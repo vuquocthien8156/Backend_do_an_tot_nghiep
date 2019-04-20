@@ -21,4 +21,7 @@ class VehicleService {
 	public function dangnhap($a,$b) {
 		return $this->vehicleRepository->dangnhap($a,$b);
 	}
+	public function getall($user, $pass) {
+		return $this->vehicleRepository->getall($user, $pass);
+	}
 }

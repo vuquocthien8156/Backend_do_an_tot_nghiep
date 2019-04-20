@@ -36,7 +36,7 @@ class logintestController extends Controller {
 	}
 	public function d($user, $pass) {
 			$c = $this->vehicleService->getall($user, $pass);
-			if ($c[0]->email) {
+			if (isset($c[0]->email)) {
 				return \Response::json(['status' =>"ok",'success' => true,'item' => $c]);
 			}
 			return \Response::json(['status' =>"error",'success' => false]);

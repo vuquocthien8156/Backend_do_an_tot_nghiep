@@ -29,9 +29,6 @@ class VehicleService {
 	public function gettk() {
 		return $this->vehicleRepository->gettk();
 	}
-	public function getall($user, $pass) {
-		return $this->vehicleRepository->getall($user, $pass);
-	}
 	public function inserttaikhoan($id,$a,$b) {
 		return $this->vehicleRepository->inserttaikhoan($id,$a,$b);
 	}

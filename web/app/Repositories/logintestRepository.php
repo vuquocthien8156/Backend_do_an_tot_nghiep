@@ -20,8 +20,46 @@ class VehicleRepository {
 	}
 
 	public function dangnhap($a, $b) {
-		$result = DB::table('taikhoan')->select('email')->where('id', '=', 1)->get();
+		$result = DB::table('taikhoan')->select('email','mat_khau')->where([
+			'email' => $a,
+			'mat_khau' => $b
+		])->get();
 		return $result;
+	}
+	public function insertUser($ns,$sdt,$gt,$name) {
+		$user = new Users();
+		$user->ten = $name;
+		$user->ngay_sinh = $ns;
+		$user->gioi_tinh = $gt;
+		$user->sdt = $sdt;
+		$user->trang_thai = 1;
+		$user->save();
+		return $user;
+	}
+	public function getid() {
+		$result = DB::table('users')->max('id');
+		return $result;
+	}
+	public function gettk() {
+		$result = DB::table('taikhoan')->select('email')->where('trang_thai','=',1)->get();
+		return $result;
+	}
+	public function getall($user, $pass) {
+		$result= DB::table('taikhoan')->select('email','mat_khau')->where([
+			'trang_thai' => 1,
+			'email' => $user,
+			'mat_khau' => $pass
+		])->get();
+		return $result;
+	}
+	public function inserttaikhoan($id,$a,$b) {
+		$tk = new taikhoan();
+		$tk->user_id = $id;
+		$tk->email = $a;
+		$tk->mat_khau = $b;
+		$tk->trang_thai = 1;
+		$tk->save();
+		return $tk;
 	}
 
 }
