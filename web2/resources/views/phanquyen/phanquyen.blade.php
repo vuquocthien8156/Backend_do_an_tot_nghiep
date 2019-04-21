@@ -19,15 +19,17 @@
                                 <input type="text" class="form-control" id="email" style="width: 200px;">
                             </div>
                             <div>
-                                <input type="radio" name="">
-                                <input type="radio" name="">
+                                @if (count($listPermission) > 0)
+                                    @foreach ($listPermission as $item)
+                                        <input type="radio" name="as" v-model="per" value="{{ $item->id }}"> {{$item->ten_vai_tro}}<br>              
+                                    @endforeach
+                                @endif
                             <div>       
                         </td>
                     </tr>
                 </table>
                 <div class="modal-footer">
-                    <button type="button" @click="edit()" class="button-app" style="margin-right: 75%">Sửa</button>
-                    <button type="button" @click="exit()" class="button-app ml-5 float-right">Thoát</button>
+                    <button type="button" @click="permission()" class="button-app" style="margin-right: 75%">Cập nhật</button>
                 </div>
             </div>
         </div>

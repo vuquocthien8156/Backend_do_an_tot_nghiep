@@ -8,10 +8,13 @@ const app = new Vue({
         return {
             results:{},
             name:'',
+            per:'',
         };
     },
 
     methods: {
-        
+        permission() {
+            console.log(this.per);
+        }
 	}
 });

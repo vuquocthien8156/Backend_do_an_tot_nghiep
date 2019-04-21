@@ -39,8 +39,10 @@ class PermissionController extends Controller {
 		$this->permissionService = $permissionService;
 	}
 
-	public function PermissionView() {  
-		return view('phanquyen.phanquyen');
+	public function PermissionView() {
+		$listPermission = $this->permissionService->getListpermission();
+		$listUser = $this->permissionService->getListInternalUser();
+		return view('phanquyen.phanquyen',['listPermission'=>$listPermission, 'listUser' =>$listUser]);
 	}
 
 	

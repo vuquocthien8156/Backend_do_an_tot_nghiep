@@ -33,7 +33,8 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 
 //api
 Route::post('api/deleteAccount', 'AccountController@deleteAccount');
-Route::post('api/dangnhap', 'LoginController@login', '_token');
-Route::post('api/dangnhapsdt', 'LoginController@loginsdt', '_token');
+Route::post('api/dangnhap', 'LoginController@login');
+Route::post('api/dangnhapsdt', 'LoginController@loginsdt');
 Route::get('api/listcAcount', 'AccountController@search');
 Route::get('api/checkExist', 'LoginController@check');
+Route::get('api/logout', 'LoginController@logout');

@@ -18,4 +18,11 @@ class PermissionService {
 		$this->permissionRepository = $permissionRepository;
 	}
 
+	public function getListpermission() {
+		return $this->permissionRepository->getListpermission();
+	}
+
+	public function getListInternalUser() {
+		return $this->permissionRepository->getListInternalUser();
+	}
 }
