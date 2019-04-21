@@ -16,7 +16,18 @@
                         <td>
                             <div class="form-group">
                                 <label for="child_name1">Tài khoản</label>
-                                <input type="text" class="form-control" id="email" style="width: 200px;">
+                                <select v-model="user_per" class="form-control" id="user_per" style="width: 200px;">
+                                    @if (count($listUser) > 0)
+                                        <option value="">Chọn user</option>
+                                         @foreach ($listUser as $item)
+                                            @if ($item->ten_vai_tro == null)
+                                                <option value="{{ $item->id }}">{{$item->email}}-Chưa có</option>
+                                            @else
+                                                <option value="{{ $item->id }}">{{$item->email}}-{{$item->ten_vai_tro}}</option>
+                                            @endif              
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
                             <div>
                                 @if (count($listPermission) > 0)

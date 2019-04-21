@@ -25,4 +25,8 @@ class PermissionService {
 	public function getListInternalUser() {
 		return $this->permissionRepository->getListInternalUser();
 	}
+
+	public function Permission($id_per, $id_user) {
+		return $this->permissionRepository->Permission($id_per, $id_user);
+	}
 }

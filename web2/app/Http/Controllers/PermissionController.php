@@ -45,5 +45,17 @@ class PermissionController extends Controller {
 		return view('phanquyen.phanquyen',['listPermission'=>$listPermission, 'listUser' =>$listUser]);
 	}
 
+	public function Permission(Request $request) {
+		$id_per = $request->get('id_per');
+		$id_user = $request->get('id_user');
+		$result = $this->permissionService->Permission($id_per, $id_user);
+		if ($result > 0) {
+			return response()->json(['status' => 'ok', 'error' => 0]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error','error' => 1]);
+		}
+	}
 	
 }

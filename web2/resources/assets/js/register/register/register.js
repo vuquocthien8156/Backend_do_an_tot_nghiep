@@ -120,7 +120,7 @@ const app = new Vue({
                     }
                     if (response.error == 0) {
                         alert('Đăng ký thành công!');
-                        window.location = 'login2';
+                        window.location = 'login';
                     }
                     else
                     {

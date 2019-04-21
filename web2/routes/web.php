@@ -12,8 +12,7 @@
 */
 Auth::routes();
 Route::get('api', 'logintestController@d')->name('home');
-Route::get('login1', 'logintestController@index');
-Route::get('login2', 'LoginController@loginView');
+Route::get('login', 'LoginController@loginView');
 Route::post('dangnhap', 'LoginController@login', '_token');
 Route::post('dangnhapsdt', 'LoginController@loginsdt', '_token');
 Route::get('logout', 'LoginController@logout');
@@ -26,6 +25,7 @@ Route::post('manage/delete', 'AccountController@deleteAccount');
 Route::post('manage/edit', 'AccountController@editAccount');
 
 Route::get('permission', 'PermissionController@PermissionView');
+Route::post('permission', 'PermissionController@Permission');
 
 Route::get('auth/facebook', 'FacebookAuthController@redirectToProvider')->name('facebook.login') ;
 Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');

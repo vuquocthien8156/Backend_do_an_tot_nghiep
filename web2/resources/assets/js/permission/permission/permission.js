@@ -9,12 +9,28 @@ const app = new Vue({
             results:{},
             name:'',
             per:'',
+            user_per:''
         };
     },
 
     methods: {
         permission() {
-            console.log(this.per);
+            var data ={
+                id_per:this.per,
+                id_user:this.user_per
+            }
+            $.ajax({
+                    url: 'permission',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    type: 'post',
+                    data: data,
+                    success: function (result) {
+                        if (result.error === 0) {
+                            alert('Thành công!');
+                            window.location = 'permission';
+                        }
+                    },
+            });
         }
 	}
 });
