@@ -4,21 +4,13 @@ namespace App\Repositories;
 
 use App\Enums\EStatus;
 use App\Enums\EUser;
-use App\Enums\EManufacture;
-use App\Enums\EVehicleStatus;
-use App\Enums\EVehicleAccredited;
-use App\Enums\EVehicleDisplayOrder;
 use App\Models\Users;
 use App\Models\quyen;
 use App\Models\phanquyen;
-use App\Models\SellingVehicle;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class AccountRepository {
-	public function __construct(SellingVehicle $SellingVehicle) {
-		$this->SellingVehicle = $SellingVehicle;
-	}
 
 	public function search($name, $page = 1, $pageSize = 15) {
 		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.ten','us.email','us.trang_thai')->orderBy('us.id', 'asc')->paginate(15);

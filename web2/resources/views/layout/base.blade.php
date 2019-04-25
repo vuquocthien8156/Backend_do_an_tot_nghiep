@@ -57,7 +57,7 @@
                     <li><a style="color: white" href="#chefs">Our Chefs</a></li>
                     <li><a style="color: white" href="#facts">Facts</a></li>
                     @if((Session::get('vaitro') == 1 && Session::get('type') == 1))
-                    <li><a style="color: white" href="#facts">Phân quyền</a></li>
+                    <li><a style="color: white" href="permission">Phân quyền</a></li>
                     @endif
                     @if((Session::get('vaitro') == 1 && Session::get('type') == 1) || (Session::get('vaitro') == 1 && Session::get('type') == 2))
 
@@ -84,7 +84,7 @@
                     <li><a style="color: white" href="#facts">Facts</a></li>
                     <li><a style="color: white" href="#special-offser">Special Offers</a></li>
                     <li><a style="color: white" href="#special-offser">Special Offers</a></li>
-                    <li><a style="color: white" href="login2">Login</a></li>
+                    <li><a style="color: white" href="login">Login</a></li>
                     <li><a style="color: white" href="register">Register</a></li>
                 @endif
 
@@ -129,14 +129,6 @@
                 top: 75px;
             }
         </style>
-        <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-storage.js"></script>
-        <script type = "application/javascript">
-            var app = firebase.initializeApp(JSON.parse('{!! json_encode(config('app.firebase')) !!}'));
-            var database = firebase.database();
-            var storage = firebase.storage();  
-        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9" crossorigin="anonymous"></script>
         
@@ -160,7 +152,6 @@
         @endphp
     </script>
 @endsection
-        @include('partial.base-js')
         @section('scripts')
         @show
     </body>
