@@ -32,7 +32,7 @@ class FacebookAuthController extends Controller
 		session()->put('login',true);
         Auth::login($authUser, true);
  
-        return redirect()->route('home');
+        return redirect()->route('home',['status' => 'Thành công']);
     }
  
     private function findOrCreateUser($facebookUser){
