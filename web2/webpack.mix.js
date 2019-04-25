@@ -21,41 +21,6 @@ mix
     .js('resources/assets/js/account/account/account.js', 'public/js/account/account')
     .js('resources/assets/js/register/register/register.js', 'public/js/register/register')
     .js('resources/assets/js/test/test/test.js', 'public/js/test/test')
-    .js('resources/assets/js/customer/manage-customer/manage-customer.js', 'public/js/customer/manage-customer')
-    .js('resources/assets/js/customer/manage-card-member/manage-card-member.js', 'public/js/customer/manage-card-member')
-    .js('resources/assets/js/customer/manage-appointment/manage-appointment.js', 'public/js/customer/manage-appointment')
-    .js('resources/assets/js/customer/make-appointment/make-appointment.js', 'public/js/customer/make-appointment')
-
-    .js('resources/assets/js/vehicle/manage-vehicle/manage-vehicle.js', 'public/js/vehicle/manage-vehicle')
-    .js('resources/assets/js/vehicle/manage-vehicle/jquery.fancybox.min.js', 'public/js/vehicle/manage-vehicle')
-    .js('resources/assets/js/vehicle/manage-vehicle/see-more-description.js', 'public/js/vehicle/manage-vehicle')
-
-    .js('resources/assets/js/trading/manage-trading/manage-trading.js', 'public/js/trading/manage-trading')
-    .js('resources/assets/js/trading/manage-trading/see-more-feedback.js', 'public/js/trading/manage-trading')      
-
-    .js('resources/assets/js/setting/manufacture-model/manufacture-model.js', 'public/js/setting/manufacture-model')
-    .js('resources/assets/js/setting/create-branch/create-branch.js', 'public/js/setting/create-branch')
-    .js('resources/assets/js/setting/birthday/birthday.js', 'public/js/setting/birthday')
-    .js('resources/assets/js/setting/bank-tranfer/bank-tranfer.js', 'public/js/setting/bank-tranfer')
-
-    .js('resources/assets/js/notification/manage-notification/manage-notification.js', 'public/js/notification/manage-notification')
-
-    .js('resources/assets/js/rescue/manage-rescue/manage-rescue.js', 'public/js/rescue/manage-rescue')
-
-    .js('resources/assets/js/employees/manage-employees/manage-employees.js', 'public/js/employees/manage-employees')
-
-    .js('resources/assets/js/conversation/chat-user/chat-user.js', 'public/js/conversation/chat-user')
-
-    .js('resources/assets/js/conversation/chat-user/chat-user2.js', 'public/js/conversation/chat-user')
-
-    .js('resources/assets/js/conversation/chat-user/chat-user3.js', 'public/js/conversation/chat-user')
-
-    .js('resources/assets/js/authorization/authorization-user-web/authorization-user-web.js', 'public/js/authorization/authorization-user-web')
-
-    .js('resources/assets/js/config/banner.js', 'public/js/config')
-
-    .js('resources/assets/js/forwarder/vehicle-transfer/vehicle-transfer.js', 'public/js/forwarder/vehicle-transfer')
-
     .js('resources/assets/js/bootstrap.min.js', 'public/js/config')
     .js('resources/assets/js/jquery.actual.min.js', 'public/js/config')
     .js('resources/assets/js/jquery.scrollTo.min.js', 'public/js/config')

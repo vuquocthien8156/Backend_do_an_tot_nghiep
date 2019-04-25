@@ -4,10 +4,7 @@ namespace App\Repositories;
 
 use App\Enums\EStatus;
 use App\Enums\EUser;
-use App\Enums\EManufacture;
-use App\Enums\ECodePermissionGroup;
 use App\Models\Users;
-use App\Models\UserRolePermission;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
