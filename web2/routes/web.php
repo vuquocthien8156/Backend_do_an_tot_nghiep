@@ -32,11 +32,11 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 
 
 //api
-Route::post('api/register', 'RegisterController@register');
+Route::post('api/register' , 'RegisterController@register');
 Route::post('api/deleteAccount', 'AccountController@deleteAccount');
-Route::post('api/dangnhap', 'LoginController@login');
+Route::post('api/dangnhap' , 'LoginController@login');
 Route::post('api/dangnhapsdt', 'LoginController@loginsdt');
 Route::get('api/listcAcount', 'AccountController@searchAccount');
 Route::get('api/checkExist', 'LoginController@check');
-Route::get('api/logout', 'LoginController@logout');
+Route::get('api/logout' , 'LoginController@logout');
 Route::get('api/listProduct', 'ProductController@searchProduct');

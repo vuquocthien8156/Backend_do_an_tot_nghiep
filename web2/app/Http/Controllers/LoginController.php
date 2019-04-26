@@ -41,7 +41,7 @@ class LoginController extends Controller {
 		$pass = $request->get("password");
 		$check = $this->loginService->check($user);
 		if (isset($check[0]->email)) {
-			return response()->json(['status' => 'ok', 'error' => 0, $check]);
+			return response()->json(['status' => 'ok', 'error' => 0]);
 		}
 		else
 		{
