@@ -40,3 +40,4 @@ Route::get('api/listcAcount', 'AccountController@searchAccount');
 Route::get('api/checkExist', 'LoginController@check');
 Route::get('api/logout' , 'LoginController@logout');
 Route::get('api/listProduct', 'ProductController@searchProduct');
+Route::get('api/auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
