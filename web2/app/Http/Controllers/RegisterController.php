@@ -9,6 +9,7 @@ use App\Enums\ErrorCode;
 use App\Helpers\ConfigHelper;
 use App\Traits\CommonTrait;
 use App\Exports\VehicleExport;
+use App\Services\RegisterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
@@ -36,18 +37,53 @@ class RegisterController extends Controller {
 		$birthday = $request->get("birthday");
 		$phone = $request->get("phone");
 		$address = $request->get("address");
-		$check = $this->registerService->getAccount();
+		$check = $this->registerService->getAccount($username);
 		for ($i=0; $i < count($check); $i++) { 
 			if ($username == $check[$i]->email) {
 				return \Response::json(['status' =>"already",'success' => false]);
 			}
 		}
 		$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
-		$idMax = $this->registerService->idMax();
-		$Permission = $this->registerService->insertPermission($idMax);
+		// $idMax = $this->registerService->idMax();
+		// $Permission = $this->registerService->insertPermission($idMax);
 		if ($Permission == true) {
 			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
 		}
 		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
+	}
+
+	public function registerForPhone(Request $request) {  
+		$username = $request->get("username");
+		$password = $request->get("password");
+		$name = $request->get("name");
+		$gender = $request->get("gender");
+		$birthday = $request->get("birthday");
+		$address = $request->get("address");
+		$check = $this->registerService->getPhone($username);
+		for ($i=0; $i < count($check); $i++) { 
+			if ($username == $check[$i]->sdt) {
+				return \Response::json(['status' =>"already",'success' => false]);
+			}
+		}
+		$insert = $this->registerService->insertUserPhone($username, $password, $name, $gender, $birthday, $address);
+		//$idMax = $this->registerService->idMax();
+		// $Permission = $this->registerService->insertPermission($idMax);
+		if ($Permission == true) {
+			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
+		}
+		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
+	}
+
+	public function check(Request $request) {
+		$user = $request->get("username");
+		$pass = $request->get("password");
+		$check = $this->loginService->check($user);
+		if (isset($check[0]->email)) {
+			return response()->json(['status' => 'ok', 'error' => 0, $check]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
+		}
 	}
 }

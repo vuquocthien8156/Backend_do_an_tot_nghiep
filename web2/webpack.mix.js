@@ -19,6 +19,8 @@ mix
     .js('resources/assets/js/login/login/login.js', 'public/js/login/login')
     .js('resources/assets/js/permission/permission/permission.js', 'public/js/permission/permission')
     .js('resources/assets/js/account/account/account.js', 'public/js/account/account')
+    .js('resources/assets/js/product/product/product.js', 'public/js/product/product')
+    .js('resources/assets/js/product/product/addProduct.js', 'public/js/product/product')
     .js('resources/assets/js/register/register/register.js', 'public/js/register/register')
     .js('resources/assets/js/test/test/test.js', 'public/js/test/test')
     .js('resources/assets/js/bootstrap.min.js', 'public/js/config')

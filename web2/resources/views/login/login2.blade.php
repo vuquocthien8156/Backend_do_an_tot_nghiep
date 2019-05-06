@@ -26,11 +26,6 @@
                     				<div class="form-group">
                             			<input id="password" style="height: 50px;width: 450px" v-model="password" type="password" class="form-control" placeholder="Nhập password" name="password" required>
                        				 </div>
-                       				 <div>
-                       				 	<strong id="error" style="display: none; color: red">
-                       				 		Sai tên đăng nhập hoặc mật khẩu
-                       				 	</strong>
-                       				 </div>
                     			</td>
                     		</tr>
                     		<tr>

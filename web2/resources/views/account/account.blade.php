@@ -54,15 +54,18 @@
                         <td><p>@{{item.ten}}<p></td>
                         <td><p>@{{item.sdt}}<p></td>
                         <td><p>@{{item.ngay_sinh}}<p></td>
-                        <td><p>@{{item.gioi_tinh}}<p></td>
+                        <td v-if="item.gioi_tinh == 1"><p>Nam<p></td>
+                        <td v-if="item.gioi_tinh == 2"><p>Nữ<p></td>
+                        <td v-if="item.gioi_tinh == 3"><p>Khác<p></td>
+                        <td v-if="item.gioi_tinh == null"><p>Chưa có<p></td>
                         <td><p>@{{item.diem_tich}}<p></td>
                         <td><p>@{{item.dia_chi}}<p></td>
                         <td><p>@{{item.email}}<p></td>
-                        <td><img src=""></td>
-                        <td v-if="item.trang_thai == {{ \App\Enums\EStatus::DELETED }}">Đã xóa</td>
-                        <td v-if="item.trang_thai == {{ \App\Enums\EStatus::ACTIVE }}">Đã kích hoạt</td>
+                        <td><img :src="item.pathToResource+'/'+item.avatar" width="50px" height="50px"></td>
+                        <td v-if="item.da_xoa == {{ \App\Enums\EStatus::DELETED }}">Đã xóa</td>
+                        <td v-if="item.da_xoa == {{ \App\Enums\EStatus::ACTIVE }}">Đã kích hoạt</td>
                         <td><p>
-                            <!-- <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.id);"></a> -->
+                            <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.id);"></a>
                             <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteHealthRecord(item.id)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span><p></td>
                     <tr>
                 </tbody>

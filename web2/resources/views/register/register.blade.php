@@ -86,9 +86,9 @@
                                     <div class="form-group">
                                         <select class="form-control" v-model="gender">
                                             <option value="">Gender</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Others">Others</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="3">Others</option>
                                         </select>
                                      </div>
                                 </td>

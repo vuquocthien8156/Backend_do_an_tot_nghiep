@@ -30,4 +30,23 @@ class LoginService {
 		return $this->loginRepository->check($user);
 	}
 
+	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar) {
+		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar);	
+	}
+
+	public function getLikedProduct($email) {
+		return $this->loginRepository->getLikedProduct($email);	
+	}
+
+	public function getLike() {
+		return $this->loginRepository->getLike();	
+	}
+
+	public function updateLike($id_product, $id_user, $like) {
+		return $this->loginRepository->updateLike($id_product, $id_user, $like);	
+	}
+
+	public function insertLike($id_product, $id_user, $like) {
+		return $this->loginRepository->insertLike($id_product, $id_user, $like);	
+	}
 }

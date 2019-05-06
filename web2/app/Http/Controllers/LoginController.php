@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Excel;
 
 class LoginController extends Controller {
@@ -54,14 +55,14 @@ class LoginController extends Controller {
 	  		return redirect()->route('home');
 	  	}  
 		$user = $request->get("username");
-		$pass = $request->get("password");
+		$pass =$request->get("password");
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
 			session()->put('id',$check[0]->user_id);
 			session()->put('name',$check[0]->ten);
 			session()->put('login',true);
-			session()->put('vaitro',$check[0]->vaitro);
-			session()->put('type',$check[0]->type);
+			session()->put('vaitro',$check[0]->id_vai_tro);
+			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}
 		else
@@ -81,7 +82,7 @@ class LoginController extends Controller {
 			session()->put('name',$check[0]->ten);
 			session()->put('login',true);
 			session()->put('vaitro',$check[0]->vaitro);
-			session()->put('type',$check[0]->type);
+			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}
 		else
@@ -92,7 +93,70 @@ class LoginController extends Controller {
 
 	public function logout(Request $request) {  
 		session()->flush();
-		return redirect('api');
+		return redirect('home');
+	}
+
+	public function requestUpdateInfo(Request $request) {
+		$email = $request->get('email');
+		$name = $request->get('name');
+		$phone = $request->get('phone');
+		$gender = $request->get('gender');
+		$dob = $request->get('birth_day');
+		$avatar = $request->file('avatar');
+		$now = Carbon::now();
+		if ($request->file('avatar') != null || $request->file('avatar') != '') {
+                $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename =  $subName . '/' . $request->file('avatar')->getClientOriginalName();
+                $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+        }
+        $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar);
+        if ($update > 0) {
+        	return response()->json(['status' => 'ok', 'error' => 0]);
+        }else {
+        	return response()->json(['status' => 'update fail', 'error' => 1]);
+        }
+	}
+	public function getLikedProduct(Request $request) {
+		$email = $request->get('email');
+		$getLikedProduct =  $this->loginService->getLikedProduct($email);
+		if (isset($getLikedProduct[0]->ma_chu)) {
+			return response()->json(['status' => 'ok', 'error' => 0, 'list' => $getLikedProduct]);
+		}else{
+			return response()->json(['status' => 'fail', 'error' => 1]);
+		}
+	}
+
+	public function requestLike(Request $request) {
+		$id_product = $request->get('id_product');
+		$id_user = $request->get('id_user');
+		$like = $request->get('like');
+		$temp = 0;
+		$getLike =  $this->loginService->getLike();
+		for ($i=0; $i < count($getLike); $i++) { 
+			if ($getLike[$i]->ma_san_pham == $id_product && $getLike[$i]->ma_khach_hang == $id_user) {
+				$temp = 1;
+				break;
+			}
+			else {
+				$temp = 0;
+			}
+		}
+		if ($temp == 1) {
+			$updateLike =  $this->loginService->updateLike($id_product, $id_user, $like);
+		}else {
+			$insertLike =  $this->loginService->insertLike($id_product, $id_user, $like);
+		}
+		if (isset($update) || $insertLike == true) {
+			return response()->json(['status' => 'ok', 'error' => 0]);
+		}else{
+			return response()->json(['status' => 'fail', 'error' => 1]);
+		}
 	}
 	
 }

@@ -12,9 +12,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class RegisterRepository {
-	public function __construct(SellingVehicle $SellingVehicle) {
-		$this->SellingVehicle = $SellingVehicle;
-	}
 
 	public function login($user, $pass) {
 		$result = DB::table('taikhoan')->select('email', 'mat_khau')->where([
@@ -24,10 +21,18 @@ class RegisterRepository {
 		])->get(); 
 		return $result;
 	}
-	public function getAccount() {
+
+	public function getAccount($username) {
 		$result = DB::table('users')->select('email')->where([
-			'trang_thai' => 1,
-		])->get(); 
+			'da_xoa' => 1,
+		])->where('email' , '=', $username)->get(); 
+		return $result;
+	}
+
+	public function getPhone($username) {
+		$result = DB::table('users')->select('sdt')->where([
+			'da_xoa' => 1,
+		])->where('sdt' , '=', $username)->get(); 
 		return $result;
 	}
 
@@ -37,10 +42,23 @@ class RegisterRepository {
 		$user->ngay_sinh = $birthday;
 		$user->gioi_tinh = $gender;
 		$user->sdt = $phone;
-		$user->diachi = $address;
+		$user->dia_chi = $address;
 		$user->email = $username;
 		$user->password = $password;
-		$user->trang_thai = 1;
+		$user->da_xoa = 1;
+		$user->save();
+		return $user;
+	}
+
+	public function insertUserPhone($username, $password, $name, $gender, $birthday, $address) {
+		$user = new Users();
+		$user->ten = $name;
+		$user->ngay_sinh = $birthday;
+		$user->gioi_tinh = $gender;
+		$user->sdt = $username;
+		$user->dia_chi = $address;
+		$user->password = $password;
+		$user->da_xoa = 1;
 		$user->save();
 		return $user;
 	}
@@ -51,7 +69,7 @@ class RegisterRepository {
 	}
 
 	public function insertPermission($idMax) {
-		$result = DB::table('phanquyen')->insert(['id_user' => $idMax, 'id_quyen' => 1, 'trang_thai' => 1]);
+		$result = DB::table('phanquyen')->insert(['id_user' => $idMax, 'trang_thai' => 1]);
 		// $phanquyen = new phanquyen();
 		// $phanquyen->id_user = $idMax;
 		// $phanquyen->id_quyen = 1;

@@ -22,19 +22,19 @@ class PermissionRepository {
 
 	public function getListInternalUser() {
 		$result = DB::table('users as us')->select('us.id', 'ten', 'email', 'ten_vai_tro')
-		->join('phanquyen','id_user','=', 'us.id')
-		->leftjoin('vaitro as vt', 'vt.id', '=','phanquyen.vaitro')
+		->join('PhanQuyen','PhanQuyen.tai_khoan','=', 'us.id')
+		->leftjoin('vaitro as vt', 'vt.id', '=','PhanQuyen.id_vai_tro')
 		->where([
-			'us.trang_thai' => 1,
-		])->orderby('id','asc')->get(); 
+			'us.da_xoa' => 1,
+		])->orderby('us.id','asc')->get(); 
 		return $result;
 	}
 
 	public function Permission($id_per, $id_user) {
-		$result = DB::table('phanquyen')
+		$result = DB::table('PhanQuyen')
 		->where([
-			'id_user' => $id_user,
-		])->update(['vaitro' => $id_per]); 
+			'tai_khoan' => $id_user,
+		])->update(['id_vai_tro' => $id_per]); 
 		return $result;
 	}
 }

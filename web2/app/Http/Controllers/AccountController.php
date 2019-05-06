@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constant\ConfigKey;
 use App\Constant\SessionKey;
 use App\Enums\EStatus;
+use App\Enums\ErrorCode;
 use App\Enums\EUser;
 use App\Helpers\ConfigHelper;
 use App\Services\LoginService;
@@ -36,10 +37,14 @@ class AccountController extends Controller {
 	 } 
 		$name = $request->get('name');
 		$page = 1;
-            if ($request->get('page') !== null) {
-                $page = $request->get('page');
-            }
+        if ($request->get('page') !== null) {
+            $page = $request->get('page');
+        }
+        $pathToResource = config('app.resource_url_path');
 		$listAccount = $this->accountService->search($name, $page);
+		for ($i=0; $i < count($listAccount); $i++) { 
+             $listAccount[$i]->pathToResource = $pathToResource;
+        }
 		return response()->json(['listSearch'=>$listAccount]);
 	}
 

@@ -22,13 +22,22 @@ class RegisterService {
 		return $this->registerRepository->login($user, $pass);
 	}
 
-	public function getAccount() {
-		return $this->registerRepository->getAccount();
+	public function getAccount($username) {
+		return $this->registerRepository->getAccount($username);
+	}
+
+	public function getPhone($username) {
+		return $this->registerRepository->getPhone($username);
 	}
 
 	public function insertUser($username, $password, $name, $gender, $birthday, $phone, $address) {
 		return $this->registerRepository->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
 	}
+
+	public function insertUserPhone($username, $password, $name, $gender, $birthday, $address) {
+		return $this->registerRepository->insertUserPhone($username, $password, $name, $gender, $birthday, $address);
+	}
+
 	public function idMax() {
 		return $this->registerRepository->idMax();
 	}

@@ -41,6 +41,7 @@ const app = new Vue({
                 .done(response => {
                     if (response.error == 0) {
                         alert("xóa thành công !!");
+                        window.location = 'account';
                     }
                 })
             }

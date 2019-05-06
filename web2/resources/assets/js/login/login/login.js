@@ -34,20 +34,13 @@ const app = new Vue({
             $("#username").attr('placeholder', 'Nhập email');
         },
         login() {
-        	if (this.username == '' || this.password == '') {
-        		$('#error').css('display','block');
+        	if (this.username == '' || this.password == '' || this.username == null || this.password == null) {
+        		alert('vui lòng nhập đầy đủ thông tin!');
         	}
         	else
         	{
         		$('#error').css('display','none');
-        	}
-        	$('#username').focus(function () {
-        		$('#error').css('display','none');
-        	});
-        	$('#password').focus(function () {
-        		$('#error').css('display','none');
-        	});
-        	var data = {
+                var data = {
                 username: this.username,
                 password:this.password,
             };
@@ -59,28 +52,30 @@ const app = new Vue({
                     success: function (result) {
                         if (result.error === 0) {
                             alert('Thành công!');
-                            window.location = 'api';
-                        } else {            
-                            $('#error').css('display','block');
+                            window.location = 'home';
+                        } else {
+                            if (result.error === 0) {
+                                alert('Sai tên hoặc mật khẩu!');
+                            }            
+                            
                         }
                     },
             });
+        	}
+        	$('#username').focus(function () {
+        		$('#error').css('display','none');
+        	});
+        	$('#password').focus(function () {
+        		$('#error').css('display','none');
+        	});
         },
         login_sdt() {
             if (this.username == '' && this.username == null) {
-                $('#error').css('display','block');
+                alert('vui lòng nhập đầy đủ thông tin!');
             }
             else
             {
-                $('#error').css('display','none');
-            }
-            $('#username').focus(function () {
-                $('#error').css('display','none');
-            });
-            $('#password').focus(function () {
-                $('#error').css('display','none');
-            });
-            var data = {
+                var data = {
                 username: this.username,
             };
             $.ajax({
@@ -91,11 +86,18 @@ const app = new Vue({
                     success: function (result) {
                         if (result.error === 0) {
                             alert('Thành công!');
-                            window.location = 'api';
+                            window.location = 'home';
                         } else {            
                             $('#error').css('display','block');
                         }
                     },
+            });
+            }
+            $('#username').focus(function () {
+                $('#error').css('display','none');
+            });
+            $('#password').focus(function () {
+                $('#error').css('display','none');
             });
         }
 	}
