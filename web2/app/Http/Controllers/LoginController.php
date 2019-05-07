@@ -40,9 +40,12 @@ class LoginController extends Controller {
 	public function check(Request $request) {
 		$user = $request->get("username");
 		$pass = $request->get("password");
+		if ($user == null) {
+			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
+		}
 		$check = $this->loginService->check($user);
 		if (isset($check[0]->email)) {
-			return response()->json(['status' => 'ok', 'error' => 0]);
+			return response()->json(['status' => 'ok', 'error' => 0,'email' => $check[0]->email, 'id_fb' => $check[0]->fb_id, 'phone' => $check[0]->sdt]);
 		}
 		else
 		{
@@ -158,5 +161,32 @@ class LoginController extends Controller {
 			return response()->json(['status' => 'fail', 'error' => 1]);
 		}
 	}
-	
+
+	public function getAllOrder(Request $request) {
+		$id_KH = $request->get('id_khach_hang');
+		if ($id_KH == '' || $id_KH == null) {
+			$getAllOrder =  null;
+			$getUser = null;
+		}
+		else
+		{
+			$getAllOrder =  $this->loginService->getAllOrder($id_KH);
+			$getUser = $this->loginService->getUser($id_KH);
+			$id_don_hang = $getAllOrder[0]->ma_don_hang;
+			//$getDetailOrder = $this->loginService->getDetailOrder($id_don_hang);
+			for ($i=0; $i < count($getAllOrder) ; $i++) { 
+				$getAllOrder[$i]->ma_khach_hang = $getUser[0];
+			}
+		}
+		dd($getAllOrder, $id_don_hang);
+	}
+
+	public function updateIdFB(Request $request)
+    {
+    	$id_fb = $request->get('id_fb');
+    	$email = $request->get('email');
+        $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
+        $getInfo = $this->loginService->getInfo($id_fb);
+        dd($getInfo);
+    }
 }

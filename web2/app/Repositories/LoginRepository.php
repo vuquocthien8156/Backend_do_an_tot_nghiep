@@ -31,11 +31,7 @@ class LoginRepository {
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
                 $where->whereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
-<<<<<<< HEAD
-                      ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
-=======
                      ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
->>>>>>> 47a5dcf9095712c128e3787f80f70178e2990e0e
                 });
         } 
 		return $result->get();
@@ -78,5 +74,34 @@ class LoginRepository {
            'trang_thai' => 1,
         ]);
         return $result;	
+	}
+
+	public function getAllOrder($id_KH) {
+		$result = DB::table('DonHang')->select('ma_don_hang', 'ma_khach_hang', 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+		if ($id_KH != null && $id_KH != '') {
+			$result->where('ma_khach_hang', '=', $id_KH);
+		}
+		return $result->get();
+	}
+
+	public function getUser($id_KH) {
+		$result = DB::table('users')->select('id', 'ten', 'sdt', 'dia_chi');
+		if ($id_KH != null && $id_KH != '') {
+			$result->where('id', '=', $id_KH);
+		}
+		return $result->get();
+	}
+
+	public function updateIdFB($id_fb, $email) {
+		$result = DB::table('users')->where('email', '=', $email)
+		->update([
+			'fb_id' => $id_fb,
+		]);
+		return $result;
+	}
+
+	public function getInfo($id_fb) {
+		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'ngay_sinh')->where('fb_id', '=', $id_fb)->get();
+		return $result;
 	}
 }

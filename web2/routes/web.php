@@ -41,27 +41,25 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 
 
 //api
-<<<<<<< HEAD
+
 Route::post('api/register', 'RegisterController@register');
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
-=======
-Route::post('api/register' , 'RegisterController@register');
->>>>>>> 47a5dcf9095712c128e3787f80f70178e2990e0e
-Route::post('api/deleteAccount', 'AccountController@deleteAccount');
-Route::post('api/dangnhap' , 'LoginController@login');
-Route::post('api/dangnhapsdt', 'LoginController@loginsdt');
-Route::get('api/listcAcount', 'AccountController@searchAccount');
-<<<<<<< HEAD
-Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
+
+Route::post('api/login' , 'LoginController@login');
+Route::post('api/login-by-phone', 'LoginController@loginsdt');
 Route::get('api/checkLoginExist', 'LoginController@check');
-Route::get('api/checkRegisterExist', 'RegisterController@check');
 Route::get('api/logout', 'LoginController@logout');
-=======
-Route::get('api/checkExist', 'LoginController@check');
-Route::get('api/logout' , 'LoginController@logout');
->>>>>>> 47a5dcf9095712c128e3787f80f70178e2990e0e
-Route::get('api/listProduct', 'ProductController@searchProduct');
-Route::get('api/auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
+
+Route::post('api/deleteAccount', 'AccountController@deleteAccount');
+Route::get('api/listcAcount', 'AccountController@searchAccount');
 Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
-Route::get('api/likedProduct', 'LoginController@getLikedProduct');
-Route::get('api/like', 'LoginController@requestLike');
+
+Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu
+Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
+Route::post('api/update-id_fb', 'LoginController@updateIdFB');
+
+Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
+Route::get('api/listProduct', 'ProductController@searchProduct');
+Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
+
+Route::get('api/like', 'LoginController@requestLike');//thích sp

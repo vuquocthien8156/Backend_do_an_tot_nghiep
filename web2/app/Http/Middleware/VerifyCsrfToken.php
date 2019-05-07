@@ -13,12 +13,12 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'api/dangnhap',
         'api/deleteAccount',
-        'api/dangnhapsdt',
-        'dangnhap',
+        'api/login-by-phone',
+        'api/login',
         'dangnhapsdt',
         'api/listcAcount',
-
+        'api/insert-no-mail',
+        'api/update-id_fb',
     ];
 }
