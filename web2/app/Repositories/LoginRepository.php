@@ -31,11 +31,8 @@ class LoginRepository {
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
                 $where->whereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
-<<<<<<< HEAD
                       ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
-=======
                      ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
->>>>>>> 47a5dcf9095712c128e3787f80f70178e2990e0e
                 });
         } 
 		return $result->get();
