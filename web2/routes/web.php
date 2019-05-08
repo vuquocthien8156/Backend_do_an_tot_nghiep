@@ -43,10 +43,6 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 //api
 Route::post('api/register', 'RegisterController@register');
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
-Route::post('api/register' , 'RegisterController@register');
-
-Route::post('api/register', 'RegisterController@register');
-Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 
 Route::post('api/login' , 'LoginController@login');
 Route::post('api/login-by-phone', 'LoginController@loginsdt');
@@ -55,12 +51,6 @@ Route::get('api/logout', 'LoginController@logout');
 
 Route::post('api/deleteAccount', 'AccountController@deleteAccount');
 Route::get('api/listcAcount', 'AccountController@searchAccount');
-Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
-Route::get('api/checkLoginExist', 'LoginController@check');
-Route::get('api/checkRegisterExist', 'RegisterController@check');
-Route::get('api/logout', 'LoginController@logout');
-Route::get('api/checkExist', 'LoginController@check');
-Route::get('api/logout' , 'LoginController@logout');
 Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
 
 Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
