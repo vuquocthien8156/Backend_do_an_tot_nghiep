@@ -21,5 +21,6 @@ class VerifyCsrfToken extends Middleware
         'api/insert-no-mail',
         'api/update-id_fb',
         'api/update-email',
+        'api/updateInfo'
     ];
 }

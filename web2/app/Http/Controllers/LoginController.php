@@ -190,6 +190,7 @@ class LoginController extends Controller {
     {
     	$id_fb = $request->get('id_fb');
     	$email = $request->get('email');
+    	$type = $request->get('type');
         $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
         $getInfo = $this->loginService->getInfo($id_fb);
         if (isset($getInfo[0]->ten)) {

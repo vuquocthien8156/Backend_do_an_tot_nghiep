@@ -52,6 +52,22 @@ class ProductController extends Controller {
 		return response()->json(['listSearch'=>$listProduct]);  
 	}
 
+	public function searchProductAPI(Request $request) {
+		$name = $request->get('name');
+		$ma_loai = $request->get('ma_loai');
+		$mo_ta = $request->get('mo_ta');
+		$page = 1;
+        if ($request->get('page') !== null) {
+                $page = $request->get('page');
+        }
+        $pathToResource = config('app.resource_url_path');
+        $listProduct = $this->productService->searchProductAPI($name, $page, $ma_loai, $mo_ta);
+        for ($i=0; $i < count($listProduct); $i++) { 
+             $listProduct[$i]->pathToResource = $pathToResource;
+        }
+		return response()->json(['listSearch'=>$listProduct]);  
+	}
+
 	public function searchRankProduct(Request $request) {
 		$page = 1;
         if ($request->get('page') !== null) {

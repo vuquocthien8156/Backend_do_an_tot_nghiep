@@ -34,14 +34,13 @@ Route::prefix('product')->group(function() {
 });
 
 Route::get('permission', 'PermissionController@PermissionView');
-Route::post('permission', 'PermissionController@Permission');
+Route::post('permission', 'Permi	ssionController@Permission');
 
 Route::get('auth/facebook', 'FacebookAuthController@redirectToProvider')->name('facebook.login') ;
 Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
 
 
 //api
-Route::post('api/register', 'RegisterController@register');
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 
 Route::post('api/login' , 'LoginController@login');
@@ -49,15 +48,17 @@ Route::post('api/login-by-phone', 'LoginController@loginsdt');
 Route::get('api/checkLoginExist', 'LoginController@check');
 Route::get('api/logout', 'LoginController@logout');
 
-Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
+Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 
-Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
-Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
-Route::post('api/update-id_fb', 'LoginController@updateIdFB');
-Route::post('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
+// Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
+// Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
+// Route::post('api/update-id_fb', 'LoginController@updateIdFB');
+// Route::post('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
+
+Route::post('api/login-fb', 'FacebookAuthController@loginfb');
 
 Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
-Route::get('api/listProduct', 'ProductController@searchProduct');
+Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 
 Route::get('api/like', 'LoginController@requestLike');//thích sp
