@@ -20,5 +20,6 @@ class VerifyCsrfToken extends Middleware
         'api/listcAcount',
         'api/insert-no-mail',
         'api/update-id_fb',
+        'api/update-email',
     ];
 }

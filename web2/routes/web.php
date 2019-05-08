@@ -49,14 +49,14 @@ Route::post('api/login-by-phone', 'LoginController@loginsdt');
 Route::get('api/checkLoginExist', 'LoginController@check');
 Route::get('api/logout', 'LoginController@logout');
 
-Route::post('api/deleteAccount', 'AccountController@deleteAccount');
-Route::get('api/listcAcount', 'AccountController@searchAccount');
 Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
 
+Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
 Route::post('api/update-id_fb', 'LoginController@updateIdFB');
+Route::post('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
 
-Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
+Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
 Route::get('api/listProduct', 'ProductController@searchProduct');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 
