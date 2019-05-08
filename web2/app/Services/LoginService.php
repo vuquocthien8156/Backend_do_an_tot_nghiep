@@ -34,8 +34,8 @@ class LoginService {
 		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar);	
 	}
 
-	public function getLikedProduct($email) {
-		return $this->loginRepository->getLikedProduct($email);	
+	public function getLikedProduct($id) {
+		return $this->loginRepository->getLikedProduct($id);	
 	}
 
 	public function getLike() {
@@ -68,5 +68,9 @@ class LoginService {
 
 	public function getInfo($id_fb) {
 		return $this->loginRepository->getInfo($id_fb);
+	}
+
+	public function insertPass($id_fb) {
+		return $this->loginRepository->insertPass($id_fb);
 	}
 }

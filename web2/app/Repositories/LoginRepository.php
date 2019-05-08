@@ -8,6 +8,7 @@ use App\Models\Users;
 use App\Models\quyen;
 use App\Models\phanquyen;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 class LoginRepository {
@@ -48,11 +49,11 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getLikedProduct($email) {
+	public function getLikedProduct($id) {
 		$result = DB::table('SanPhamYeuThich')->select('ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham')
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
-		->where('email', '=', $email)->get();
+		->where('users.id', '=', $id)->get();
 		return $result;
 	}
 
@@ -101,7 +102,14 @@ class LoginRepository {
 	}
 
 	public function getInfo($id_fb) {
-		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'ngay_sinh')->where('fb_id', '=', $id_fb)->get();
+		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
+	}
+	public function insertPass($id_fb) {
+		$pass = Hash::make(123);
+		$result = DB::table('users')->where('fb_id', '=', $id_fb)->update([
+           'password' => $pass,
+        ]);
+        return $result;	
 	}
 }

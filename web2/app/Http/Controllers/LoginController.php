@@ -126,8 +126,8 @@ class LoginController extends Controller {
         }
 	}
 	public function getLikedProduct(Request $request) {
-		$email = $request->get('email');
-		$getLikedProduct =  $this->loginService->getLikedProduct($email);
+		$id = $request->get('id');
+		$getLikedProduct =  $this->loginService->getLikedProduct($id);
 		if (isset($getLikedProduct[0]->ma_chu)) {
 			return response()->json(['status' => 'ok', 'error' => 0, 'list' => $getLikedProduct]);
 		}else{
@@ -187,6 +187,21 @@ class LoginController extends Controller {
     	$email = $request->get('email');
         $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
         $getInfo = $this->loginService->getInfo($id_fb);
-        dd($getInfo);
+        if (isset($getInfo[0]->ten)) {
+        	return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
+        }
+        return response()->json(['status' => 'fail', 'error' => 1]);
+    }
+
+    public function  updateEmail(Request $request)
+    {
+    	$id_fb = $request->get('id_fb');
+    	$email = $request->get('email');
+    	$updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
+    	$insertPass = $this->loginService->insertPass($id_fb);
+        if (isset($getInfo[0]->ten)) {
+        	return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
+        }
+        return response()->json(['status' => 'fail', 'error' => 1]);
     }
 }
