@@ -58,7 +58,7 @@ class LoginController extends Controller {
 	  		return redirect()->route('home');
 	  	}  
 		$user = $request->get("username");
-		$pass =$request->get("password");
+		$pass =Hash::make($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
 			session()->put('id',$check[0]->user_id);
