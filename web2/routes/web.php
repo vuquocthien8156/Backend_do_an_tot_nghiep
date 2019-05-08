@@ -44,9 +44,16 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 Route::post('api/register', 'RegisterController@register');
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 Route::post('api/register' , 'RegisterController@register');
+
+Route::post('api/register', 'RegisterController@register');
+Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
+
+Route::post('api/login' , 'LoginController@login');
+Route::post('api/login-by-phone', 'LoginController@loginsdt');
+Route::get('api/checkLoginExist', 'LoginController@check');
+Route::get('api/logout', 'LoginController@logout');
+
 Route::post('api/deleteAccount', 'AccountController@deleteAccount');
-Route::post('api/dangnhap' , 'LoginController@login');
-Route::post('api/dangnhapsdt', 'LoginController@loginsdt');
 Route::get('api/listcAcount', 'AccountController@searchAccount');
 Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
 Route::get('api/checkLoginExist', 'LoginController@check');
@@ -54,8 +61,13 @@ Route::get('api/checkRegisterExist', 'RegisterController@check');
 Route::get('api/logout', 'LoginController@logout');
 Route::get('api/checkExist', 'LoginController@check');
 Route::get('api/logout' , 'LoginController@logout');
-Route::get('api/listProduct', 'ProductController@searchProduct');
-Route::get('api/auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
 Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
-Route::get('api/likedProduct', 'LoginController@getLikedProduct');
-Route::get('api/like', 'LoginController@requestLike');
+
+Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
+Route::post('api/update-id_fb', 'LoginController@updateIdFB');
+
+Route::get('api/listcRankProduct', 'ProductController@searchRankProduct');
+Route::get('api/listProduct', 'ProductController@searchProduct');
+Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
+
+Route::get('api/like', 'LoginController@requestLike');//thích sp

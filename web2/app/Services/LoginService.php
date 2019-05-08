@@ -49,4 +49,24 @@ class LoginService {
 	public function insertLike($id_product, $id_user, $like) {
 		return $this->loginRepository->insertLike($id_product, $id_user, $like);	
 	}
+
+	public function getAllOrder($id_KH) {
+		return $this->loginRepository->getAllOrder($id_KH);
+	}
+
+	public function getUser($id_KH) {
+		return $this->loginRepository->getUser($id_KH);
+	}
+
+	public function getDetailOrder($id_don_hang) {
+		return $this->loginRepository->getDetailOrder($id_don_hang);
+	}
+
+	public function updateIdFB($id_fb, $email) {
+		return $this->loginRepository->updateIdFB($id_fb, $email);
+	}
+
+	public function getInfo($id_fb) {
+		return $this->loginRepository->getInfo($id_fb);
+	}
 }
