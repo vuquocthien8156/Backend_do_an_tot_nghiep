@@ -41,7 +41,6 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 
 
 //api
-
 Route::post('api/register', 'RegisterController@register');
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 
@@ -55,7 +54,7 @@ Route::get('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
 Route::post('api/update-id_fb', 'LoginController@updateIdFB');
-Route::get('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
+Route::post('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
 
 Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
 Route::get('api/listProduct', 'ProductController@searchProduct');
