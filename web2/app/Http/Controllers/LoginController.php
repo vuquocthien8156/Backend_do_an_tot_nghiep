@@ -152,13 +152,18 @@ class LoginController extends Controller {
 		}
 		if ($temp == 1) {
 			$updateLike =  $this->loginService->updateLike($id_product, $id_user, $like);
+			if ($updateLike != 0) {
+				return response()->json(['status' => 'ok', 'error' => 0, 'message' => 'update like']);
+			}else{
+				return response()->json(['status' => 'fail', 'error' => 1]);
+			}
 		}else {
 			$insertLike =  $this->loginService->insertLike($id_product, $id_user, $like);
-		}
-		if (isset($update) || $insertLike == true) {
-			return response()->json(['status' => 'ok', 'error' => 0]);
-		}else{
-			return response()->json(['status' => 'fail', 'error' => 1]);
+			if ($insertLike == true) {
+				return response()->json(['status' => 'ok', 'error' => 0, 'message' => 'insert like']);
+			}else{
+				return response()->json(['status' => 'fail', 'error' => 1]);
+			}
 		}
 	}
 
