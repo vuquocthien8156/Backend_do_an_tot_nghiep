@@ -16,14 +16,14 @@ class LoginRepository {
 	public function login($user, $pass) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('email','=', $user)->where('password','=', $pass)->where('us.da_xoa','=', 1)->get();
+        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('email','=', $user)->where('password','=', $pass)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
 
 	public function loginsdt($user) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'vaitro', 'quyen_he_thong')
         ->leftjoin('phanquyen as per', 'per.id_user', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.id', '=', 'per.id_quyen')->where('sdt','=', $user)->where('us.trang_thai','=', 1)->get();
+        ->leftjoin('quyen as pe', 'pe.id', '=', 'per.id_quyen')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
 
