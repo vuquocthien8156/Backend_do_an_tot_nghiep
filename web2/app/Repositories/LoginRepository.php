@@ -53,10 +53,12 @@ class LoginRepository {
 	}
 
 	public function getLikedProduct($id) {
-		$result = DB::table('SanPhamYeuThich')->select('ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham')
+		$result = DB::table('SanPhamYeuThich')->select(
+			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham'
+			 , 'so_lan_dat' , 'gia_vua' , 'gia_lon' , 'mo_ta' )
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
-		->where('users.id', '=', $id)->get();
+		->where(['users.id' => $id, 'thich' => 1])->get();
 		return $result;
 	}
 
