@@ -43,7 +43,7 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 //api
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 
-Route::post('api/login' , 'LoginController@login');
+Route::get('api/login' , 'LoginController@login');
 Route::post('api/login-by-phone', 'LoginController@loginsdt');
 Route::get('api/checkLoginExist', 'LoginController@check');
 Route::get('api/logout', 'LoginController@logout');

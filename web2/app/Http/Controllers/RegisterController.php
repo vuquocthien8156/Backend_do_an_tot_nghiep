@@ -31,7 +31,7 @@ class RegisterController extends Controller {
 	}
 	public function register(Request $request) {  
 		$username = $request->get("username");
-		$password = $request->get("password");
+		$password = md5($request->get("password"));
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
@@ -54,7 +54,7 @@ class RegisterController extends Controller {
 
 	public function registerForPhone(Request $request) {  
 		$username = $request->get("username");
-		$password = $request->get("password");
+		$password =Hash::make($request->get("password"));
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
@@ -76,7 +76,7 @@ class RegisterController extends Controller {
 
 	public function check(Request $request) {
 		$user = $request->get("username");
-		$pass = $request->get("password");
+		$pass = Hash::make($request->get("password"));
 		$check = $this->loginService->check($user);
 		if (isset($check[0]->email)) {
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);

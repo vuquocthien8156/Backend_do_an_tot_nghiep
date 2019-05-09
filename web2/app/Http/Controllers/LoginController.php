@@ -58,7 +58,7 @@ class LoginController extends Controller {
 	  		return redirect()->route('home');
 	  	}  
 		$user = $request->get("username");
-		$pass =Hash::make($request->get("password"));
+		$pass = md5($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
 			session()->put('id',$check[0]->user_id);
@@ -84,7 +84,7 @@ class LoginController extends Controller {
 			session()->put('id',$check[0]->user_id);
 			session()->put('name',$check[0]->ten);
 			session()->put('login',true);
-			session()->put('vaitro',$check[0]->vaitro);
+			session()->put('vaitro',$check[0]->id_vai_tro);
 			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}
