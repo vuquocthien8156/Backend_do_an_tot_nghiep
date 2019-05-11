@@ -122,4 +122,19 @@ class ProductRepository {
         return $result;
 
     }
+
+    public function getIdSp() {
+        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->DISTINCT();
+        return $result->orderBy('ma_san_pham', 'asc')->get();
+    }
+
+    public function getAmount($id) {
+       $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where('ma_san_pham', '=', $id);
+       return $result->get();
+    }
+
+    public function getlist($id) {
+       $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon')->where('ma_so', '=', $id);
+       return $result->get();
+    }
 }

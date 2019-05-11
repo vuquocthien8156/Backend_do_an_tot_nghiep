@@ -56,7 +56,7 @@ class LoginRepository {
 		$result = DB::table('SanPhamYeuThich')->select('ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham')
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
-		->where('users.id', '=', $id)->get();
+		->where(['users.id' => $id, 'thich' => 1])->get();
 		return $result;
 	}
 

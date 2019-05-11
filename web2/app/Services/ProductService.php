@@ -46,4 +46,15 @@ class ProductService {
         return $this->productRepository->editProduct($avatar_path, $ten, $id, $so_lan_order, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
     }
 
+    public function getIdSp() {
+        return $this->productRepository->getIdSp();
+    }
+
+    public function getAmount($id) {
+        return $this->productRepository->getAmount($id);
+    }
+
+    public function getlist($id) {
+        return $this->productRepository->getlist($id);
+    }
 }

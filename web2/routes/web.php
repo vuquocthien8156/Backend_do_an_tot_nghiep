@@ -58,6 +58,7 @@ Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/login-fb', 'FacebookAuthController@loginfb');
 
 Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
+Route::get('api/TheMostFavoriteProduct', 'ProductController@getIdSp');
 Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 

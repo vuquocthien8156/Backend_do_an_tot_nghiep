@@ -157,4 +157,38 @@ class ProductController extends Controller {
         }
 
 	}
+
+	public function getIdSp() {
+		$getIdSp = $this->productService->getIdSp();
+		$list=[];
+		for ($i=0; $i < count($getIdSp); $i++) { 
+			$amount[] = $this->productService->getAmount($getIdSp[$i]->ma_san_pham); // lấy số lượng theo id
+		}
+		//sắp xếp theo kết quả đã count
+		for ($i = 0; $i < count($amount) - 1; $i++)
+    	{
+	        $max = $i;
+	        for ($j = $i + 1; $j < count($amount); $j++){
+	            if ($amount[$j] > $amount[$max]){
+	                $max = $j;
+	            }
+	        }
+	        $temp = $amount[$i];
+	        $amount[$i] = $amount[$max];
+	        $amount[$max] = $temp;
+    	}
+
+    	//lấy id kết quả đã count
+    	for ($i=0; $i < count($amount); $i++) {
+    		$b[] = $amount[$i][0]->ma_san_pham; 
+    	}
+
+    	for ($i=0; $i < count($b); $i++) {
+    		if ($i < 10) {
+    			$getlist[] = $this->productService->getlist($b[$i]);
+    		}
+    	}
+
+		return $getlist;
+	}
 }
