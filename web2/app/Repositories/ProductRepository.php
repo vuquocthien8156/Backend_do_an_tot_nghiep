@@ -73,7 +73,7 @@ class ProductRepository {
         $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
-            'lsp.da_xoa' => 1,
+            'lsp.da_xoa' => 0,
         ]);
         return $result->orderBy('sp.so_lan_dat', 'asc')->limit(10)->paginate(15);
     }
