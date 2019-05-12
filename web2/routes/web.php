@@ -46,7 +46,6 @@ Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
 Route::get('api/login' , 'LoginController@login');
 Route::post('api/login-by-phone', 'LoginController@loginsdt');
 Route::get('api/checkLoginExist', 'LoginController@check');
-Route::get('api/logout', 'LoginController@logout');
 
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 
@@ -61,5 +60,7 @@ Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
 Route::get('api/TheMostFavoriteProduct', 'ProductController@getIdSp');
 Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
-
 Route::get('api/like', 'LoginController@requestLike');//thích sp
+Route::get('api/productType', 'LoginController@productType');
+
+Route::get('api/news', 'LoginController@news');

@@ -56,16 +56,20 @@ class ProductController extends Controller {
 		$name = $request->get('name');
 		$ma_loai = $request->get('ma_loai');
 		$mo_ta = $request->get('mo_ta');
-		$page = 1;
-        if ($request->get('page') !== null) {
-                $page = $request->get('page');
-        }
+        $page = $request->get('page');
         $pathToResource = config('app.resource_url_path');
         $listProduct = $this->productService->searchProductAPI($name, $page, $ma_loai, $mo_ta);
         for ($i=0; $i < count($listProduct); $i++) { 
-             $listProduct[$i]->pathToResource = $pathToResource;
+        	$list[] = $listProduct[$i];
         }
+<<<<<<< HEAD
+        for ($i=0; $i < count($list); $i++) { 
+             $list[$i]->pathToResource = $pathToResource;
+        }
+		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);  
+=======
         return response()->json(['status' => 'ok', 'error' => 0 , 'list'=>$listProduct]);
+>>>>>>> 226af53d1cd14a41694a06fac7a09d245d1e50c5
 	}
 
 	public function searchRankProduct(Request $request) {
@@ -78,7 +82,11 @@ class ProductController extends Controller {
         for ($i=0; $i < count($listRankProduct); $i++) { 
              $listRankProduct[$i]->pathToResource = $pathToResource;
         }
+<<<<<<< HEAD
+		return response()->json(['status' => 'Success', 'error' => 0,'listSearchRank'=>$listRankProduct]);  
+=======
 		return response()->json(['listSearchRank'=> $listRankProduct]);  
+>>>>>>> 226af53d1cd14a41694a06fac7a09d245d1e50c5
 	}
 
 	public function deleteProduct(Request $request) {

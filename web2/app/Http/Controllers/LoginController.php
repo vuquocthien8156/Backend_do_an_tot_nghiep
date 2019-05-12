@@ -199,7 +199,7 @@ class LoginController extends Controller {
         return response()->json(['status' => 'fail', 'error' => 1]);
     }
 
-    public function  updateEmail(Request $request)
+    public function updateEmail(Request $request)
     {
     	$id_fb = $request->get('id_fb');
     	$email = $request->get('email');
@@ -209,5 +209,31 @@ class LoginController extends Controller {
         	return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
         }
         return response()->json(['status' => 'fail', 'error' => 1]);
+    }
+
+    public function news (Request $request) {
+    	$page = $request->get('page');
+    	$getNews = $this->loginService->news($page);
+    	$pathToResource = config('app.resource_url_path');
+    	 for ($i=0; $i < count($getNews); $i++) { 
+        	$list[] = $getNews[$i];
+        }
+        for ($i=0; $i < count($list); $i++) { 
+             $list[$i]->pathToResource = $pathToResource;
+        }
+		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);
+    }
+
+    public function productType (Request $request) {
+    	$page = $request->get('page');
+    	$getProductType = $this->loginService->productType($page);
+    	$pathToResource = config('app.resource_url_path');
+    	 for ($i=0; $i < count($getProductType); $i++) { 
+        	$list[] = $getProductType[$i];
+        }
+        for ($i=0; $i < count($list); $i++) { 
+             $list[$i]->pathToResource = $pathToResource;
+        }
+		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);
     }
 }
