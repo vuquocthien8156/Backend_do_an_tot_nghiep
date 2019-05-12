@@ -30,8 +30,8 @@ class LoginService {
 		return $this->loginRepository->check($user);
 	}
 
-	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar) {
-		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar);	
+	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
+		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);	
 	}
 
 	public function getLikedProduct($id) {
