@@ -162,7 +162,7 @@ class ProductRepository {
     }
 
     public function getlist($id) {
-       $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon')->where('ma_so', '=', $id);
+       $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon' , 'hinh_san_pham')->where('ma_so', '=', $id);
        return $result->get();
     }
 }
