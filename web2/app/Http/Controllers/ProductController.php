@@ -185,9 +185,9 @@ class ProductController extends Controller {
 
     	for ($i=0; $i < count($b); $i++) {
     		if ($i < 10) {
-    			$getlist[] = $this->productService->getlist($b[$i]);
+    			$getlist[] = $this->productService->getlist($b[$i])[0];
     		}
     	}
-		return response()->json(['status' => 'fail', 'error' => 1 , 'list' => $getlist]);
+		return response()->json(['status' => 'ok', 'error' => 0 , 'list' => $getlist]);
 	}
 }
