@@ -74,6 +74,19 @@ class LoginController extends Controller {
 		}
 	}
 
+	public function loginAPI(Request $request) {  
+		$user = $request->get("username");
+		$pass = md5($request->get("password"));
+		$check = $this->loginService->login($user, $pass);
+		if (isset($check[0]->user_id)) {
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error','error' => 1]);
+		}
+	}
+
 	public function loginsdt(Request $request) {
 	if ($request->session()->has('name') == true) {
 	  		return redirect()->route('home');
@@ -86,7 +99,19 @@ class LoginController extends Controller {
 			session()->put('login',true);
 			session()->put('vaitro',$check[0]->id_vai_tro);
 			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
-			return response()->json(['status' => 'ok', 'error' => 0, $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error','error' => 1]);
+		}
+	}
+
+	public function loginsdtAPI(Request $request) {
+		$user = $request->get("username");
+		$check = $this->loginService->loginsdt($user);
+		if (isset($check[0]->user_id)) {
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
 		}
 		else
 		{
