@@ -259,6 +259,6 @@ class LoginController extends Controller {
         for ($i=0; $i < count($list); $i++) { 
              $list[$i]->pathToResource = $pathToResource;
         }
-		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);
+		return response()->json(['status' => 'ok', 'error' => 0, 'listCatalogy'=>$list]);
     }
 }

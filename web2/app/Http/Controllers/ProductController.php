@@ -65,7 +65,6 @@ class ProductController extends Controller {
         for ($i=0; $i < count($list); $i++) { 
              $list[$i]->pathToResource = $pathToResource;
         }
-		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);  
         return response()->json(['status' => 'ok', 'error' => 0 , 'list'=>$listProduct]);
 	}
 
@@ -79,8 +78,7 @@ class ProductController extends Controller {
         for ($i=0; $i < count($listRankProduct); $i++) { 
              $listRankProduct[$i]->pathToResource = $pathToResource;
         }
-		return response()->json(['status' => 'Success', 'error' => 0,'listSearchRank'=>$listRankProduct]);  
-		return response()->json(['listSearchRank'=> $listRankProduct]);  
+		return response()->json(['status' => 'ok', 'error' => 0,'list'=>$listRankProduct]);  
 	}
 
 	public function deleteProduct(Request $request) {
