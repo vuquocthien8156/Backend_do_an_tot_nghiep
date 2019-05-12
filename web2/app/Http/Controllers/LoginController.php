@@ -129,7 +129,7 @@ class LoginController extends Controller {
 		$phone = $request->get('phone');
 		$gender = $request->get('gender');
 		$dob = $request->get('birth_day');
-		$avatar = $request->get('avatar');
+		$avatar = $request->get('avatar_path');
 		$now = Carbon::now();
 		if ($request->file('avatar') != null || $request->file('avatar') != '') {
                 $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
@@ -239,7 +239,7 @@ class LoginController extends Controller {
     	$page = $request->get('page');
     	$getNews = $this->loginService->news($page);
     	$pathToResource = config('app.resource_url_path');
-    	 for ($i=0; $i < count($getNews); $i++) { 
+    	for ($i=0; $i < count($getNews); $i++) { 
         	$list[] = $getNews[$i];
         }
         for ($i=0; $i < count($list); $i++) { 

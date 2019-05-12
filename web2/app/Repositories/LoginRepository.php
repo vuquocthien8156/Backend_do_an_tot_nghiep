@@ -159,17 +159,17 @@ class LoginRepository {
 
 	public function news($page) {
 		if ($page == null) {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc')
+            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
-        	return $result->orderBy('ma_tin_tuc', 'asc')->get();
+        	return $result->limit(4)->orderBy('ngay_tao', 'desc')->get();
         }else {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc')
+            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
-        	return $result->orderBy('ma_tin_tuc', 'asc')->paginate(15);
+        	return $result->limit(4)->orderBy('ngay_tao', 'desc')->paginate(4);
         }
 	}
 
