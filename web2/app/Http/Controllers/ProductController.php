@@ -62,10 +62,14 @@ class ProductController extends Controller {
         for ($i=0; $i < count($listProduct); $i++) { 
         	$list[] = $listProduct[$i];
         }
+<<<<<<< HEAD
         for ($i=0; $i < count($list); $i++) { 
              $list[$i]->pathToResource = $pathToResource;
         }
 		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);  
+=======
+        return response()->json(['status' => 'ok', 'error' => 0 , 'list'=>$listProduct]);
+>>>>>>> 226af53d1cd14a41694a06fac7a09d245d1e50c5
 	}
 
 	public function searchRankProduct(Request $request) {
@@ -78,7 +82,11 @@ class ProductController extends Controller {
         for ($i=0; $i < count($listRankProduct); $i++) { 
              $listRankProduct[$i]->pathToResource = $pathToResource;
         }
+<<<<<<< HEAD
 		return response()->json(['status' => 'Success', 'error' => 0,'listSearchRank'=>$listRankProduct]);  
+=======
+		return response()->json(['listSearchRank'=> $listRankProduct]);  
+>>>>>>> 226af53d1cd14a41694a06fac7a09d245d1e50c5
 	}
 
 	public function deleteProduct(Request $request) {
@@ -188,7 +196,6 @@ class ProductController extends Controller {
     			$getlist[] = $this->productService->getlist($b[$i]);
     		}
     	}
-
-		return $getlist;
+		return response()->json(['status' => 'fail', 'error' => 1 , 'list' => $getlist]);
 	}
 }
