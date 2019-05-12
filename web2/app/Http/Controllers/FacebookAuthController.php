@@ -84,36 +84,29 @@ class FacebookAuthController extends Controller
             if ($request->session()->has('name') == true) {
                 return redirect('home');
             }
-            $user = Socialite::driver('facebook')->user();
-            $authUser = $this->login($user);
-            // Chỗ này để check xem nó có chạy hay không
-            session()->put('name',$user->email);
-            session()->put('login',true);
-            Auth::login($authUser, true);
-            return redirect()->route('home',['status' => 'Thành công', 'id' => $user->id, 'name' => $user->name, 'email' => $user->email, 'avatar'=> $user->avatar]);
+            $login = $this->loginService->loginfb($id_fb, $email);
+            return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
         }
         if ($type == 2) {
             $id_fb = $request->get('id_fb');
-            return User::create([
-                'fb_id' => $id_fb,
-            ]);
+            $email = null;
+            $create = $this->loginService->create($id_fb, $email);
+            $login = $this->loginService->loginfb($id_fb, $email);
+            return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
+
         }
         if ($type == 3) {
             if ($request->session()->has('name') == true) {
                 return redirect('home');
             }
-            $user = Socialite::driver('facebook')->user();
-            $authUser = $this->firsLogin($user);
-            // Chỗ này để check xem nó có chạy hay không
-            session()->put('name',$user->email);
-            session()->put('login',true);
-            Auth::login($authUser, true);
-            return redirect()->route('home',['status' => 'Thành công', 'id' => $user->id, 'name' => $user->name, 'email' => $user->email, 'avatar'=> $user->avatar]);
+            $create = $this->loginService->create($id_fb, $email);
+            $login = $this->loginService->loginfb($id_fb, $email);
+            return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
         }
         if($type == 4) {
             $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
             $getInfo = $this->loginService->getInfo($id_fb);
-            if (isset($getInfo[0]->ten)) {
+            if (isset($getInfo[0]->email)) {
                 return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
@@ -121,29 +114,11 @@ class FacebookAuthController extends Controller
         if ($type == 5) {
             $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
             $insertPass = $this->loginService->insertPass($id_fb);
-            if (isset($getInfo[0]->ten)) {
+            $getInfo = $this->loginService->getInfo($id_fb);
+            if (isset($getInfo[0]->email)) {
                 return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }
-    }
-
-    private function login($facebookUser){
-        $authUser = User::where([
-            'fb_id' => $facebookUser->id,
-            'email' => $facebookUser->email
-        ])->first();
- 
-        if($authUser){
-            return $authUser;
-        }
-    }
-
-    private function firsLogin($facebookUser){
-        return User::create([
-            'ten' => $facebookUser->name,
-            'email' => $facebookUser->email,
-            'fb_id' => $facebookUser->id,
-        ]);
     }
 }

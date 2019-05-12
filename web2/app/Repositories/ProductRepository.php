@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository {
-	public function searchProduct($name, $page = 1, $ma_loai, $mo_ta) {
+	public function searchProduct($name, $page, $ma_loai, $mo_ta) {
         $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
@@ -41,8 +41,9 @@ class ProductRepository {
 		return $result->orderBy('sp.ma_so', 'asc')->paginate(15);
     }
 
-    public function searchProductAPI($name, $page = 1, $ma_loai, $mo_ta) {
-        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+    public function searchProductAPI($name, $page, $ma_loai, $mo_ta) {
+       if ($page == null) {
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
@@ -67,6 +68,33 @@ class ProductRepository {
         }
 
         return $result->orderBy('sp.ma_so', 'asc')->get();
+        }else {
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'lsp.da_xoa' =>0,
+        ]);
+
+        if ($name != '' && $name != null) {
+            $result->where(function($where) use ($name) {
+                $where->whereRaw('lower(sp.ten) like ? ', ['%' . trim(mb_strtolower($name, 'UTF-8')) . '%']);
+         
+            });
+        }
+
+        if ($ma_loai != '' && $ma_loai != null) {
+             $result->where('sp.loai_sp', '=', $ma_loai);
+        }
+
+        if ($mo_ta != '' && $mo_ta != null) {
+            $result->where(function($where) use ($mo_ta) {
+                $where->whereRaw('lower(sp.mo_ta) like ? ', ['%' . trim(mb_strtolower($mo_ta, 'UTF-8')) . '%']);
+         
+            });
+        }
+
+        return $result->orderBy('sp.ma_so', 'asc')->paginate(15);
+        }
     }
 
     public function searchRankProduct() {
@@ -75,7 +103,7 @@ class ProductRepository {
         ->where([
             'lsp.da_xoa' => 0,
         ]);
-        return $result->orderBy('sp.so_lan_dat', 'asc')->limit(10)->paginate(15);
+        return $result->orderBy('sp.so_lan_dat', 'asc')->limit(10)->get();
     }
 
     public function delete($id) {
@@ -86,7 +114,7 @@ class ProductRepository {
 
     public function loaisp() {
         $result = DB::table('LoaiSanPham')->select('ma_loai_sp', 'ten_loai_sp')
-        ->where(['da_xoa' => 1])->orderBy('ma_loai_sp', 'asc')->get();
+        ->where(['da_xoa' => 0])->orderBy('ma_loai_sp', 'asc')->get();
         return $result;
     }
 
@@ -101,7 +129,7 @@ class ProductRepository {
             'ngay_ra_mat' => $ngay_ra_mat,
             'hinh_san_pham' => $avatar_path,
             'mo_ta' => $mo_ta,
-            'daxoa' => 1
+            'daxoa' => 0
         ]);
         return $result;
     }

@@ -19,14 +19,14 @@ class LoginRepository {
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
         ->where(['email' => $user, 
         		'password' => $pass, 
-        		'us.da_xoa' => 1])->get();
+        		'us.da_xoa' => 0])->get();
 		return $result;
 	}
 
 	public function loginsdt($user) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 1)->get();
+        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
 
@@ -77,7 +77,7 @@ class LoginRepository {
            'ma_san_pham' => $id_product,
            'ma_khach_hang' => $id_user,
            'thich' => $like,
-           'trang_thai' => 1,
+           'trang_thai' => 0,
         ]);
         return $result;	
 	}
@@ -107,7 +107,7 @@ class LoginRepository {
 	}
 
 	public function getInfo($id_fb) {
-		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
+		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
 	}
 	public function insertPass($id_fb) {
@@ -116,5 +116,75 @@ class LoginRepository {
            'password' => $pass,
         ]);
         return $result;	
+	}
+
+	public function loginfb($id_fb, $email) {
+		if ($email != null && $email != '') {
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
+	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
+	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
+	        ->where([
+	        		'email' => $email, 
+	        		'fb_id' => $id_fb, 
+	        		'us.da_xoa' => 0])->get();
+			return $result;
+		}else {
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
+	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
+	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
+	        ->where([
+	        		'fb_id' => $id_fb, 
+	        		'us.da_xoa' => 0])->get();
+			return $result;
+		}
+
+	}
+
+	public function create($id_fb, $email) {
+		if ($email != null && $email != '') {
+			$result = DB::table('users')->insert([
+						   'email' => $email,
+				           'fb_id' => $id_fb,
+				           'da_xoa' => 0,
+       			 ]);
+		}else {
+			$result = DB::table('users')->insert([
+				           'fb_id' => $id_fb,
+				           'da_xoa' => 0,
+       			 ]);
+		}
+        return $result;	
+	}
+
+	public function news($page) {
+		if ($page == null) {
+            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc')
+	        ->where([
+	            'da_xoa' => 0,
+	        ]);
+        	return $result->orderBy('ma_tin_tuc', 'asc')->get();
+        }else {
+            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc')
+	        ->where([
+	            'da_xoa' => 0,
+	        ]);
+        	return $result->orderBy('ma_tin_tuc', 'asc')->paginate(15);
+        }
+	}
+
+	public function productType($page) {
+		if ($page == null) {
+            $result = DB::table('LoaiSanPham')->select('ma_loai_sp', 'ten_loai_sp', 'loai_chinh')
+	        ->where([
+	            'da_xoa' => 0,
+	        ]);
+        	return $result->orderBy('ma_loai_sp', 'asc')->get();
+        }else {
+            $result = DB::table('LoaiSanPham')->select('ma_loai_sp', 'ten_loai_sp', 'loai_chinh')
+	        ->where([
+	            'da_xoa' => 0,
+	        ]);
+        	return $result->orderBy('ma_loai_sp', 'asc')->paginate(15);
+        }
 	}
 }

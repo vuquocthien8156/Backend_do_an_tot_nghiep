@@ -73,4 +73,20 @@ class LoginService {
 	public function insertPass($id_fb) {
 		return $this->loginRepository->insertPass($id_fb);
 	}
+
+	public function loginfb($id_fb, $email) {
+		return $this->loginRepository->loginfb($id_fb, $email);
+	}
+	
+	public function create($id_fb, $email) {
+		return $this->loginRepository->create($id_fb, $email);
+	}
+
+	public function news($page) {
+		return $this->loginRepository->news($page);
+	}
+	
+	public function productType($page) {
+		return $this->loginRepository->productType($page);
+	}
 }
