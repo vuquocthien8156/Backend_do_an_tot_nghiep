@@ -77,7 +77,7 @@ class LoginController extends Controller {
 		$pass = md5($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
 		else
 		{
@@ -108,7 +108,7 @@ class LoginController extends Controller {
 		$user = $request->get("username");
 		$check = $this->loginService->loginsdt($user);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
 		else{
 			return response()->json(['status' => 'error','error' => 1]);
