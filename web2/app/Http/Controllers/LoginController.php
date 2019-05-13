@@ -142,6 +142,7 @@ class LoginController extends Controller {
                 }
                 $avatar = $filename;
         }
+        $update =  $this->loginService->updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar);
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
         if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);

@@ -30,6 +30,8 @@ class LoginService {
 		return $this->loginRepository->check($user);
 	}
 
+	public function updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar) {
+		return $this->loginRepository->updateInfo($id ,$email, $name, $phone, $gender, $dob, $avatar);	
 	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
 		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);	
 	}
