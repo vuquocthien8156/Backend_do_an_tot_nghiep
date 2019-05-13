@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
         ->where(['email' => $user, 
@@ -24,7 +24,7 @@ class LoginRepository {
 	}
 
 	public function loginsdt($user) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
