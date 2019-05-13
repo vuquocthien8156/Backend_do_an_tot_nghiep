@@ -121,17 +121,8 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function loginfb($id_fb, $email) {
-		if ($email != null && $email != '') {
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
-	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
-	        ->where([
-	        		'email' => $email, 
-	        		'fb_id' => $id_fb, 
-	        		'us.da_xoa' => 0])->get();
-			return $result;
-		}else {
+	public function loginfb($id_fb) {
+		
 			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
@@ -139,8 +130,6 @@ class LoginRepository {
 	        		'fb_id' => $id_fb, 
 	        		'us.da_xoa' => 0])->get();
 			return $result;
-		}
-
 	}
 
 	public function create($id_fb, $email) {

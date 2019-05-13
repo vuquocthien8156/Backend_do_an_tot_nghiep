@@ -75,8 +75,8 @@ class LoginService {
 		return $this->loginRepository->insertPass($id_fb);
 	}
 
-	public function loginfb($id_fb, $email) {
-		return $this->loginRepository->loginfb($id_fb, $email);
+	public function loginfb($id_fb) {
+		return $this->loginRepository->loginfb($id_fb);
 	}
 	
 	public function create($id_fb, $email) {

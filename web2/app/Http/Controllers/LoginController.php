@@ -99,8 +99,7 @@ class LoginController extends Controller {
 			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
 		}
-		else
-		{
+		else{
 			return response()->json(['status' => 'error','error' => 1]);
 		}
 	}
@@ -111,8 +110,7 @@ class LoginController extends Controller {
 		if (isset($check[0]->user_id)) {
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
 		}
-		else
-		{
+		else{
 			return response()->json(['status' => 'error','error' => 1]);
 		}
 	}

@@ -81,26 +81,22 @@ class FacebookAuthController extends Controller
         $email = $request->get('email');
         $type = $request->get('type');
         if ($type == 1) {
-            if ($request->session()->has('name') == true) {
-                return redirect('home');
-            }
-            $login = $this->loginService->loginfb($id_fb, $email);
+            
+            $login = $this->loginService->loginfb($id_fb);
             return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
         }
         if ($type == 2) {
             $id_fb = $request->get('id_fb');
             $email = null;
             $create = $this->loginService->create($id_fb, $email);
-            $login = $this->loginService->loginfb($id_fb, $email);
+            $login = $this->loginService->loginfb($id_fb);
             return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
 
         }
         if ($type == 3) {
-            if ($request->session()->has('name') == true) {
-                return redirect('home');
-            }
+            
             $create = $this->loginService->create($id_fb, $email);
-            $login = $this->loginService->loginfb($id_fb, $email);
+            $login = $this->loginService->loginfb($id_fb);
             return response()->json(['status' => 'compplete', 'ten' => $login[0]->ten, 'email' => $login[0]->email, 'password' => $login[0]->password, 'fb_id' => $login[0]->fb_id]);
         }
         if($type == 4) {
