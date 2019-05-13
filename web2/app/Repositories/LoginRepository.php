@@ -34,15 +34,17 @@ class LoginRepository {
 		$result = DB::table('users as us')->select('us.id as user_id', 'email', 'password', 'sdt', 'fb_id');
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
-                $where->whereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
-                      ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
+                $where->whereRaw('lower(us.fb_id) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
+                	->orwhereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
+                    ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
                 });
         } 
 		return $result->get();
 	}
-	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar) {
-		$result = DB::table('users')->where('email', '=', $email)
+	public function updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar) {
+		$result = DB::table('users')->where('id', '=', $id)
 		->update([
+			'email' => $email,
 			'ten' => $name,
 			'sdt' => $phone,
 			'gioi_tinh' => $gender,

@@ -40,11 +40,9 @@ class LoginController extends Controller {
 	public function check(Request $request) {
 		$user = $request->get("username");
 		$pass = $request->get("password");
-		if ($user == null) {
-			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
-		}
+		// $id_fb = $request->get("id_fb");
 		$check = $this->loginService->check($user);
-		if (isset($check[0]->email)) {
+		if (isset($check[0]->user_id)) {
 			return response()->json(['status' => 'ok', 'error' => 0,'email' => $check[0]->email, 'id_fb' => $check[0]->fb_id, 'phone' => $check[0]->sdt]);
 		}
 		else
@@ -125,6 +123,7 @@ class LoginController extends Controller {
 	}
 
 	public function requestUpdateInfo(Request $request) {
+		$id = $request->get('id');
 		$email = $request->get('email');
 		$name = $request->get('name');
 		$phone = $request->get('phone');
@@ -143,7 +142,7 @@ class LoginController extends Controller {
                 }
                 $avatar_path = $filename;
         }
-        $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar);
+        $update =  $this->loginService->updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar);
         if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);
         }else {
