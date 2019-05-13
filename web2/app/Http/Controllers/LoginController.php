@@ -129,7 +129,7 @@ class LoginController extends Controller {
 		$phone = $request->get('phone');
 		$gender = $request->get('gender');
 		$dob = $request->get('birth_day');
-		$avatar = $request->file('avatar');
+		$avatar = $request->get('avatar_path');
 		$now = Carbon::now();
 		if ($request->file('avatar') != null || $request->file('avatar') != '') {
                 $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
@@ -140,9 +140,10 @@ class LoginController extends Controller {
                 if (!file_exists($check)) {
                     return \Response::json(false);
                 }
-                $avatar_path = $filename;
+                $avatar = $filename;
         }
         $update =  $this->loginService->updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar);
+        $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
         if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);
         }else {
@@ -239,7 +240,7 @@ class LoginController extends Controller {
     	$page = $request->get('page');
     	$getNews = $this->loginService->news($page);
     	$pathToResource = config('app.resource_url_path');
-    	 for ($i=0; $i < count($getNews); $i++) { 
+    	for ($i=0; $i < count($getNews); $i++) { 
         	$list[] = $getNews[$i];
         }
         for ($i=0; $i < count($list); $i++) { 
