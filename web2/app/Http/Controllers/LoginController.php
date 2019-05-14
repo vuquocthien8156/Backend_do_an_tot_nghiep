@@ -259,4 +259,17 @@ class LoginController extends Controller {
         }
 		return response()->json(['status' => 'ok', 'error' => 0, 'listCatalogy'=>$list]);
     }
+
+    public function getInfoByEmail(Request $request){
+        $email = $request->get("email");
+        $check = $this->loginService->getInfoByEmail($email);
+        if (isset($check[0]->user_id)) {
+            return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
+        }
+        else
+        {
+            return response()->json(['status' => 'error','error' => 1]);
+        }
+    }
+
 }

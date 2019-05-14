@@ -57,6 +57,10 @@ class LoginService {
 	public function getUser($id_KH) {
 		return $this->loginRepository->getUser($id_KH);
 	}
+	
+    public function getInfoByEmail($email) {
+        return $this->loginRepository->getInfoByEmail($email);
+    }
 
 	public function getDetailOrder($id_don_hang) {
 		return $this->loginRepository->getDetailOrder($id_don_hang);

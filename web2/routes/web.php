@@ -42,8 +42,10 @@ Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallb
 
 //api
 Route::post('api/registerPhoneNumber', 'RegisterController@registerForPhone');
+Route::post('api/register', 'RegisterController@register');
 
-Route::get('api/login' , 'LoginController@loginAPI');
+Route::post('api/login' , 'LoginController@loginAPI');
+Route::get('api/getInfoByEmail' , 'LoginController@getInfoByEmail');
 Route::post('api/login-by-phone', 'LoginController@loginsdtAPI');
 Route::get('api/checkLoginExist', 'LoginController@check');
 

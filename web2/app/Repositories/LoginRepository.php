@@ -39,6 +39,11 @@ class LoginRepository {
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
+	
+    public function getInfoByEmail($email) {
+        $result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh', 'password' , 'avatar')->where('email', '=', $email)->get();
+        return $result;
+    }
 
 	public function check($user) {
 		$result = DB::table('users as us')->select('us.id as user_id', 'email', 'password', 'sdt', 'fb_id');
