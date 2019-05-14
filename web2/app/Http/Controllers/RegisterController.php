@@ -66,7 +66,6 @@ class RegisterController extends Controller {
 				return \Response::json(['status' =>"already",'error' => 0]);
 			}
 		}
-		
 		$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
 		
 		// $idMax = $this->registerService->idMax();
