@@ -22,6 +22,10 @@ class LoginService {
 		return $this->loginRepository->login($user, $pass);
 	}
 
+	public function loginAPI($user, $pass) {
+		return $this->loginRepository->loginAPI($user, $pass);
+	}
+
 	public function loginsdt($user) {
 		return $this->loginRepository->loginsdt($user);
 	}
@@ -32,10 +36,8 @@ class LoginService {
 
 	public function updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar) {
 		return $this->loginRepository->updateInfo($id ,$email, $name, $phone, $gender, $dob, $avatar);	
-	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
-		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);	
 	}
-
+	
 	public function getLikedProduct($id) {
 		return $this->loginRepository->getLikedProduct($id);	
 	}

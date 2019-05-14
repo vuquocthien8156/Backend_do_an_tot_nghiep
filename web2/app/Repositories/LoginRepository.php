@@ -23,6 +23,16 @@ class LoginRepository {
 		return $result;
 	}
 
+	public function loginAPI($user, $pass) {
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
+        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
+        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
+        ->where(['email' => $user, 
+        		'password' => $pass, 
+        		'us.da_xoa' => 0])->get();
+		return $result;
+	}
+
 	public function loginsdt($user) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
@@ -41,8 +51,7 @@ class LoginRepository {
         } 
 		return $result->get();
 	}
-	public function updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar) {
-		$result = DB::table('users')->where('id', '=', $id)
+
 	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
 		$result = DB::table('users')->where('user_id', '=', $id)
 		->update([
@@ -124,7 +133,7 @@ class LoginRepository {
 
 	public function loginfb($id_fb, $email) {
 		if ($email != null && $email != '') {
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id', 'avatar', 'ngay_sinh', 'gioi_tinh', 'sdt', 'diem_tich')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
@@ -133,7 +142,7 @@ class LoginRepository {
 	        		'us.da_xoa' => 0])->get();
 			return $result;
 		}else {
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id', 'avatar', 'ngay_sinh', 'gioi_tinh', 'sdt', 'diem_tich')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
