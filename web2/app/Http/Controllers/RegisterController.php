@@ -54,7 +54,7 @@ class RegisterController extends Controller {
 
 	public function registerForPhone(Request $request) {  
 		$username = $request->get("username");
-		$password =Hash::make($request->get("password"));
+		$password =md5($request->get("password"));
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
