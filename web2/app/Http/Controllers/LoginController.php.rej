@@ -1,0 +1,22 @@
+diff a/web2/app/Http/Controllers/LoginController.php b/web2/app/Http/Controllers/LoginController.php	(rejected hunks)
+@@ -77,7 +77,19 @@
+ 		$pass = md5($request->get("password"));
+ 		$check = $this->loginService->loginAPI($user, $pass);
+ 		if (isset($check[0]->user_id)) {
+-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
++			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
++		}
++		else
++		{
++			return response()->json(['status' => 'error','error' => 1]);
++		}
++	}
++
++	public function getInfoByEmail(Request $request){
++		$email = $request->get("email");
++		$check = $this->loginService->getInfoByEmail($email);
++		if (isset($check[0]->user_id)) {
++			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
+ 		}
+ 		else
+ 		{

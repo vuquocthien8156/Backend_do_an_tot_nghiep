@@ -47,7 +47,7 @@ class LoginController extends Controller {
 		}
 		else
 		{
-			return response()->json(['status' => 'error', 'error' => 1]);
+			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
 		}
 	}
 
@@ -77,19 +77,7 @@ class LoginController extends Controller {
 		$pass = md5($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
-		}
-		else
-		{
-			return response()->json(['status' => 'error','error' => 1]);
-		}
-	}
-
-	public function getInfoByEmail(Request $request){
-		$email = $request->get("email");
-		$check = $this->loginService->getInfoByEmail($email);
-		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
 		}
 		else
 		{
