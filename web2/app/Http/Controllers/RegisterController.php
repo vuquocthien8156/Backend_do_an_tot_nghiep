@@ -40,16 +40,16 @@ class RegisterController extends Controller {
 		$check = $this->registerService->getAccount($username);
 		for ($i=0; $i < count($check); $i++) { 
 			if ($username == $check[$i]->email) {
-				return \Response::json(['status' =>"already",'success' => false]);
+				return \Response::json(['status' =>"already",'error' => 0]);
 			}
 		}
 		$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
 		// $idMax = $this->registerService->idMax();
 		// $Permission = $this->registerService->insertPermission($idMax);
 		if ($Permission == true) {
-			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
+			return \Response::json(['status' =>"ok", 'error' => 0]);
 		}
-		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
+		return \Response::json(['status' =>"error", 'error' => 1]);
 	}
 
 	public function registerForPhone(Request $request) {  

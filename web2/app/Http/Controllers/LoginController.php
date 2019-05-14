@@ -47,7 +47,7 @@ class LoginController extends Controller {
 		}
 		else
 		{
-			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
+			return response()->json(['status' => 'error', 'error' => 1]);
 		}
 	}
 
@@ -77,7 +77,19 @@ class LoginController extends Controller {
 		$pass = md5($request->get("password"));
 		$check = $this->loginService->loginAPI($user, $pass);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error','error' => 1]);
+		}
+	}
+
+	public function getInfoByEmail(Request $request){
+		$email = $request->get("email");
+		$check = $this->loginService->getInfoByEmail($email);
+		if (isset($check[0]->user_id)) {
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
 		else
 		{
@@ -99,8 +111,7 @@ class LoginController extends Controller {
 			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
 		}
-		else
-		{
+		else{
 			return response()->json(['status' => 'error','error' => 1]);
 		}
 	}
@@ -109,10 +120,9 @@ class LoginController extends Controller {
 		$user = $request->get("username");
 		$check = $this->loginService->loginsdt($user);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
-		else
-		{
+		else{
 			return response()->json(['status' => 'error','error' => 1]);
 		}
 	}
@@ -142,7 +152,7 @@ class LoginController extends Controller {
                 }
                 $avatar = $filename;
         }
-        $update =  $this->loginService->updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar);
+       
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
         if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);
