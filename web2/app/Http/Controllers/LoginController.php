@@ -47,7 +47,7 @@ class LoginController extends Controller {
 		}
 		else
 		{
-			return response()->json(['status' => 'error', 'error' => 1, 'message' => 'account is not exist']);
+			return response()->json(['status' => 'error', 'error' => 1]);
 		}
 	}
 
@@ -75,9 +75,21 @@ class LoginController extends Controller {
 	public function loginAPI(Request $request) {  
 		$user = $request->get("username");
 		$pass = md5($request->get("password"));
-		$check = $this->loginService->loginAPI($user, $pass);
+		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
-			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check]);
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
+		}
+		else
+		{
+			return response()->json(['status' => 'error','error' => 1]);
+		}
+	}
+
+	public function getInfoByEmail(Request $request){
+		$email = $request->get("email");
+		$check = $this->loginService->getInfoByEmail($email);
+		if (isset($check[0]->user_id)) {
+			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
 		else
 		{
@@ -259,17 +271,4 @@ class LoginController extends Controller {
         }
 		return response()->json(['status' => 'ok', 'error' => 0, 'listCatalogy'=>$list]);
     }
-
-    public function getInfoByEmail(Request $request){
-        $email = $request->get("email");
-        $check = $this->loginService->getInfoByEmail($email);
-        if (isset($check[0]->user_id)) {
-            return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
-        }
-        else
-        {
-            return response()->json(['status' => 'error','error' => 1]);
-        }
-    }
-
 }

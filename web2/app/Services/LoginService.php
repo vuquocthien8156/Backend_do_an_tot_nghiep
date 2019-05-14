@@ -22,6 +22,10 @@ class LoginService {
 		return $this->loginRepository->login($user, $pass);
 	}
 
+	public function getInfoByEmail($email) {
+		return $this->loginRepository->getInfoByEmail($email);
+	}
+
 	public function loginsdt($user) {
 		return $this->loginRepository->loginsdt($user);
 	}
@@ -30,10 +34,11 @@ class LoginService {
 		return $this->loginRepository->check($user);
 	}
 
-	public function updateInfo($id , $email, $name, $phone, $gender, $dob, $avatar) {
-		return $this->loginRepository->updateInfo($id ,$email, $name, $phone, $gender, $dob, $avatar);	
+		
+	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
+		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);	
 	}
-	
+
 	public function getLikedProduct($id) {
 		return $this->loginRepository->getLikedProduct($id);	
 	}
@@ -57,10 +62,6 @@ class LoginService {
 	public function getUser($id_KH) {
 		return $this->loginRepository->getUser($id_KH);
 	}
-	
-    public function getInfoByEmail($email) {
-        return $this->loginRepository->getInfoByEmail($email);
-    }
 
 	public function getDetailOrder($id_don_hang) {
 		return $this->loginRepository->getDetailOrder($id_don_hang);
@@ -78,8 +79,8 @@ class LoginService {
 		return $this->loginRepository->insertPass($id_fb);
 	}
 
-	public function loginfb($id_fb, $email) {
-		return $this->loginRepository->loginfb($id_fb, $email);
+	public function loginfb($id_fb) {
+		return $this->loginRepository->loginfb($id_fb);
 	}
 	
 	public function create($id_fb, $email) {
