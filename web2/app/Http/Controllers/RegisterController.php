@@ -52,26 +52,35 @@ class RegisterController extends Controller {
 		return \Response::json(['status' =>"error", 'error' => 1]);
 	}
 
-	public function registerForPhone(Request $request) {  
+	public function registerAPI(Request $request) {  
 		$username = $request->get("username");
-		$password =md5($request->get("password"));
+		$sdt = $request->get("phone");
+		$password = md5($request->get("password"));
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
+		$phone = $request->get("phone");
 		$address = $request->get("address");
-		$check = $this->registerService->getPhone($username);
+		$check = $this->registerService->getAccount($username);
 		for ($i=0; $i < count($check); $i++) { 
-			if ($username == $check[$i]->sdt) {
-				return \Response::json(['status' =>"already",'success' => false]);
+			if ($username == $check[$i]->email) {
+				return \Response::json(['status' =>"already",'error' => 0]);
 			}
 		}
-		$insert = $this->registerService->insertUserPhone($username, $password, $name, $gender, $birthday, $address);
-		//$idMax = $this->registerService->idMax();
-		// $Permission = $this->registerService->insertPermission($idMax);
-		if ($Permission == true) {
-			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
+		if ($sdt == null || $sdt == '') {
+			$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
+		}else{
+			if (($username == null || $username == '') && ($sdt != null || $sdt != '')) {
+				$username = $sdt;
+				$insert = $this->registerService->insertUserPhone($username, $password, $name, $gender, $birthday, $address);
+			}
 		}
-		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
+		// $idMax = $this->registerService->idMax();
+		// $Permission = $this->registerService->insertPermission($idMax);
+		if ($insert == true) {
+			return \Response::json(['status' =>"ok", 'error' => 0]);
+		}
+		return \Response::json(['status' =>"error", 'error' => 1]);
 	}
 
 	public function registerForPhoneAPI(Request $request) {  
