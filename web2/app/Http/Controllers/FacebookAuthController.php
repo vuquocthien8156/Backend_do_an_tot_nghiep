@@ -91,9 +91,8 @@ class FacebookAuthController extends Controller
             $id_fb = $request->get('id_fb');
             $email = null;
             $create = $this->loginService->create($id_fb, $email);
-            $login = $this->loginService->loginfb($id_fb, $email);
             if (isset($login[0]->fb_id)) {
-               return response()->json(['status' => 'success', 'error' => 0,'info' => $login]);
+               return response()->json(['status' => 'success', 'error' => 0]);
             }
             return response()->json(['status' => 'success', 'error' => 1]);
 
@@ -118,7 +117,7 @@ class FacebookAuthController extends Controller
             $insertPass = $this->loginService->insertPass($id_fb);
             $getInfo = $this->loginService->getInfo($id_fb);
             if (isset($getInfo[0]->email)) {
-                return response()->json(['status' => 'success', 'error' => 0, 'infoUser' => $getInfo]);
+                return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }

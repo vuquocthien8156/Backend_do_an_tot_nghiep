@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
         ->where(['email' => $user, 
@@ -23,40 +23,30 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function loginAPI($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
-        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
-        ->where(['email' => $user, 
-        		'password' => $pass, 
-        		'us.da_xoa' => 0])->get();
+	public function getInfoByEmail($email) {
+		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh', 'password' , 'avatar')->where('email', '=', $email)->get();
 		return $result;
 	}
 
 	public function loginsdt($user) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
-	
-    public function getInfoByEmail($email) {
-        $result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh', 'password' , 'avatar')->where('email', '=', $email)->get();
-        return $result;
-    }
 
 	public function check($user) {
 		$result = DB::table('users as us')->select('us.id as user_id', 'email', 'password', 'sdt', 'fb_id');
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
-                $where->whereRaw('lower(us.fb_id) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
-                	->orwhereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
-                    ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
+                $where->where('us.fb_id', '=' ,$user)
+                	->orwhere('us.email', '=' ,$user)
+                    ->orWhere('us.sdt' , '=' ,$user);
                 });
         } 
 		return $result->get();
 	}
-
+	
 	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
 		$result = DB::table('users')->where('user_id', '=', $id)
 		->update([
@@ -128,6 +118,7 @@ class LoginRepository {
 		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
 	}
+
 	public function insertPass($id_fb) {
 		$pass = md5(123);
 		$result = DB::table('users')->where('fb_id', '=', $id_fb)->update([
@@ -136,26 +127,15 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function loginfb($id_fb, $email) {
-		if ($email != null && $email != '') {
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id', 'avatar', 'ngay_sinh', 'gioi_tinh', 'sdt', 'diem_tich')
-	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
-	        ->where([
-	        		'email' => $email, 
-	        		'fb_id' => $id_fb, 
-	        		'us.da_xoa' => 0])->get();
-			return $result;
-		}else {
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id', 'avatar', 'ngay_sinh', 'gioi_tinh', 'sdt', 'diem_tich')
+	public function loginfb($id_fb) {
+		
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
 	        		'fb_id' => $id_fb, 
 	        		'us.da_xoa' => 0])->get();
 			return $result;
-		}
-
 	}
 
 	public function create($id_fb, $email) {
