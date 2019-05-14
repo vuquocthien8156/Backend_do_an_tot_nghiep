@@ -54,7 +54,7 @@ class RegisterController extends Controller {
 
 	public function registerForPhone(Request $request) {  
 		$username = $request->get("username");
-		$password =Hash::make($request->get("password"));
+		$password =md5($request->get("password"));
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
@@ -69,6 +69,28 @@ class RegisterController extends Controller {
 		//$idMax = $this->registerService->idMax();
 		// $Permission = $this->registerService->insertPermission($idMax);
 		if ($Permission == true) {
+			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
+		}
+		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
+	}
+
+	public function registerForPhoneAPI(Request $request) {  
+		$username = $request->get("username");
+		$password =md5($request->get("password"));
+		$name = $request->get("name");
+		$gender = $request->get("gender");
+		$birthday = $request->get("birthday");
+		$address = $request->get("address");
+		$check = $this->registerService->getPhone($username);
+		for ($i=0; $i < count($check); $i++) { 
+			if ($username == $check[$i]->sdt) {
+				return \Response::json(['status' =>"already",'success' => false]);
+			}
+		}
+		$insert = $this->registerService->insertUserPhone($username, $password, $name, $gender, $birthday, $address);
+		//$idMax = $this->registerService->idMax();
+		// $Permission = $this->registerService->insertPermission($idMax);
+		if ($insert == true) {
 			return \Response::json(['status' =>"ok",'success' => true, 'error' => 0]);
 		}
 		return \Response::json(['status' =>"error",'success' => false, 'error' => 1]);
