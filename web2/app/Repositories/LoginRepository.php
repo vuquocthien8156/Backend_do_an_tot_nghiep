@@ -23,11 +23,6 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getInfoByEmail($email) {
-		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh', 'password' , 'avatar')->where('email', '=', $email)->get();
-		return $result;
-	}
-
 	public function loginsdt($user) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
@@ -39,9 +34,9 @@ class LoginRepository {
 		$result = DB::table('users as us')->select('us.id as user_id', 'email', 'password', 'sdt', 'fb_id');
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
-                $where->where('us.fb_id', '=' ,$user)
-                	->orwhere('us.email', '=' ,$user)
-                    ->orWhere('us.sdt' , '=' ,$user);
+                $where->whereRaw('lower(us.fb_id) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
+                	->orwhereRaw('lower(us.email) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%'])
+                    ->orWhereRaw('lower(us.sdt) like ? ', ['%' . trim(mb_strtolower($user, 'UTF-8')) . '%']);
                 });
         } 
 		return $result->get();
@@ -118,7 +113,6 @@ class LoginRepository {
 		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
 	}
-
 	public function insertPass($id_fb) {
 		$pass = md5(123);
 		$result = DB::table('users')->where('fb_id', '=', $id_fb)->update([

@@ -22,10 +22,6 @@ class LoginService {
 		return $this->loginRepository->login($user, $pass);
 	}
 
-	public function getInfoByEmail($email) {
-		return $this->loginRepository->getInfoByEmail($email);
-	}
-
 	public function loginsdt($user) {
 		return $this->loginRepository->loginsdt($user);
 	}
