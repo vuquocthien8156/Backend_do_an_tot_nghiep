@@ -7,8 +7,8 @@
 # After clone source code
 ```
 $ cd <project root directory>
-$ composer install
-$ yarn install
+$ composer install --ignore-platform-reqs
+$ yarn install --ignore-platform-reqs
 $ npm run dev
 ```
 ```
