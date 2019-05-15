@@ -65,3 +65,5 @@ Route::get('api/like', 'LoginController@requestLike');//thích sp
 Route::get('api/productType', 'LoginController@productType');
 
 Route::get('api/news', 'LoginController@news');
+
+Route::get('api/add-cart', 'LoginController@addCart');
