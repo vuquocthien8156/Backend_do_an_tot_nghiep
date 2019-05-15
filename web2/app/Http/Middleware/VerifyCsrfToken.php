@@ -16,11 +16,13 @@ class VerifyCsrfToken extends Middleware
         'api/deleteAccount',
         'api/login-by-phone',
         'api/login',
+        'api/register',
         'dangnhapsdt',
         'api/listcAcount',
         'api/insert-no-mail',
         'api/update-id_fb',
         'api/update-email',
-        'api/updateInfo'
+        'api/updateInfo',
+        'api/login-fb',
     ];
 }
