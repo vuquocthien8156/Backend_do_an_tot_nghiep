@@ -34,6 +34,9 @@ class LoginService {
 		return $this->loginRepository->check($user);
 	}
 
+	public function idMax() {
+		return $this->loginRepository->idMax();
+	}
 		
 	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
 		return $this->loginRepository->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);	
@@ -67,16 +70,12 @@ class LoginService {
 		return $this->loginRepository->getDetailOrder($id_don_hang);
 	}
 
-	public function updateIdFB($id_fb, $email) {
-		return $this->loginRepository->updateIdFB($id_fb, $email);
+	public function updateUserFB($id_fb, $email , $type) {
+		return $this->loginRepository->updateUserFB($id_fb, $email , $type);
 	}
 
 	public function getInfo($id_fb) {
 		return $this->loginRepository->getInfo($id_fb);
-	}
-
-	public function insertPass($id_fb) {
-		return $this->loginRepository->insertPass($id_fb);
 	}
 
 	public function loginfb($id_fb) {

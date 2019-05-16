@@ -79,45 +79,59 @@ class FacebookAuthController extends Controller
     public function loginfb(Request $request) {
         $id_fb = $request->get('id_fb');
         $email = $request->get('email');
-        $type = $request->get('type');
-        if ($type == 1) {
-            $login = $this->loginService->loginfb($id_fb, $email);
-            if (isset($login[0]->fb_id)) {
-               return response()->json(['status' => 'ok', 'error' => 0,'info' => $login]);
-            }
-            return response()->json(['status' => 'ok', 'error' => 1]);
-        }
-        if ($type == 2) {
-            $id_fb = $request->get('id_fb');
-            $email = null;
-            $create = $this->loginService->create($id_fb, $email);
-            if (isset($login[0]->fb_id)) {
-               return response()->json(['status' => 'ok', 'error' => 0]);
-            }
-            return response()->json(['status' => 'ok', 'error' => 1]);
 
-        }
-        if ($type == 3) {
+        $checkIdFB = $this->loginService->check($id_fb);
+        $checkEmail =  $this->loginService->check($email);
+
+        // 'type' => 3
+        if (!isset($checkIdFB[0]->fb_id) && !isset($checkEmail[0]->email)) {
             $create = $this->loginService->create($id_fb, $email);
-            if (isset($login[0]->fb_id)) {
-               return response()->json(['status' => 'ok', 'error' => 0]);
-            }
-            return response()->json(['status' => 'ok', 'error' => 1]);
-        }
-        if($type == 4) {
-            $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
-            $getInfo = $this->loginService->getInfo($id_fb);
-            if (isset($getInfo[0]->email)) {
-                return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
+            if ($create == 1) {
+               $idMax = $this->loginService->idMax();
+               return response()->json(['status' => 'ok', 'error' => 0  , 'info' => ['user_id' => $idMax]]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }
-        if ($type == 5) {
-            $updateIdFB =  $this->loginService->updateIdFB($id_fb, $email);
-            $insertPass = $this->loginService->insertPass($id_fb);
+
+        // 'type' => 4
+        if(!isset($checkIdFB[0]->fb_id) && isset($checkEmail[0]->email) && !isset($checkEmail[0]->fb_id)) {
+            $updateIdFB =  $this->loginService->updateUserFB($id_fb, $email , 4);
             $getInfo = $this->loginService->getInfo($id_fb);
             if (isset($getInfo[0]->email)) {
-                return response()->json(['status' => 'ok', 'error' => 0, 'infoUser' => $getInfo]);
+                return response()->json(['status' => 'ok', 'error' => 0, 'info' => $getInfo[0]]);
+            }
+            return response()->json(['status' => 'fail', 'error' => 1]);
+        }
+
+        // 'type' => 2
+        if (!isset($checkIdFB[0]->fb_id) && isset($checkEmail[0]->email)) {
+            $email = null;
+            $create = $this->loginService->create($id_fb, $email);
+
+            if ($create == 1) {
+                $idMax = $this->loginService->idMax();
+               return response()->json( ['status' => 'ok',
+                     'error' => 0 , 
+                     'info' => ['user_id' => $idMax]] );
+            }
+            return response()->json(['status' => 'fail', 'error' => 1]);
+        }
+
+        //  'type' => 5
+        if (!isset($checkIdFB[0]->email) && !isset($checkEmail[0]->email) && isset($checkIdFB[0]->fb_id) ) {
+            $updateIdFB =  $this->loginService->updateUserFB($id_fb, $email , 5);
+            $getInfo = $this->loginService->getInfo($id_fb);
+            if (isset($getInfo[0]->email)) {
+                return response()->json(['status' => 'ok', 'error' => 0, 'info' => $getInfo[0] ]);
+            }
+            return response()->json(['status' => 'fail', 'error' => 1]);
+        }
+
+        //  'type' => 1
+        if (isset($checkIdFB[0]->fb_id)) {
+            $login = $this->loginService->loginfb($id_fb);
+            if (isset($login[0]->fb_id)) {
+               return response()->json(['status' => 'ok', 'error' => 0,'info' => $login[0] ]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }

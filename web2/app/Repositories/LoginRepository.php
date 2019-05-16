@@ -39,9 +39,9 @@ class LoginRepository {
 		$result = DB::table('users as us')->select('us.id as user_id', 'email', 'password', 'sdt', 'fb_id');
         if ($user != '' && $user != null) {
             $result->where(function($where) use ($user) {
-                $where->where('us.fb_id', '=' ,$user)
-                	->orwhere('us.email', '=' ,$user)
-                    ->orWhere('us.sdt' , '=' ,$user);
+                $where->where('us.email', '=' ,$user)
+                    ->orWhere('us.sdt' , '=' ,$user)
+                    ->orWhere('us.fb_id' , '=' , $user);
                 });
         } 
 		return $result->get();
@@ -99,32 +99,33 @@ class LoginRepository {
 	}
 
 	public function getUser($id_KH) {
-		$result = DB::table('users')->select('id', 'ten', 'sdt', 'dia_chi');
+		$result = DB::table('users')->select('id as user_id', 'ten', 'sdt', 'dia_chi');
 		if ($id_KH != null && $id_KH != '') {
 			$result->where('id', '=', $id_KH);
 		}
 		return $result->get();
 	}
 
-	public function updateIdFB($id_fb, $email) {
-		$result = DB::table('users')->where('email', '=', $email)
-		->update([
-			'fb_id' => $id_fb,
-		]);
+	public function updateUserFB($id_fb, $email , $type) {
+		if ($type == 4) {
+			$result = DB::table('users')->where('email', '=', $email)
+			->update([
+				'fb_id' => $id_fb,
+			]);
+		}
+		else
+		{
+			$result = DB::table('users')->where('fb_id', '=', $id_fb)
+			->update([
+				'email' => $email,
+			]);
+		}
 		return $result;
 	}
 
 	public function getInfo($id_fb) {
-		$result = DB::table('users')->select('ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
+		$result = DB::table('users')->select('id as user_id', 'ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
-	}
-
-	public function insertPass($id_fb) {
-		$pass = md5(123);
-		$result = DB::table('users')->where('fb_id', '=', $id_fb)->update([
-           'password' => $pass,
-        ]);
-        return $result;	
 	}
 
 	public function loginfb($id_fb) {
@@ -168,6 +169,11 @@ class LoginRepository {
 	        ]);
         	return $result->limit(4)->orderBy('ngay_tao', 'desc')->paginate(4);
         }
+	}
+
+	public function idMax() {
+		$result = DB::table('users')->max('id');
+		return $result;
 	}
 
 	public function productType($page) {

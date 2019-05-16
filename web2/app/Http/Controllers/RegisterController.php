@@ -61,17 +61,13 @@ class RegisterController extends Controller {
 		$phone = $request->get("phone");
 		$address = $request->get("address");
 		$check = $this->registerService->getAccount($username);
-		for ($i=0; $i < count($check); $i++) { 
-			if ($username == $check[$i]->email) {
-				return \Response::json(['status' =>"already",'error' => 0]);
-			}
-		}
+		
 		$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
 		
-		// $idMax = $this->registerService->idMax();
 		// $Permission = $this->registerService->insertPermission($idMax);
 		if ($insert == true) {
-			return \Response::json(['status' =>"ok", 'error' => 0]);
+			$idMax = $this->registerService->idMax();
+			return \Response::json(['status' =>"ok", 'error' => 0 , 'info' => ['user_id' => $idMax]]);
 		}
 		return \Response::json(['status' =>"error", 'error' => 1]);
 	}
