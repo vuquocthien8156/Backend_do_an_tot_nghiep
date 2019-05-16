@@ -271,4 +271,67 @@ class LoginController extends Controller {
         }
 		return response()->json(['status' => 'ok', 'error' => 0, 'listCatalogy'=>$list]);
     }
+
+    public function addCart(Request $request) {
+    	$id_KH = $request->get('id_KH');
+    	$id_sp = $request->get('id_sp');
+    	$size = $request->get('size');
+    	$so_luong = $request->get('so_luong');
+    	$parent_id = $request->get('parent_id');
+    	$getCartOfCustomer = $this->loginService->getCart($id_KH);
+    	$temp = 0;
+    	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
+    		if ($getCartOfCustomer[$i]->ma_san_pham == $id_sp && $getCartOfCustomer[$i]->ma_khach_hang == $id_KH && $getCartOfCustomer[$i]->parent_id == $parent_id && $getCartOfCustomer[$i]->kich_co == $size) {
+    			$temp = 1;
+    			break;
+    		}else {
+    			$temp = 0;
+    		}
+    	}
+    	if ($temp > 0) {
+    		$type = 3;
+    		$getQuantity = $this->loginService->getQuantity($getCartOfCustomer[$i]->ma_gio_hang);
+    		$sl = $getQuantity[0]->so_luong + $so_luong;
+    		$insertCart = null;
+    		$updateQuantity = $this->loginService->updateQuantity($getCartOfCustomer[$i]->ma_gio_hang, $sl, $type);
+    	}else{
+    		$updateQuantity = null;
+    		$insertCart = $this->loginService->insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id);
+    	}
+    	$getCartOfCustomer = $this->loginService->getCart($id_KH);
+    	if ($insertCart == true || $updateQuantity == 1) {
+    		return response()->json(['ma_khach_hang' => $id_KH,'list' => $getCartOfCustomer]);
+    	}
+    	return response()->json(['status' => 'fail', 'error' => 1]);
+    }
+
+    public function deleteCart(Request $request) {
+    	$id_GH = $request->get('id_GH');
+    	$deleteCart = $this->loginService->deleteCart($id_GH);
+    	if ($deleteCart == 1) {
+    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	}
+    	return response()->json(['status' => 'fail', 'error' => 1]);
+    }
+
+    public function deleteCartCustomer(Request $request) {
+    	$id_KH = $request->get('id_KH');
+    	$deleteCartCustomer = $this->loginService->deleteCartCustomer($id_KH);
+    	if ($deleteCartCustomer == 1) {
+    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	}
+    	return response()->json(['status' => 'fail', 'error' => 1]);
+    }
+
+    public function updateQuantity(Request $request) {
+    	$id_GH = $request->get('id_GH');
+    	$type = $request->get('type');
+    	$getQuantity = $this->loginService->getQuantity($id_GH);
+    	$sl = $getQuantity[0]->so_luong;
+    	$updateQuantity = $this->loginService->updateQuantity($id_GH, $sl, $type);
+    	if ($updateQuantity == 1) {
+    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	}
+    	return response()->json(['status' => 'fail', 'error' => 1]);
+    }
 }

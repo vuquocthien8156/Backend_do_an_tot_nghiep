@@ -185,4 +185,52 @@ class LoginRepository {
         	return $result->orderBy('ma_loai_sp', 'asc')->paginate(15);
         }
 	}
+
+	public function insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id) {
+		$result = DB::table('GioHang')->insert([
+           'ma_khach_hang' => $id_KH,
+           'ma_san_pham' => $id_sp,
+           'kich_co' => $size,
+           'so_luong' => $so_luong,
+           'parent_id' => $parent_id
+        ]);
+        return $result;	
+	}
+
+	public function getCart($id_KH) {
+		$result = DB::table('GioHang')->select( 'ma_gio_hang' , 'ma_khach_hang', 'ma_san_pham', 'so_luong', 'kich_co', 'parent_id')->where('ma_khach_hang' , '=', $id_KH)->get();
+        return $result;	
+	}
+
+	public function deleteCart($id_GH) {
+		$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->delete();
+        return $result;	
+	}
+
+	public function deleteCartCustomer($id_KH) {
+		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)->delete();
+        return $result;	
+	}
+
+	public function getQuantity($id_GH) {
+		$result = DB::table('GioHang')->select('so_luong')->where('ma_gio_hang' , '=', $id_GH)->get();
+        return $result;	
+	}
+	
+	public function updateQuantity($id_GH, $sl, $type) {
+		if ($type == 1) {
+			$sl = $sl+1;
+			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
+        	return $result;	
+		}
+		if ($type == 2) {
+			$sl = $sl-1;
+			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
+        	return $result;		
+		}
+		if ($type == 3) { // thêm bị trùng
+			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
+        	return $result;		
+		}	
+	}
 }

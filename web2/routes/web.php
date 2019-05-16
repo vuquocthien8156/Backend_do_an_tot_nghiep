@@ -66,4 +66,7 @@ Route::get('api/productType', 'LoginController@productType');
 
 Route::get('api/news', 'LoginController@news');
 
-Route::get('api/add-cart', 'LoginController@addCart');
+Route::post('api/add-cart', 'LoginController@addCart');
+Route::post('api/delete-cart', 'LoginController@deleteCart');
+Route::post('api/delete-all-cart-of-customer', 'LoginController@deleteCartCustomer');
+Route::post('api/cart/update-quantity', 'LoginController@updateQuantity');

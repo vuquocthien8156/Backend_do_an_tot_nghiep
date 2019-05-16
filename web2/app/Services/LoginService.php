@@ -94,4 +94,28 @@ class LoginService {
 	public function productType($page) {
 		return $this->loginRepository->productType($page);
 	}
+
+	public function insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id) {
+		return $this->loginRepository->insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id);
+	}
+
+	public function getCart($id_KH) {
+		return $this->loginRepository->getCart($id_KH);
+	}
+
+	public function deleteCart($id_GH) {
+		return $this->loginRepository->deleteCart($id_GH);
+	}
+
+	public function deleteCartCustomer($id_KH) {
+		return $this->loginRepository->deleteCartCustomer($id_KH);
+	}
+
+	public function getQuantity($id_GH) {
+		return $this->loginRepository->getQuantity($id_GH);
+	}
+
+	public function updateQuantity($id_GH, $sl, $type) {
+		return $this->loginRepository->updateQuantity($id_GH, $sl, $type);
+	}
 }
