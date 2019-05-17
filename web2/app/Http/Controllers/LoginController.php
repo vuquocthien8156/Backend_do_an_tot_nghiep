@@ -280,33 +280,18 @@ class LoginController extends Controller {
     }
 
     public function addCart(Request $request) {
-    	$id_KH = $request->get('id_KH');
-    	$id_sp = $request->get('id_sp');
-    	$size = $request->get('size');
-    	$so_luong = $request->get('so_luong');
-    	$parent_id = $request->get('parent_id');
-    	$getCartOfCustomer = $this->loginService->getCart($id_KH);
-    	$temp = 0;
-    	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
-    		if ($getCartOfCustomer[$i]->ma_san_pham == $id_sp && $getCartOfCustomer[$i]->ma_khach_hang == $id_KH && $getCartOfCustomer[$i]->parent_id == $parent_id && $getCartOfCustomer[$i]->kich_co == $size) {
-    			$temp = 1;
-    			break;
-    		}else {
-    			$temp = 0;
-    		}
-    	}
-    	if ($temp > 0) {
-    		$type = 3;
-    		$getQuantity = $this->loginService->getQuantity($getCartOfCustomer[$i]->ma_gio_hang);
-    		$sl = $getQuantity[0]->so_luong + $so_luong;
-    		$insertCart = null;
-    		$updateQuantity = $this->loginService->updateQuantity($getCartOfCustomer[$i]->ma_gio_hang, $sl, $type);
-    	}else{
-    		$updateQuantity = null;
+    	$objectCart = $request->get('object');
+    	$id_KH = $objectCart['id'];
+    	$list = $objectCart['list'];
+    	for ($i=0; $i < count($list); $i++) { 
+    		$id_sp = $list[$i]['ma_san_pham'];
+    		$so_luong = $list[$i]['so_luong'];
+    		$size = $list[$i]['size'];
+    		$parent_id = $list[$i]['parent_id'];
     		$insertCart = $this->loginService->insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id);
     	}
     	$getCartOfCustomer = $this->loginService->getCart($id_KH);
-    	if ($insertCart == true || $updateQuantity == 1) {
+    	if (isset($getCartOfCustomer[0]->ma_gio_hang)) {
     		return response()->json(['ma_khach_hang' => $id_KH,'list' => $getCartOfCustomer]);
     	}
     	return response()->json(['status' => 'fail', 'error' => 1]);

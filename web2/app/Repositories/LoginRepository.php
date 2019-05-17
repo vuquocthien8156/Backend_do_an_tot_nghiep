@@ -234,9 +234,5 @@ class LoginRepository {
 			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
         	return $result;		
 		}
-		if ($type == 3) { // thêm bị trùng
-			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
-        	return $result;		
-		}	
 	}
 }
