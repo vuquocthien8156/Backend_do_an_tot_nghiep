@@ -132,6 +132,21 @@ class LoginController extends Controller {
 		return redirect('home');
 	}
 
+	public function uploadImage(Request $request){
+		$now = Carbon::now();
+		if ($request->file('avatar') != null || $request->file('avatar') != ''){
+	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $destinationPath = config('app.resource_physical_path');
+	            $pathToResource = config('app.resource_url_path');
+	            $filename =  $subName . '/' . $request->file('avatar')->getClientOriginalName();
+	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
+            	if (!file_exists($check)) {
+                	return \Response::json(['fail'=> false]);
+            	}
+            return \Response::json(['filename' => $filename]);
+        }
+	}
+
 	public function requestUpdateInfo(Request $request) {
 		$id = $request->get('id');
 		$email = $request->get('email');
@@ -140,24 +155,12 @@ class LoginController extends Controller {
 		$gender = $request->get('gender');
 		$dob = $request->get('birth_day');
 		$avatar = $request->get('avatar_path');
-		$now = Carbon::now();
-		if ($request->file('avatar') != null || $request->file('avatar') != '') {
-                $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
-                $destinationPath = config('app.resource_physical_path');
-                $pathToResource = config('app.resource_url_path');
-                $filename =  $subName . '/' . $request->file('avatar')->getClientOriginalName();
-                $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
-                if (!file_exists($check)) {
-                    return \Response::json(false);
-                }
-                $avatar = $filename;
-        }
-       
+      
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
         if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);
         }else {
-        	return response()->json(['status' => 'update fail', 'error' => 1]);
+        	return response()->json(['status' => 'upload fall', 'error' => 1]);
         }
 	}
 	public function getLikedProduct(Request $request) {

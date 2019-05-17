@@ -49,6 +49,7 @@ Route::post('api/login-by-phone', 'LoginController@loginsdtAPI');
 Route::get('api/checkLoginExist', 'LoginController@check');
 
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
+Route::post('api/uploadImage', 'LoginController@uploadImage');
 
 // Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 // Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');

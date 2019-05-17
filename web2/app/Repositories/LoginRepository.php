@@ -48,7 +48,7 @@ class LoginRepository {
 	}
 	
 	public function updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id) {
-		$result = DB::table('users')->where('user_id', '=', $id)
+		$result = DB::table('users')->where('id', '=', $id)
 		->update([
 			'email' => $email,
 			'ten' => $name,
