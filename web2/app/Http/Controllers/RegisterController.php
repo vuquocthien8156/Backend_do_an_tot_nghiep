@@ -65,7 +65,7 @@ class RegisterController extends Controller {
 		$insert = $this->registerService->insertUser($username, $password, $name, $gender, $birthday, $phone, $address);
 		
 		// $Permission = $this->registerService->insertPermission($idMax);
-		if ($insert == true) {
+		if ($insert == 1) {
 			$idMax = $this->registerService->idMax();
 			return \Response::json(['status' =>"ok", 'error' => 0 , 'info' => ['user_id' => $idMax]]);
 		}
