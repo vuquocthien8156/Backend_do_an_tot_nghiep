@@ -132,6 +132,10 @@ class LoginController extends Controller {
 		return redirect('home');
 	}
 
+	public function twoDigitNumber($number) {
+		return $number < 10 ? '0'.$number : $number;
+    }
+	
 	public function uploadImage(Request $request){
 		$now = Carbon::now();
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
