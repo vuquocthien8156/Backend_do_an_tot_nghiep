@@ -139,15 +139,16 @@ class LoginController extends Controller {
 	public function uploadImage(Request $request){
 		$now = Carbon::now();
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
-	            $subName = 'images/account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
 	            $filename =  $subName . '/' . $request->file('avatar')->getClientOriginalName();
 	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
             	if (!file_exists($check)) {
-                	return 'fail';
+                	return response()->json(['filename' => "null"]);
             	}
-            return $filename;
+            $filename = "images/" . $filename;
+            return response()->json(['filename' => $filename]);
         }
 	}
 
@@ -161,11 +162,10 @@ class LoginController extends Controller {
 		$avatar = $request->get('avatar_path');
       
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
-        if ($update > 0) {
+        if ($update > 0)
         	return response()->json(['status' => 'ok', 'error' => 0]);
-        }else {
-        	return response()->json(['status' => 'upload fall', 'error' => 1]);
-        }
+        else 
+        	return response()->json(['status' => 'fail', 'error' => 1]);
 	}
 	public function getLikedProduct(Request $request) {
 		$id = $request->get('id');
@@ -280,30 +280,35 @@ class LoginController extends Controller {
     }
 
     public function addCart(Request $request) {
-    	$objectCart = $request->get('object');
-    	$id_KH = $objectCart['id'];
+    	$objectCart = $request->get('cart');
+    	$id_KH = $objectCart['idCustomer'];
     	$list = $objectCart['list'];
-    	for ($i=0; $i < count($list); $i++) { 
+    	$i=0;
+    	for (; $i < count($list); $i++) { 
     		$id_sp = $list[$i]['ma_san_pham'];
     		$so_luong = $list[$i]['so_luong'];
     		$size = $list[$i]['size'];
     		$parent_id = $list[$i]['parent_id'];
     		$insertCart = $this->loginService->insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id);
     	}
-    	$getCartOfCustomer = $this->loginService->getCart($id_KH);
-    	if (isset($getCartOfCustomer[0]->ma_gio_hang)) {
-    		return response()->json(['ma_khach_hang' => $id_KH,'list' => $getCartOfCustomer]);
-    	}
-    	return response()->json(['status' => 'fail', 'error' => 1]);
+    	if($i == count($list))
+    		return response()->json(['status' => 'ok', 'error' => 0]);
+    	else
+    		return response()->json(['status' => 'fail', 'error' => 1]);
+
+    	// $getCartOfCustomer = $this->loginService->getCart($id_KH);
+    	// if (isset($getCartOfCustomer[0]->ma_gio_hang)) {
+    	// 	return response()->json(['ma_khach_hang' => $id_KH,'list' => $getCartOfCustomer]);
+    	// }
     }
 
     public function deleteCart(Request $request) {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
-    	if ($deleteCart == 1) {
-    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	if ($deleteCart > 0) {
+    		return response()->json(['status' => 'Success', 'error' => 0 , 'd' => $deleteCart]);
     	}
-    	return response()->json(['status' => 'fail', 'error' => 1]);
+    	return response()->json(['status' => 'fail', 'error' => 1 , 'd' => $deleteCart]);
     }
 
     public function deleteCartCustomer(Request $request) {

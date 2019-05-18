@@ -117,4 +117,8 @@ class LoginService {
 	public function updateQuantity($id_GH, $sl, $type) {
 		return $this->loginRepository->updateQuantity($id_GH, $sl, $type);
 	}
+
+	public function getProductById($idProduct){
+		return $this->loginRepository->getProductById($idProduct)
+	}
 }
