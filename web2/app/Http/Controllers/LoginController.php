@@ -139,15 +139,15 @@ class LoginController extends Controller {
 	public function uploadImage(Request $request){
 		$now = Carbon::now();
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
-	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $subName = 'images/account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
 	            $filename =  $subName . '/' . $request->file('avatar')->getClientOriginalName();
 	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
             	if (!file_exists($check)) {
-                	return \Response::json(['fail'=> false]);
+                	return 'fail';
             	}
-            return \Response::json(['filename' => $filename]);
+            return $filename;
         }
 	}
 
