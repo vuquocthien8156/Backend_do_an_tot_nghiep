@@ -10,6 +10,14 @@ const app = new Vue({
             name:'',
             img:'',
             selectedFile: null,
+            ten:'',
+            ma: '',
+            gia_goc:'',
+            gia_size_vua:'',
+            gia_size_lon:'',
+            loaisp: '',
+            ngay_ra_mat:'',
+            mo_ta:''
         };
     },
 
@@ -18,7 +26,7 @@ const app = new Vue({
     },
     methods: {
         search(page) {
-            console.log("asd");
+            common.loading.show('body');
             var data = {
                 name: this.name,
             };
@@ -27,8 +35,8 @@ const app = new Vue({
             }
             $.get('search', data)
                 .done(response => {
-                    console.log(response);
                     this.results = response.listSearch;
+                    common.loading.hide('body');
                 })
                 .fail(error => {
                     alert('Error!');
@@ -38,21 +46,41 @@ const app = new Vue({
             var data = {
                 id:id
             }
-            var r = confirm('bạn muốn xóa');
-            if (r == true) {
+            bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có xoá sản phẩm này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        alert("xóa thành công !!");
-                        window.location = 'product';
+                        bootbox.alert("xóa thành công !!");
+                        window.location.reload();
+                        common.loading.hide('body');
                     }
                 })
-            }
+                    }
+                }
+            });
+        
+            
+            
         },
         seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
             ngay_ra_mat, mo_ta, ma_loai_sp) {
-            $("#edit").css('display','block');
-            $("#body").css('display','none');
+            // $("#edit").css('display','block');
+            // $("#body").css('display','none');
             $("#id_product").val(ma_so);
             $("#ten").val(ten);
             $("#ma").val(ma_chu);
@@ -63,8 +91,13 @@ const app = new Vue({
             $("#ngay_ra_mat").val(ngay_ra_mat);
             $("#mo_ta").val(mo_ta);
             $("#so_lan_order").val(so_lan_dat);
+            $('#update').modal('show');
+        },
+        add() {
+            $('#add').modal('show');
         },
         edit() {
+            common.loading.show('body');
             var data = new FormData();
             let url = $('#form_edit_info').attr("action");
             data.append('files_edit', this.selectedFile);
@@ -88,7 +121,8 @@ const app = new Vue({
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
                         alert('Thành công!!!');
-                        window.location = 'manage';
+                        window.location.reload();
+                        common.loading.hide('body');
                     } else {
                         alert('Thất bại!!!');
                     }
@@ -122,7 +156,6 @@ const app = new Vue({
             }
         },
         edit1 : function(event) {
-            console.log(this.selectedFile);
             var data = new FormData();
             data.append('files_edit', this.selectedFile);
             let url = $('#form_edit_info').attr("action");
@@ -145,5 +178,36 @@ const app = new Vue({
             $("#edit").css('display','none');
             $("#body").css('display','block');
         },
+        luu() {
+            // common.loading.show('body');
+            var data = new FormData();
+            data.append('files_edit', this.selectedFile);
+            let url = $('#add-new').attr("action");
+            data.append('ten', this.ten);
+            data.append('ma', this.ma);
+            data.append('gia_goc', this.gia_goc);
+            data.append('gia_size_vua', this.gia_size_vua);
+            data.append('gia_size_lon', this.gia_size_lon);
+            data.append('loaisp', this.loaisp);
+            data.append('ngay_ra_mat', this.ngay_ra_mat);
+            data.append('mo_ta', this.mo_ta);
+            let options = {
+                        method: 'POST',
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                    };
+            $.ajax(url, options).done(response => {
+                    if (response.error === 0) {
+                        alert('Thêm thành công!!!');
+                        window.location = 'manage';
+                        common.loading.hide('body');
+                        window.location.reload();
+                    } else {
+                        alert('Thêm thất bại!!!');
+                        common.loading.hide('body');
+                    }
+                })
+        }
 	}
 });

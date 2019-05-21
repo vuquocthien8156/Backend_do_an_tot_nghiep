@@ -34,6 +34,7 @@ const app = new Vue({
             $("#username").attr('placeholder', 'Nhập email');
         },
         login() {
+            common.loading.show('body');
         	if (this.username == '' || this.password == '' || this.username == null || this.password == null) {
         		alert('vui lòng nhập đầy đủ thông tin!');
         	}
@@ -52,7 +53,8 @@ const app = new Vue({
                     success: function (result) {
                         if (result.error === 0) {
                             alert('Thành công!');
-                            window.location = 'home';
+                            common.loading.hide('body');
+                            window.location = 'manage/account';
                         } else {
                             if (result.error === 0) {
                                 alert('Sai tên hoặc mật khẩu!');

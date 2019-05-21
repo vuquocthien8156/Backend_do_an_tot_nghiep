@@ -91,10 +91,25 @@ class LoginRepository {
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang')->select('ma_don_hang', 'ma_khach_hang', 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
+			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
 			$result->where('ma_khach_hang', '=', $id_KH);
 		}
+		return $result->get();
+	}
+
+	public function getDetail($ma_don_hang) {
+		$result = DB::table('ChiTietDonHang as ctdh')->select('ma_chi_tiet', 'ma_san_pham', 'so_luong', 'don_gia', 'kich_co', 'gia_khuyen_mai', 'thanh_tien', 'ghi_chu')
+			->where('ctdh.ma_don_hang', '=', $ma_don_hang);
+		return $result->get();
+	}
+
+	public function getStatusOrder($ma_don_hang) {
+		$result = DB::table('ChiTietTrangThaiDonHang as ctttdh')->select('ten_trang_thai', 'thoi_gian')
+			->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai')
+			->where('ctttdh.ma_don_hang', '=', $ma_don_hang);
 		return $result->get();
 	}
 
@@ -192,13 +207,13 @@ class LoginRepository {
         }
 	}
 
-	public function insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id) {
+	public function insertCart($id_KH, $ma_sp, $so_luong, $size, $note) {
 		$result = DB::table('GioHang')->insert([
            'ma_khach_hang' => $id_KH,
-           'ma_san_pham' => $id_sp,
+           'ma_san_pham' => $ma_sp,
            'kich_co' => $size,
            'so_luong' => $so_luong,
-           'parent_id' => $parent_id
+           'ghi_chu' => $note
         ]);
         return $result;	
 	}
@@ -234,5 +249,75 @@ class LoginRepository {
 			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
         	return $result;		
 		}
+	}
+	
+	public function getCartOfCustomer($id_KH) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'kich_co', 'so_luong', 'ghi_chu')->where('ma_khach_hang' , '=', $id_KH)->get();
+        return $result;
+	}
+
+	public function getInfoCustomer($id_KH) {
+		$result = DB::table('users')->select('id', 'ten', 'sdt', 'dia_chi')->where('id' , '=', $id_KH)->get();
+        return $result;
+	}
+
+	public function getEvaluate() {
+		$result = DB::table('DanhGia')->select('ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where('da_xoa' , '=', 0)->get();
+        return $result;
+	}
+
+	public function getChildEvaluate($id_SP, $id_Evaluate) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where(['da_xoa' => 0, 'ma_sp' => $id_SP, 'parent_id' => $id_Evaluate])->get();
+        return $result;
+	}
+
+	public function getEvaluateOfProduct($id_SP) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk','so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where(['da_xoa' => 0, 'ma_sp' => $id_SP])->get();
+        return $result;
+	}
+
+	public function getBranch() {
+		$result = DB::table('ChiNhanh')->join('KhuVuc', 'ChiNhanh.ma_khu_vuc', '=', 'KhuVuc.ma_khu_vuc')->select('ma_chi_nhanh','ten', 'dia_chi', 'latitude', 'longtitude', 'ten_khu_vuc','ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua')->where(['KhuVuc.da_xoa' => 0])->get();
+        return $result;
+	}
+
+	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id) {
+		$result = DB::table('DanhGia')->insert([
+           'ma_tk' => $id_tk,
+           'ma_sp' => $id_sp,
+           'so_diem' => $so_diem,
+           'tieu_de' => $tieu_de,
+           'noi_dung' => $noi_dung,
+           'thoi_gian' => $thoi_gian,
+           'hinh_anh' => $hinh_anh,
+           'parent_id' => $parent_id,
+           'duyet' => 1,
+           'da_xoa' => 0,
+        ]);
+        return $result;	
+	}
+
+	public function aaddThanks($id_Evaluate, $id_KH) {
+		$result = DB::table('CamOnDanhGia')->insert([
+           'ma_danh_gia' => $id_Evaluate,
+           'ma_kh' => $id_KH,
+        ]);
+        return $result;	
+	}
+
+	public function insertTopping($ma_sp, $ma_topping, $gia_san_pham, $so_luong) {
+		$result = DB::table('ChiTietThucUong')->insert([
+           'ma_khach_hang' => $id_KH,
+           'ma_chi_tiet' => $ma_sp,
+           'ma_san_pham' => $ma_topping,
+           'don_gia' => $gia_san_pham,
+           'so_luong' => $so_luong
+        ]);
+        return $result;	
+	}
+
+	public function getTopping($ma_sp) {
+		$result = DB::table('ChiTietThucUong')->select('so_thu_tu', 'ma_chi_tiet', 'ma_san_pham', 'don_gia', 'so_luong')->where(['ma_chi_tiet' => $ma_sp])->get();
+        return $result;
 	}
 }

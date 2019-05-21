@@ -180,12 +180,25 @@ class ProductController extends Controller {
 
     	//lấy id kết quả đã count
     	for ($i=0; $i < count($amount); $i++) {
-    		$b[] = $amount[$i][0]->ma_san_pham; 
+    		$b[] = $amount[$i][0]->ma_san_pham;
+    	}
+
+    	for ($i = 0; $i < count($b) - 1; $i++)
+    	{
+	        $min = $i;
+	        for ($j = $i + 1; $j < count($b); $j++){
+	            if ($b[$j] < $b[$min]){
+	                $min = $j;
+	            }
+	        }
+	        $temp = $b[$i];
+	        $b[$i] = $b[$min];
+	        $b[$min] = $temp;
     	}
 
     	for ($i=0; $i < count($b); $i++) {
     		if ($i < 10) {
-    			$getlist[] = $this->productService->getlist($b[$i])[0];
+    			$getlist[] = $this->productService->getlist($b[$i]);
     		}
     	}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  

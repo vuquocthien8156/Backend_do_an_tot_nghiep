@@ -39,7 +39,8 @@ Route::post('permission', 'Permi	ssionController@Permission');
 Route::get('auth/facebook', 'FacebookAuthController@redirectToProvider')->name('facebook.login') ;
 Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
 
-
+//Điều khoản sử dụng
+Route::get('rule', 'LoginController@rule')->name('rules') ;
 //api
 Route::post('api/register', 'RegisterController@registerAPI');
 
@@ -64,10 +65,23 @@ Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 Route::get('api/like', 'LoginController@requestLike');//thích sp
 Route::get('api/productType', 'LoginController@productType');
+Route::get('api/productDetail', 'LoginController@productDetail');
 
 Route::get('api/news', 'LoginController@news');
 
-Route::post('api/add-cart', 'LoginController@addCart');
+Route::get('api/add-cart', 'LoginController@addCart');
 Route::post('api/delete-cart', 'LoginController@deleteCart');
 Route::post('api/delete-all-cart-of-customer', 'LoginController@deleteCartCustomer');
 Route::post('api/cart/update-quantity', 'LoginController@updateQuantity');
+Route::get('api/getCartOfCustomer', 'LoginController@getCartOfCustomer');
+
+Route::get('api/getEvaluate', 'LoginController@getEvaluate');
+Route::get('api/getChildEvaluate', 'LoginController@getChildEvaluate');
+
+Route::get('api/getBranch', 'LoginController@getBranch');
+
+Route::get('api/addEvaluate', 'LoginController@addEvaluate');
+
+Route::get('api/addThanks', 'LoginController@addThanks');
+
+Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');

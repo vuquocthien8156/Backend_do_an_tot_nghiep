@@ -22,10 +22,11 @@ const app = new Vue({
             if (page) {
                 data.page = page;
             }
-             
+            common.loading.show('body');
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    common.loading.hide('body');
                 })
                 .fail(error => {
                     alert('Error!');
