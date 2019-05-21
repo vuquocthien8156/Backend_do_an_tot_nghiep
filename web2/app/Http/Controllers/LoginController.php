@@ -177,6 +177,18 @@ class LoginController extends Controller {
 		}
 	}
 
+	public function checkLikeProductByUser(Request $request){
+		$id = $request->get('id');
+		$id_sp = $request->get('id_sp');
+		$getLikedProduct =  $this->loginService->getLikedProduct($id);
+		$check = 0;
+		foreach ($getLikedProduct as $value) {
+			if($value->ma_so == $id_sp)
+				$check = 1;
+		}
+		return response()->json(['status' => 'ok', 'error' => 1 , 'check' => $check]);
+	}
+
 	public function requestLike(Request $request) {
 		$id_product = $request->get('id_product');
 		$id_user = $request->get('id_user');

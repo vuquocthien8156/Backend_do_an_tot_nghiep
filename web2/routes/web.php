@@ -63,6 +63,7 @@ Route::get('api/TheMostFavoriteProduct', 'ProductController@getIdSp');
 Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 Route::get('api/like', 'LoginController@requestLike');//thích sp
+Route::get('api/checkLikeByUser', 'LoginController@checkLikeProductByUser');
 Route::get('api/productType', 'LoginController@productType');
 
 Route::get('api/news', 'LoginController@news');

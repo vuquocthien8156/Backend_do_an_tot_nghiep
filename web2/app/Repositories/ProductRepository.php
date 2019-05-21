@@ -13,8 +13,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository {
+
 	public function searchProduct($name, $page, $ma_loai, $mo_ta) {
-        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' )
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
 			'lsp.da_xoa' => 0,
@@ -41,9 +42,9 @@ class ProductRepository {
 		return $result->orderBy('sp.ma_so', 'asc')->paginate(15);
     }
 
-    public function searchProductAPI($name, $page, $ma_loai, $mo_ta) {
+    public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
        if ($page == null) {
-            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta',  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
@@ -60,10 +61,13 @@ class ProductRepository {
              $result->where('sp.loai_sp', '=', $ma_loai);
         }
 
+        if($ma_loai_chinh != '' && $ma_loai_chinh != null){
+            $result->where('lsp.loai_chinh', '=', $ma_loai_chinh);
+        }
+
         if ($mo_ta != '' && $mo_ta != null) {
             $result->where(function($where) use ($mo_ta) {
                 $where->whereRaw('lower(sp.mo_ta) like ? ', ['%' . trim(mb_strtolower($mo_ta, 'UTF-8')) . '%']);
-         
             });
         }
 
@@ -152,7 +156,7 @@ class ProductRepository {
     }
 
     public function getIdSp() {
-        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->DISTINCT();
+        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where('thich', '=', 1)->DISTINCT();
         return $result->orderBy('ma_san_pham', 'asc')->get();
     }
 

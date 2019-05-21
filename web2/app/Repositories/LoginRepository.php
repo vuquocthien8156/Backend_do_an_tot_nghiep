@@ -139,16 +139,18 @@ class LoginRepository {
 			return $result;
 	}
 
-	public function create($id_fb, $email) {
+	public function create($id_fb, $email , $name) {
 		if ($email != null && $email != '') {
 			$result = DB::table('users')->insert([
 						   'email' => $email,
 				           'fb_id' => $id_fb,
+				           'ten' => $name,
 				           'da_xoa' => 0,
        			 ]);
 		}else {
 			$result = DB::table('users')->insert([
 				           'fb_id' => $id_fb,
+				           'ten' => $name,
 				           'da_xoa' => 0,
        			 ]);
 		}
