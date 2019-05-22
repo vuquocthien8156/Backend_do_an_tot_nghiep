@@ -27,6 +27,23 @@ const app = new Vue({
     methods: {
         search(page) {
             common.loading.show('body');
+            var data1 = {
+                name: this.name,
+                gio_hang : {
+                    idGH :1,
+                    ma_sp :1,
+                    ten_sp :1,
+                    gia_sp :1, // Thông tin sp lấy từ bảng sp
+                    hinh_anh :1,
+                    so_luong :1,
+                    size :1,
+                    note :1,
+                    topping : {
+                        0:[1,2,3,4],
+                        1:[5,6,7,8]
+                    }
+                }
+            };
             var data = {
                 name: this.name,
             };

@@ -114,8 +114,8 @@ class LoginService {
 		return $this->loginRepository->getQuantity($id_GH);
 	}
 
-	public function updateQuantity($id_GH, $sl, $type) {
-		return $this->loginRepository->updateQuantity($id_GH, $sl, $type);
+	public function updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping) {
+		return $this->loginRepository->updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping);
 	}
 
 	public function getCartOfCustomer($id_KH) {
@@ -150,12 +150,16 @@ class LoginService {
     	return $this->loginRepository->addThanks($id_Evaluate, $id_KH);
     }
 
-    public function insertTopping($ma_sp, $ma_topping, $gia_san_pham, $so_luong) {
-    	return $this->loginRepository->insertTopping($ma_sp, $ma_topping, $gia_san_pham, $so_luong);
+    public function insertTopping($selectMaxId, $ma_topping, $so_luong_topping) {
+    	return $this->loginRepository->insertTopping($selectMaxId, $ma_topping, $so_luong_topping);
     }
 
     public function getTopping($ma_sp) {
     	return $this->loginRepository->getTopping($ma_sp);
+    }
+
+    public function getToppingCart($ma_gio_hang) {
+    	return $this->loginRepository->getToppingCart($ma_gio_hang);
     }
 
     public function getStatusOrder($ma_don_hang) {
@@ -164,5 +168,13 @@ class LoginService {
 
     public function getDetail($ma_don_hang) {
     	return $this->loginRepository->getDetail($ma_don_hang);
+    }
+
+    public function selectMaxId() {
+    	return $this->loginRepository->selectMaxId();
+    }
+
+    public function getDetailCart($ma_gio_hang) {
+    	return $this->loginRepository->getDetailCart($ma_gio_hang);
     }
 }
