@@ -157,7 +157,7 @@ class ProductRepository {
 
     public function getIdSp() {
         $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where('thich', '=', 1)->DISTINCT();
-        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where('thich' , '=', 1)->DISTINCT();
+        
         return $result->orderBy('ma_san_pham', 'asc')->get();
     }
 
