@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class AccountRepository {
 
 	public function search($name, $page = 1, $pageSize = 15) {
-		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.ten','us.email','us.da_xoa','us.avatar');
+		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi');
         
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {

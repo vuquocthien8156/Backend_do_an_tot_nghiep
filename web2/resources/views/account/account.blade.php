@@ -5,74 +5,61 @@
 @endsection
 @section('body-content')
 	<div id="manage-account">
-        <div id="edit" style="width: 35%;display: none;margin-bottom: 10%;margin-top: 10px;margin-left: 33%">
-            <div style="border: 1px solid red">
-                <div class="form-group" style="text-align: center;">
-                    <h4 for="child_name1" style="color: blue;">Chỉnh sửa</h4>
-                </div>
-                <table border="0px" style="margin-left: 2%">
-                    <tr class="form-group">
-                        <td>
-                            <div class="form-group">
-                                <label for="child_name1">Hình ảnh</label>
-                                <input type="file" class="form-control" id="imag1" style="width: 200px;">
-                            </div>
-                            
-                                <input type="text" id="id_user" hidden="true" style="width: 200px;">
-                            
-                        </td>
-                    </tr>
-                </table>
-                <div class="modal-footer">
-                    <button type="button" @click="edit()" class="button-app" style="margin-right: 75%">Sửa</button>
-                    <button type="button" @click="exit()" class="button-app ml-5 float-right">Thoát</button>
-                </div>
+        <div class="row mt-5 pt-3">
+            <div style="padding-left: 2rem; margin-top:5%">
+                <h4 class="tag-page-custom">
+                    Quản lý tài khoản
+                </h4>
             </div>
         </div>
-        <div id="body" class="form-box col-12 m-auto" style="margin-bottom: 50%;margin-top: 3%;margin-left: 2%;margin-right: 2%">
-            <input id="code" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
+        <div class="row">
+            <div class="set-row background-contact w-100" style="min-height: 150px">
+                <input id="code" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
             <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
-            <table border="1px" class="table table-bordered table-striped w-100" style="min-height: 30px; line-height: 1.4;">
+           <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                 <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Họ và tên</th>
-                    <th>Số Điện Thoại</th>
-                    <th>Ngày sinh</th>
-                    <th>Giới tính</th>
-                    <th>Điểm tích</th>
-                    <th>Địa chỉ</th>
-                    <th>Tài Khoản</th>
-                    <th>Hình ảnh</th>
-                    <th>Trạng thái</th>
-                    <th>Hành Động</th>
+                <tr class="text-center blue-opacity">
+                    <th class="custom-view">STT</th>
+                    <th class="custom-view">Họ và tên</th>
+                    <th class="custom-view">Số Điện Thoại</th>
+                    <th class="custom-view">Ngày sinh</th>
+                    <th class="custom-view">Giới tính</th>
+                    <th class="custom-view">Điểm tích</th>
+                    <th class="custom-view">Địa chỉ</th>
+                    <th class="custom-view">Tài Khoản</th>
+                    <th class="custom-view">Hình ảnh</th>
+                    <th class="custom-view">Trạng thái</th>
+                    <th class="custom-view">Hành Động</th>
                 </tr>
                 </thead>
                 <tbody v-cloak>
-                    <tr  v-for="(item,index) in results.data">
-                        <td><p>@{{index + 1}}<p></td>
-                        <td><p>@{{item.ten}}<p></td>
-                        <td><p>@{{item.sdt}}<p></td>
-                        <td><p>@{{item.ngay_sinh}}<p></td>
-                        <td v-if="item.gioi_tinh == 1"><p>Nam<p></td>
-                        <td v-if="item.gioi_tinh == 2"><p>Nữ<p></td>
-                        <td v-if="item.gioi_tinh == 3"><p>Khác<p></td>
-                        <td v-if="item.gioi_tinh == null"><p>Chưa có<p></td>
-                        <td><p>@{{item.diem_tich}}<p></td>
-                        <td><p>@{{item.dia_chi}}<p></td>
-                        <td><p>@{{item.email}}<p></td>
-                        <td><img :src="item.pathToResource+'/'+item.avatar" width="50px" height="50px"></td>
-                        <td v-if="item.da_xoa == {{ \App\Enums\EStatus::DELETED }}">Đã xóa</td>
-                        <td v-if="item.da_xoa == {{ \App\Enums\EStatus::ACTIVE }}">Đã kích hoạt</td>
-                        <td><p>
+                    <tr class="text-center" v-for="(item,index) in results.data">
+                        <td class="custom-view td-grey">@{{index + 1}}</td>
+                        <td  class="custom-view">@{{item.ten}}</td>
+                        <td  class="custom-view">@{{item.sdt}}</td>
+                        <td  class="custom-view">@{{item.ngay_sinh}}</td>
+                        <td  class="custom-view" v-if="item.gioi_tinh == 1">Nam</td>
+                        <td  class="custom-view" v-if="item.gioi_tinh == 2">Nữ</td>
+                        <td  class="custom-view" v-if="item.gioi_tinh == 3">Khác</td>
+                        <td  class="custom-view" v-if="item.gioi_tinh == null">Chưa có</td>
+                        <td  class="custom-view">@{{item.diem_tich}}</td>
+                        <td  class="custom-view">@{{item.dia_chi}}</td>
+                        <td  class="custom-view" v-if="item.email != null">@{{item.email}}</td>
+                        <td  class="custom-view" v-if="item.email == null">Chưa có</td>
+                        <td  class="custom-view"><img :src="item.pathToResource+'/'+item.avatar" width="50px" height="50px"></td>
+                        <td  class="custom-view" v-if="item.da_xoa == 1">Đã xóa</td>
+                        <td  class="custom-view" v-if="item.da_xoa == 0">Đã kích hoạt</td>
+                        <td  class="custom-view">
                             <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.id);"></a>
-                            <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteHealthRecord(item.id)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span><p></td>
+                            <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteHealthRecord(item.id)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span></td>
                     <tr>
                 </tbody>
             </table>
             <div class="col-12">
                     <pagination :data="results" @pagination-change-page="search"></pagination> 
             </div>
+            </div>
+            
         </div>
     </div>
 			

@@ -42,6 +42,18 @@ class AccountController extends Controller {
         }
         $pathToResource = config('app.resource_url_path');
 		$listAccount = $this->accountService->search($name, $page);
+		$tmp = $listAccount->map(function ($item) {
+                return [
+                    'ten' => $item->ten,
+                    'sdt' => $item->sdt,
+                    'ngay_sinh' => $item->ngay_sinh,
+                    'gioi_tinh' => $item->gioi_tinh,
+                    'diem_tich' => $item->diem_tich,
+                    'email' => $item->email,
+                    'da_xoa' => $item->da_xoa,
+                    'avatar' => $item->avatar,
+                ];
+            });
 		for ($i=0; $i < count($listAccount); $i++) { 
              $listAccount[$i]->pathToResource = $pathToResource;
         }
