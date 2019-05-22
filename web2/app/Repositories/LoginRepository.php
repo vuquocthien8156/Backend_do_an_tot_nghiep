@@ -220,11 +220,6 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function getCart($id_KH) {
-		$result = DB::table('GioHang')->select( 'ma_gio_hang' , 'ma_khach_hang', 'ma_san_pham', 'so_luong', 'kich_co', 'parent_id')->where('ma_khach_hang' , '=', $id_KH)->get();
-        return $result;	
-	}
-
 	public function deleteCart($id_GH) {
 		$result = DB::table('GioHang')->where('ma_gio_hang' ,'=', $id_GH)->delete();
 		$result1 = DB::table('GioHang')->where('parent_id' ,'=', $id_GH)->delete();
@@ -255,9 +250,18 @@ class LoginRepository {
         	return $result;		
 		}
 	}		
+	public function updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping) {
+		$result1 = DB::table('ChiTietDonHang')->where('ma_gio_hang', '=', $ma_gio_hang)->delete();
+		$result = DB::table('ChiTietDonHang')->insert([
+           'ma_san_pham' => $ma_topping,
+           'ma_gio_hang' => $ChiTietDonHang,
+           'so_luong' => $so_luong_topping,
+        ]);
+        return $result;	
+	}
 	
 	public function getCartOfCustomer($id_KH) {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'kich_co', 'so_luong', 'ghi_chu')->where('ma_khach_hang' , '=', $id_KH)->get();
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where('ma_khach_hang' , '=', $id_KH)->get();
         return $result;
 	}
 
@@ -302,7 +306,7 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function aaddThanks($id_Evaluate, $id_KH) {
+	public function addThanks($id_Evaluate, $id_KH) {
 		$result = DB::table('CamOnDanhGia')->insert([
            'ma_danh_gia' => $id_Evaluate,
            'ma_kh' => $id_KH,
@@ -310,19 +314,37 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function insertTopping($ma_sp, $ma_topping, $gia_san_pham, $so_luong) {
-		$result = DB::table('ChiTietThucUong')->insert([
-           'ma_khach_hang' => $id_KH,
-           'ma_chi_tiet' => $ma_sp,
+	public function insertTopping($selectMaxId, $ma_topping, $so_luong_topping) {
+		$result = DB::table('ChiTietGioHang')->insert([
+           'ma_gio_hang' => $selectMaxId,
            'ma_san_pham' => $ma_topping,
-           'don_gia' => $gia_san_pham,
            'so_luong' => $so_luong
         ]);
         return $result;	
 	}
 
+	public function getToppingCart($ma_gio_hang) {
+		$result = DB::table('ChiTietGioHang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+        return $result;
+	}
+
 	public function getTopping($ma_sp) {
 		$result = DB::table('ChiTietThucUong')->select('so_thu_tu', 'ma_chi_tiet', 'ma_san_pham', 'don_gia', 'so_luong')->where(['ma_chi_tiet' => $ma_sp])->get();
+        return $result;
+	}
+
+	public function selectMaxId() {
+		$result = DB::table('GioHang')->max('ma_gio_hang');
+		return $result;
+	}
+
+	public function getCart($id_KH) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_khach_hang', 'ma_san_pham', 'kich_co')->where('ma_khach_hang', '=', $id_KH)->get();
+        return $result;
+	}
+
+	public function getDetailCart($ma_gio_hang) {
+		$result = DB::table('ChiTietGioHang')->select('ma_san_pham', 'so_luong')->where('ma_gio_hang', '=', $ma_gio_hang)->get();
         return $result;
 	}
 }

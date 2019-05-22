@@ -37,6 +37,10 @@ class ProductController extends Controller {
     }
 
 	public function searchProduct(Request $request) {
+		$a = $request->get('gio_hang');
+		$b = $a['topping'][0];
+
+		dd($a);
 		$name = $request->get('name');
 		$ma_loai = $request->get('ma_loai');
 		$mo_ta = $request->get('mo_ta');
