@@ -292,26 +292,7 @@ class LoginController extends Controller {
     }
 
     public function addCart(Request $request) {
-    	$objectCart = $request->get('cart');
-    	$id_KH = $objectCart['idCustomer'];
-    	$list = $objectCart['list'];
-    	$i=0;
-    	for (; $i < count($list); $i++) { 
-    		$id_sp = $list[$i]['ma_san_pham'];
-    		$so_luong = $list[$i]['so_luong'];
-    		$size = $list[$i]['size'];
-    		$parent_id = $list[$i]['parent_id'];
-    		$insertCart = $this->loginService->insertCart($id_KH, $id_sp, $size, $so_luong, $parent_id);
-    	}
-    	if($i == count($list))
-    		return response()->json(['status' => 'ok', 'error' => 0]);
-    	else
-    		return response()->json(['status' => 'fail', 'error' => 1]);
-
-    	// $getCartOfCustomer = $this->loginService->getCart($id_KH);
-    	// if (isset($getCartOfCustomer[0]->ma_gio_hang)) {
-    	// 	return response()->json(['ma_khach_hang' => $id_KH,'list' => $getCartOfCustomer]);
-    	// }
+    	
     	$objectCart = $request->get('objectCart');
     	$id_KH = $objectCart['id'];
     	$object = $objectCart['object'];
@@ -337,9 +318,9 @@ class LoginController extends Controller {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
     	if ($deleteCart > 0) {
-    		return response()->json(['status' => 'Success', 'error' => 0 , 'd' => $deleteCart]);
+    		return response()->json(['status' => 'Success', 'error' => 0]);
     	}
-    	return response()->json(['status' => 'fail', 'error' => 1 , 'd' => $deleteCart]);
+    	return response()->json(['status' => 'fail', 'error' => 1 ]);
     }
 
     public function deleteCartCustomer(Request $request) {
