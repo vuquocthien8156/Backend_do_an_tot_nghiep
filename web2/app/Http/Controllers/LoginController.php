@@ -212,8 +212,6 @@ class LoginController extends Controller {
 
 	public function getAllOrder(Request $request) {
 		$id_KH = $request->get('id_KH');
-		$getAllOrder =  $this->loginService->getAllOrder($id_KH);
-		$getUser = $this->loginService->getUser($id_KH);
 		for ($i=0; $i < count($getAllOrder); $i++) { 
 			$getStatusOrder = $this->loginService->getStatusOrder($getAllOrder[$i]->ma_don_hang);
 			$getDetail = $this->loginService->getDetail($getAllOrder[$i]->ma_don_hang);
@@ -225,7 +223,7 @@ class LoginController extends Controller {
 				}	
 		}
 
-		return response()->json(['Info' => $getUser, 'Order' => $getAllOrder]);
+		return response()->json(['status' => 'ok' , 'error' => 0 , 'Order' => $getAllOrder]);
 	}
 
 	public function updateIdFB(Request $request)
@@ -360,11 +358,12 @@ class LoginController extends Controller {
     	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH);
     	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
     		$getTopping = $this->loginService->getToppingCart($getCartOfCustomer[$i]->ma_gio_hang);
-    		$topping = ['t'=>'#'];
-    		for ($j=0; $j < count($getTopping); $j++) { 
-    			array_push($topping, [$getTopping[$j]->ma_gio_hang, $getTopping[$j]->ma_san_pham, $getTopping[$j]->so_luong]);
-    		}
-    		$getCartOfCustomer[$i]->topping = $topping;
+
+    		// $topping = ['t'=>'#'];
+    		// for ($j=0; $j < count($getTopping); $j++) { 
+    		// 	array_push( $topping, [$getTopping[$j]->ma_gio_hang, $getTopping[$j]->ma_san_pham, $getTopping[$j]->so_luong] );
+    		// }
+    		$getCartOfCustomer[$i]->topping = $getTopping;
     	}
     	$getInfo =  $this->loginService->getInfoCustomer($id_KH);
     	// return response()->json($getTopping[0]);
