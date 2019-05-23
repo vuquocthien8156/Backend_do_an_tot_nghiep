@@ -94,9 +94,9 @@ class LoginService {
 		return $this->loginRepository->productType($page);
 	}
 
-	public function insertCart($id_KH, $ma_sp, $so_luong, $size, $note) {
-		return $this->loginRepository->insertCart($id_KH, $ma_sp, $so_luong, $size, $note);
-	}
+	public function insertTopping($topping , $selectMaxId) {
+    	return $this->loginRepository->insertTopping($topping, $selectMaxId) ;
+    }
 
 	public function getCart($id_KH) {
 		return $this->loginRepository->getCart($id_KH);
@@ -148,10 +148,6 @@ class LoginService {
 
     public function addThanks($id_Evaluate, $id_KH) {
     	return $this->loginRepository->addThanks($id_Evaluate, $id_KH);
-    }
-
-    public function insertTopping($selectMaxId, $ma_topping, $so_luong_topping) {
-    	return $this->loginRepository->insertTopping($selectMaxId, $ma_topping, $so_luong_topping);
     }
 
     public function getTopping($ma_sp) {
