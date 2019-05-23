@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
         ->where(['email' => $user, 
@@ -24,12 +24,12 @@ class LoginRepository {
 	}
 
 	public function getInfoByEmail($email) {
-		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh', 'password' , 'avatar')->where('email', '=', $email)->get();
+		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh' , 'avatar')->where('email', '=', $email)->get();
 		return $result;
 	}
 
 	public function loginsdt($user) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
@@ -91,7 +91,7 @@ class LoginRepository {
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'thong_tin_giao_hang' , 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
@@ -114,7 +114,7 @@ class LoginRepository {
 	}
 
 	public function getUser($id_KH) {
-		$result = DB::table('users')->select('id as user_id', 'ten', 'sdt', 'dia_chi');
+		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' );
 		if ($id_KH != null && $id_KH != '') {
 			$result->where('id', '=', $id_KH);
 		}
@@ -139,13 +139,13 @@ class LoginRepository {
 	}
 
 	public function getInfo($id_fb) {
-		$result = DB::table('users')->select('id as user_id', 'ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id','ngay_sinh', 'password')->where('fb_id', '=', $id_fb)->get();
+		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' )->where('fb_id', '=', $id_fb)->get();
 		return $result;
 	}
 
 	public function loginfb($id_fb) {
 		
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'password', 'id_vai_tro', 'quyen_he_thong', 'fb_id')
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
@@ -154,16 +154,18 @@ class LoginRepository {
 			return $result;
 	}
 
-	public function create($id_fb, $email) {
+	public function create($id_fb, $email , $name) {
 		if ($email != null && $email != '') {
 			$result = DB::table('users')->insert([
 						   'email' => $email,
 				           'fb_id' => $id_fb,
+				           'ten' => $name,
 				           'da_xoa' => 0,
        			 ]);
 		}else {
 			$result = DB::table('users')->insert([
 				           'fb_id' => $id_fb,
+				           'ten' => $name,
 				           'da_xoa' => 0,
        			 ]);
 		}
@@ -219,12 +221,15 @@ class LoginRepository {
 	}
 
 	public function deleteCart($id_GH) {
-		$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->delete();
-        return $result;	
+		$result = DB::table('GioHang')->where('ma_gio_hang' ,'=', $id_GH)->delete();
+		$result1 = DB::table('GioHang')->where('parent_id' ,'=', $id_GH)->delete();
+        
+        return $result + $result1;	
 	}
 
 	public function deleteCartCustomer($id_KH) {
-		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)->delete();
+		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)
+									 ->delete();
         return $result;	
 	}
 
@@ -233,6 +238,18 @@ class LoginRepository {
         return $result;	
 	}
 	
+	public function updateQuantity($id_GH, $sl, $type) {
+		if ($type == 1) {
+			$sl = $sl+1;
+			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
+        	return $result;	
+		}
+		if ($type == 2) {
+			$sl = $sl-1;
+			$result = DB::table('GioHang')->where('ma_gio_hang' , '=', $id_GH)->update(['so_luong' => $sl]);
+        	return $result;		
+		}
+	}		
 	public function updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping) {
 		$result1 = DB::table('ChiTietDonHang')->where('ma_gio_hang', '=', $ma_gio_hang)->delete();
 		$result = DB::table('ChiTietDonHang')->insert([
@@ -244,7 +261,7 @@ class LoginRepository {
 	}
 	
 	public function getCartOfCustomer($id_KH) {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where('ma_khach_hang' , '=', $id_KH)->get();
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ten' ,'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'hinh_san_pham' ,'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where('ma_khach_hang' , '=', $id_KH)->get();
         return $result;
 	}
 
@@ -308,7 +325,8 @@ class LoginRepository {
 	}
 
 	public function getToppingCart($ma_gio_hang) {
-		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham', 'ten', 'gia_san_pham' ,'so_luong')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+
         return $result;
 	}
 
