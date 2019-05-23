@@ -66,6 +66,10 @@ class LoginService {
 		return $this->loginRepository->getUser($id_KH);
 	}
 
+	public function getUser2($id_KH) {
+		return $this->loginRepository->getUser2($id_KH);
+	}
+
 	public function getDetailOrder($id_don_hang) {
 		return $this->loginRepository->getDetailOrder($id_don_hang);
 	}
@@ -93,10 +97,6 @@ class LoginService {
 	public function productType($page) {
 		return $this->loginRepository->productType($page);
 	}
-
-	public function insertTopping($topping , $selectMaxId) {
-    	return $this->loginRepository->insertTopping($topping, $selectMaxId) ;
-    }
 
 	public function getCart($id_KH) {
 		return $this->loginRepository->getCart($id_KH);
@@ -138,8 +138,12 @@ class LoginService {
     	return $this->loginRepository->getEvaluateOfProduct($id_SP);
     }
 
-    public function getBranch() {
-    	return $this->loginRepository->getBranch();
+    public function getPlace() {
+    	return $this->loginRepository->getPlace();
+    }
+
+    public function getBranch($id_place) {
+    	return $this->loginRepository->getBranch($id_place);
     }
 
     public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id){
@@ -177,5 +181,25 @@ class LoginService {
 
     public function getDetailCart($ma_gio_hang) {
     	return $this->loginRepository->getDetailCart($ma_gio_hang);
+    }
+
+    public function getOrderDetail($ma_don_hang) {
+    	return $this->loginRepository->getOrderDetail($ma_don_hang);
+    }
+
+    public function getInfoProduct($id_SP) {
+    	return $this->loginRepository->getInfoProduct($id_SP);	
+    }
+
+    public function getImg($ma_sp) {
+    	return $this->loginRepository->getImg($ma_sp);
+    }
+
+    public function getDanhGia($ma_so) {
+    	return $this->loginRepository->getDanhGia($ma_so);
+    }
+
+    public function getCamOn($ma_DG) {
+    	return $this->loginRepository->getCamOn($ma_DG);
     }
 }

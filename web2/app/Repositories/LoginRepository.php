@@ -91,7 +91,7 @@ class LoginRepository {
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'thong_tin_giao_hang' , 'ma_khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
@@ -115,6 +115,14 @@ class LoginRepository {
 
 	public function getUser($id_KH) {
 		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' );
+		if ($id_KH != null && $id_KH != '') {
+			$result->where('id', '=', $id_KH);
+		}
+		return $result->get();
+	}
+
+	public function getUser2($id_KH) {
+		$result = DB::table('users')->select('ten', 'sdt', 'dia_chi');
 		if ($id_KH != null && $id_KH != '') {
 			$result->where('id', '=', $id_KH);
 		}
@@ -285,8 +293,13 @@ class LoginRepository {
         return $result;
 	}
 
-	public function getBranch() {
-		$result = DB::table('ChiNhanh')->join('KhuVuc', 'ChiNhanh.ma_khu_vuc', '=', 'KhuVuc.ma_khu_vuc')->select('ma_chi_nhanh','ten', 'dia_chi', 'latitude', 'longtitude', 'ten_khu_vuc','ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua')->where(['KhuVuc.da_xoa' => 0])->get();
+	public function getPlace() {
+		$result = DB::table('KhuVuc')->select('ma_khu_vuc', 'ten_khu_vuc')->where(['da_xoa' => 0])->get();
+        return $result;
+	}
+
+	public function getBranch($id_place) {
+		$result = DB::table('ChiNhanh')->select('ma_chi_nhanh', 'ten', 'dia_chi', 'latitude', 'longtitude', 'ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua')->where(['da_xoa' => 0, 'ma_khu_vuc' => $id_place])->get();
         return $result;
 	}
 
@@ -331,7 +344,7 @@ class LoginRepository {
 	}
 
 	public function getTopping($ma_sp) {
-		$result = DB::table('ChiTietThucUong')->select('so_thu_tu', 'ma_chi_tiet', 'ma_san_pham', 'don_gia', 'so_luong')->where(['ma_chi_tiet' => $ma_sp])->get();
+		$result = DB::table('ChiTietThucUong')->select('ma_san_pham', 'don_gia', 'so_luong')->where(['ma_chi_tiet' => $ma_sp])->get();
         return $result;
 	}
 
@@ -348,5 +361,35 @@ class LoginRepository {
 	public function getDetailCart($ma_gio_hang) {
 		$result = DB::table('ChiTietGiohang')->select('ma_san_pham', 'so_luong')->where('ma_gio_hang', '=', $ma_gio_hang)->get();
         return $result;
+	}
+
+	public function getOrderDetail($ma_don_hang) {
+		$result = DB::table('ChiTietDonHang')->select('ma_chi_tiet')->where('ma_don_hang', '=', $ma_don_hang)->get();
+        return $result;
+	}
+
+	public function getInfoProduct($id_SP) {
+		 $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham as hinh_chinh', 'sp.mo_ta',  'lsp.loai_chinh')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'lsp.da_xoa' => 0,
+            'sp.ma_so' => $id_SP
+        ])->get();
+        return $result;
+	}
+
+	public function getImg($ma_sp) {
+		 $result = DB::table('HinhAnh')->select('url')->where(['object_id' => $ma_sp, 'da_xoa' => 0])->get();
+		 return $result;
+	}
+
+	public function getDanhGia($ma_so) {
+		 $result = DB::table('DanhGia')->select('ma_danh_gia','so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'parent_id')->where(['ma_sp' => $ma_so])->get();
+		 return $result;
+	}
+
+	public function getCamOn($ma_DG) {
+		$result = DB::table('CamOnDanhGia')->select('ma_khach_hang')->where(['ma_danh_gia' => $ma_DG])->count();
+		 return $result;
 	}
 }

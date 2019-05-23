@@ -140,16 +140,15 @@ class LoginController extends Controller {
 		$now = Carbon::now();
 		$a = Hash::make(1);
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
-	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $subName = 'images/account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
 	            $filename =  $subName . '/'.$a. $request->file('avatar')->getClientOriginalName();
 	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
             	if (!file_exists($check)) {
-                	return response()->json(['filename' => "null"]);
+                	return 'fail';
             	}
-            $filename = "images/" . $filename;
-            return response()->json(['filename' => $filename]);
+            return $filename;
         }
 	}
 
@@ -163,10 +162,11 @@ class LoginController extends Controller {
 		$avatar = $request->get('avatar_path');
       
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
-        if ($update > 0)
+        if ($update > 0) {
         	return response()->json(['status' => 'ok', 'error' => 0]);
-        else 
-        	return response()->json(['status' => 'fail', 'error' => 1]);
+        }else {
+        	return response()->json(['status' => 'upload fall', 'error' => 1]);
+        }
 	}
 	public function getLikedProduct(Request $request) {
 		$id = $request->get('id');
@@ -176,18 +176,6 @@ class LoginController extends Controller {
 		}else{
 			return response()->json(['status' => 'fail', 'error' => 1]);
 		}
-	}
-
-	public function checkLikeProductByUser(Request $request){
-		$id = $request->get('id');
-		$id_sp = $request->get('id_sp');
-		$getLikedProduct =  $this->loginService->getLikedProduct($id);
-		$check = 0;
-		foreach ($getLikedProduct as $value) {
-			if($value->ma_so == $id_sp)
-				$check = 1;
-		}
-		return response()->json(['status' => 'ok', 'error' => 1 , 'check' => $check]);
 	}
 
 	public function requestLike(Request $request) {
@@ -225,19 +213,20 @@ class LoginController extends Controller {
 	public function getAllOrder(Request $request) {
 		$id_KH = $request->get('id_KH');
 		$getAllOrder =  $this->loginService->getAllOrder($id_KH);
-		$getUser = $this->loginService->getUser($id_KH);
+		$getUser = $this->loginService->getUser2($id_KH);
 		for ($i=0; $i < count($getAllOrder); $i++) { 
 			$getStatusOrder = $this->loginService->getStatusOrder($getAllOrder[$i]->ma_don_hang);
-			$getDetail = $this->loginService->getDetail($getAllOrder[$i]->ma_don_hang);
+			// $getDetail = $this->loginService->getDetail($getAllOrder[$i]->ma_don_hang);
 			$getAllOrder[$i]->trang_thai = $getStatusOrder;
-			$getAllOrder[$i]->chi_tiet = $getDetail;
-			for ($j=0; $j < count($getDetail); $j++) { 
-					$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_san_pham);
-					$getDetail[$j]->topping = $getTopping;
-				}	
+			// $getAllOrder[$i]->chi_tiet = $getDetail;
+			$getAllOrder[$i]->ma_khach_hang = $getUser;
+			// for ($j=0; $j < count($getDetail); $j++) { 
+			// 		$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_san_pham);
+			// 		$getDetail[$j]->topping = $getTopping;
+			// 	}	
 		}
 
-		return response()->json(['status' => 'ok', 'error' => 0,'Order' => $getAllOrder]);
+		return response()->json(['status' => 'ok', 'error' => 0, 'Order' => $getAllOrder]);
 	}
 
 	public function updateIdFB(Request $request)
@@ -292,34 +281,29 @@ class LoginController extends Controller {
     }
 
     public function addCart(Request $request) {
+    	$object = $request->get('object');
+    	$id_KH = $object['id'];
 
-    	$object = json_decode($request->getContent());
-
-    	return response()->json(['a' => $object]);
-
-    	$id_KH = $object['idCustomer'];
-    	$objectCart = $object['cart'];
-
-    	$ma_sp = $objectCart['idProduct'];
-    	$so_luong = $objectCart['quantity'];
+    	$objectCart = $object['Cart'];
+    	$id_GH = $objectCart['id_GH'];
+    	$ma_sp = $objectCart['ma_sp'];
+    	$so_luong = $objectCart['so_luong'];
     	$size = $objectCart['size'];
     	$note = $objectCart['note'];
 
     	$topping = $objectCart['topping'];
-<<<<<<< HEAD
-=======
-    	
->>>>>>> 42422ccf01bedac58bf0d610b137e01d38790bb0
+    	for ($i=0; $i < count($topping); $i++) { 
+    		$ma_topping = $topping[$i][0];
+    		$ten_topping = $topping[$i][1];
+    		$gia_san_pham = $topping[$i][2];
+    		$so_luong_topping = $topping[$i][3];
+    	}
     		$getCart = $this->loginService->getCart($id_KH);
 	    	for ($i=0; $i < count($getCart); $i++) { 
 	    		if ($id_KH != $getCart[$j]->ma_khach_hang || $ma_sp != $getCart[$j]->ma_san_pham || $size != $getCart[$j]->kich_co) {
 	    			$insertCart = $this->loginService->insertCart($id_KH, $ma_sp, $so_luong, $size, $note);
 			    	$selectMaxId = $this->loginService->selectMaxId();
-<<<<<<< HEAD
 			    	$insertTopping = $this->loginService->insertTopping($topping);
-=======
-			    	$insertTopping = $this->loginService->insertTopping($topping , $selectMaxId);
->>>>>>> 42422ccf01bedac58bf0d610b137e01d38790bb0
 	    		}else {
 	    			if ($id_KH == $getCart[$j]->ma_khach_hang && $ma_sp == $getCart[$j]->ma_san_pham && $size == $getCart[$j]->kich_co) {
 	    				$getDetailCart = $this->loginService->getDetailCart($getCart[$j]->ma_gio_hang);
@@ -327,32 +311,25 @@ class LoginController extends Controller {
 	    					if ($ma_topping != $getDetailCart[$y]->ma_san_pham || $so_luong_topping != $getDetailCart[$y]->so_luong) {
 	    						$insertCart = $this->loginService->insertCart($id_KH, $ma_sp, $so_luong, $size, $note);
 						    	$selectMaxId = $this->loginService->selectMaxId();
-<<<<<<< HEAD
 						    	$insertTopping = $this->loginService->insertTopping($topping);
-=======
-						    	$insertTopping = $this->loginService->insertTopping($topping , $selectMaxId);
->>>>>>> 42422ccf01bedac58bf0d610b137e01d38790bb0
 	    					}
 	    				}
 	    			}
 	    		}
 	    	}	
-<<<<<<< HEAD
-=======
-
->>>>>>> 42422ccf01bedac58bf0d610b137e01d38790bb0
     	if ($insertCart == true && $insertTopping == true) {
 			return response()->json(['status' => 'Success', 'error' => 0]);
 		}
 		return response()->json(['status' => 'fail', 'error' => 1]);
     }
+
     public function deleteCart(Request $request) {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
-    	if ($deleteCart > 0) {
+    	if ($deleteCart == 1) {
     		return response()->json(['status' => 'Success', 'error' => 0]);
     	}
-    	return response()->json(['status' => 'fail', 'error' => 1 ]);
+    	return response()->json(['status' => 'fail', 'error' => 1]);
     }
 
     public function deleteCartCustomer(Request $request) {
@@ -386,10 +363,14 @@ class LoginController extends Controller {
     	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH);
     	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
     		$getTopping = $this->loginService->getToppingCart($getCartOfCustomer[$i]->ma_gio_hang);
-    	
-    		$getCartOfCustomer[$i]->topping = $getTopping;
+    		$topping = ['t'=>'#'];
+    		for ($j=0; $j < count($getTopping); $j++) { 
+    			array_push($topping, [$getTopping[$j]->ma_gio_hang, $getTopping[$j]->ma_san_pham, $getTopping[$j]->so_luong]);
+    		}
+    		$getCartOfCustomer[$i]->topping = $topping;
     	}
     	$getInfo =  $this->loginService->getInfoCustomer($id_KH);
+    	// return response()->json($getTopping[0]);
     	return response()->json(['status' => 'Success', 'erro' => 0, 'Cart' => $getCartOfCustomer]);
     }
 
@@ -412,19 +393,28 @@ class LoginController extends Controller {
     }
 
     public function productDetail(Request $request) {
-    	$id_KH = $request->get('id_KH');
     	$id_SP = $request->get('id_SP');
-    	// $getInfoCustomer =  $this->loginService->getInfoCustomer($id_KH);
-    	$getEvaluateOfProduct = $this->loginService->getEvaluateOfProduct($id_SP);
-
-    	// $getThankforEvaluate = $this->loginService->getThankforEvaluate($id_KH, $id_SP);
-    	return response()->json(['status' => 'Success', 'Evaluate' =>  $getEvaluateOfProduct]);
+    	$getInfoProduct = $this->loginService->getInfoProduct($id_SP);
+    	$getImg = $this->loginService->getImg($getInfoProduct[0]->ma_so);
+    	$getInfoProduct[0]->Arr_img = $getImg;
+    	$getDanhGia = $this->loginService->getDanhGia($getInfoProduct[0]->ma_so);
+    	$getInfoProduct[0]->danh_gia = $getDanhGia;
+    	for ($i=0; $i < count($getDanhGia); $i++) { 
+    		$getCamOn = $this->loginService->getCamOn($getDanhGia[$i]->ma_danh_gia);
+    		$getDanhGia[$i]->So_danh_gia = $getCamOn;
+    	}
+    	return response()->json(['status' => 'Success', 'Detail' =>  $getInfoProduct]);
 
     }
 
     public function getBranch() {
-    	$getBranch = $this->loginService->getBranch();
-    	return response()->json(['status' => 'Success','listBranch' =>  $getBranch]);
+    	$getPlace = $this->loginService->getPlace();
+    	for ($i=0; $i < count($getPlace); $i++) { 
+    		$id_place = $getPlace[$i]->ma_khu_vuc;
+    		$getBranch = $this->loginService->getBranch($id_place);
+    		$getPlace[$i]->Place = $getBranch;
+    	}
+    	return response()->json(['status' => 'Success','Branch' =>  $getPlace]);
     }
 
     public function addEvaluate(Request $request) {
@@ -462,5 +452,15 @@ class LoginController extends Controller {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	}
     	return response()->json(['status' => 'Fail','error' =>  1]);
+    }
+
+    public function getOrderDetail(Request $request) {
+    	$ma_don_hang = $request->get('ma_don_hang');
+    	$getDetail = $this->loginService->getDetail($ma_don_hang);
+    	for ($j=0; $j < count($getDetail); $j++) { 
+					$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_san_pham);
+					$getDetail[$j]->topping = $getTopping;
+				}	
+    	return response()->json(['status' => 'Success','error' =>  0, 'Detail' => $getDetail]);
     }
 }
