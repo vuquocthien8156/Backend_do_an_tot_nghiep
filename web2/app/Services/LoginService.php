@@ -150,8 +150,8 @@ class LoginService {
     	return $this->loginRepository->addThanks($id_Evaluate, $id_KH);
     }
 
-    public function insertTopping($selectMaxId, $ma_topping, $so_luong_topping) {
-    	return $this->loginRepository->insertTopping($selectMaxId, $ma_topping, $so_luong_topping);
+    public function insertTopping($topping) {
+    	return $this->loginRepository->insertTopping($topping);
     }
 
     public function getTopping($ma_sp) {

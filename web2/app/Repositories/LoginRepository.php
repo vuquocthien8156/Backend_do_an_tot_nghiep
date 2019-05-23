@@ -297,17 +297,18 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function insertTopping($selectMaxId, $ma_topping, $so_luong_topping) {
-		$result = DB::table('ChiTietGioHang')->insert([
-           'ma_gio_hang' => $selectMaxId,
-           'ma_san_pham' => $ma_topping,
-           'so_luong' => $so_luong
-        ]);
+	public function insertTopping($topping) {
+		for ($i=0; $i < count($topping); $i++) { 
+			$result = DB::table('ChiTietGiohang')->insert([
+           		'ma_san_pham' => $topping[$i][0],
+           		'so_luong' => $topping[$i][3]
+        	]);	
+		}
         return $result;	
 	}
 
 	public function getToppingCart($ma_gio_hang) {
-		$result = DB::table('ChiTietGioHang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong')->where(['ma_gio_hang' => $ma_gio_hang])->get();
         return $result;
 	}
 
@@ -327,7 +328,7 @@ class LoginRepository {
 	}
 
 	public function getDetailCart($ma_gio_hang) {
-		$result = DB::table('ChiTietGioHang')->select('ma_san_pham', 'so_luong')->where('ma_gio_hang', '=', $ma_gio_hang)->get();
+		$result = DB::table('ChiTietGiohang')->select('ma_san_pham', 'so_luong')->where('ma_gio_hang', '=', $ma_gio_hang)->get();
         return $result;
 	}
 }

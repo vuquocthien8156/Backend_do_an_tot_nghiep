@@ -289,17 +289,12 @@ class LoginController extends Controller {
     	$note = $objectCart['note'];
 
     	$topping = $objectCart['topping'];
-    	for ($i=0; $i < count($topping); $i++) { 
-    		$ma_topping = $topping[$i][0];
-    		$ten_topping = $topping[$i][1];
-    		$gia_san_pham = $topping[$i][2];
-    		$so_luong_topping = $topping[$i][3];
     		$getCart = $this->loginService->getCart($id_KH);
 	    	for ($i=0; $i < count($getCart); $i++) { 
 	    		if ($id_KH != $getCart[$j]->ma_khach_hang || $ma_sp != $getCart[$j]->ma_san_pham || $size != $getCart[$j]->kich_co) {
 	    			$insertCart = $this->loginService->insertCart($id_KH, $ma_sp, $so_luong, $size, $note);
 			    	$selectMaxId = $this->loginService->selectMaxId();
-			    	$insertTopping = $this->loginService->insertTopping($selectMaxId, $ma_topping, $so_luong_topping);
+			    	$insertTopping = $this->loginService->insertTopping($topping);
 	    		}else {
 	    			if ($id_KH == $getCart[$j]->ma_khach_hang && $ma_sp == $getCart[$j]->ma_san_pham && $size == $getCart[$j]->kich_co) {
 	    				$getDetailCart = $this->loginService->getDetailCart($getCart[$j]->ma_gio_hang);
@@ -307,13 +302,12 @@ class LoginController extends Controller {
 	    					if ($ma_topping != $getDetailCart[$y]->ma_san_pham || $so_luong_topping != $getDetailCart[$y]->so_luong) {
 	    						$insertCart = $this->loginService->insertCart($id_KH, $ma_sp, $so_luong, $size, $note);
 						    	$selectMaxId = $this->loginService->selectMaxId();
-						    	$insertTopping = $this->loginService->insertTopping($selectMaxId, $ma_topping, $so_luong_topping);
+						    	$insertTopping = $this->loginService->insertTopping($topping);
 	    					}
 	    				}
 	    			}
 	    		}
 	    	}	
-    	}
     	if ($insertCart == true && $insertTopping == true) {
 			return response()->json(['status' => 'Success', 'error' => 0]);
 		}
