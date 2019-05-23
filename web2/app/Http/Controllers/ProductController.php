@@ -61,8 +61,9 @@ class ProductController extends Controller {
 		$ma_loai = $request->get('ma_loai');
 		$mo_ta = $request->get('mo_ta');
         $page = $request->get('page');
+        $ma_loai_chinh = $request->get('loai_chinh');
         $pathToResource = config('app.resource_url_path');
-        $listProduct = $this->productService->searchProductAPI($name, $page, $ma_loai, $mo_ta);
+        $listProduct = $this->productService->searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh);
         for ($i=0; $i < count($listProduct); $i++) { 
         	$list[] = $listProduct[$i];
         }
@@ -202,7 +203,7 @@ class ProductController extends Controller {
 
     	for ($i=0; $i < count($b); $i++) {
     		if ($i < 10) {
-    			$getlist[] = $this->productService->getlist($b[$i]);
+    			$getlist[] = $this->productService->getlist($b[$i])[0];
     		}
     	}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  

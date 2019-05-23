@@ -140,15 +140,16 @@ class LoginController extends Controller {
 		$now = Carbon::now();
 		$a = Hash::make(1);
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
-	            $subName = 'images/account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
 	            $filename =  $subName . '/'.$a. $request->file('avatar')->getClientOriginalName();
 	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
             	if (!file_exists($check)) {
-                	return 'fail';
+                	return response()->json(['filename' => "null"]);
             	}
-            return $filename;
+            $filename = "images/" . $filename;
+            return response()->json(['filename' => $filename]);
         }
 	}
 
@@ -162,11 +163,10 @@ class LoginController extends Controller {
 		$avatar = $request->get('avatar_path');
       
         $update =  $this->loginService->updateInfo($email, $name, $phone, $gender, $dob, $avatar, $id);
-        if ($update > 0) {
+        if ($update > 0)
         	return response()->json(['status' => 'ok', 'error' => 0]);
-        }else {
-        	return response()->json(['status' => 'upload fall', 'error' => 1]);
-        }
+        else 
+        	return response()->json(['status' => 'fail', 'error' => 1]);
 	}
 	public function getLikedProduct(Request $request) {
 		$id = $request->get('id');
@@ -176,6 +176,18 @@ class LoginController extends Controller {
 		}else{
 			return response()->json(['status' => 'fail', 'error' => 1]);
 		}
+	}
+
+	public function checkLikeProductByUser(Request $request){
+		$id = $request->get('id');
+		$id_sp = $request->get('id_sp');
+		$getLikedProduct =  $this->loginService->getLikedProduct($id);
+		$check = 0;
+		foreach ($getLikedProduct as $value) {
+			if($value->ma_so == $id_sp)
+				$check = 1;
+		}
+		return response()->json(['status' => 'ok', 'error' => 1 , 'check' => $check]);
 	}
 
 	public function requestLike(Request $request) {
@@ -278,6 +290,7 @@ class LoginController extends Controller {
     }
 
     public function addCart(Request $request) {
+    	
     	$objectCart = $request->get('objectCart');
     	$id_KH = $objectCart['id'];
     	$id_GH = $objectCart['id_GH'];
@@ -321,10 +334,10 @@ class LoginController extends Controller {
     public function deleteCart(Request $request) {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
-    	if ($deleteCart == 1) {
+    	if ($deleteCart > 0) {
     		return response()->json(['status' => 'Success', 'error' => 0]);
     	}
-    	return response()->json(['status' => 'fail', 'error' => 1]);
+    	return response()->json(['status' => 'fail', 'error' => 1 ]);
     }
 
     public function deleteCartCustomer(Request $request) {

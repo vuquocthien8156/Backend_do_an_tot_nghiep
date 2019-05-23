@@ -82,8 +82,8 @@ class LoginService {
 		return $this->loginRepository->loginfb($id_fb);
 	}
 	
-	public function create($id_fb, $email) {
-		return $this->loginRepository->create($id_fb, $email);
+	public function create($id_fb, $email , $name) {
+		return $this->loginRepository->create($id_fb, $email  , $name);
 	}
 
 	public function news($page) {

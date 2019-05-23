@@ -22,8 +22,8 @@ class ProductService {
         return $this->productRepository->searchProduct($name, $page, $ma_loai, $mo_ta);
     }
 
-    public function searchProductAPI($name, $page, $ma_loai, $mo_ta) {
-        return $this->productRepository->searchProductAPI($name, $page, $ma_loai, $mo_ta);
+    public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
+        return $this->productRepository->searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh);
     }
 
     public function searchRankProduct() {
