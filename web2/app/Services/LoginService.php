@@ -159,8 +159,8 @@ class LoginService {
     	return $this->loginRepository->insertTopping($topping);
     }
 
-    public function getTopping($ma_sp) {
-    	return $this->loginRepository->getTopping($ma_sp);
+    public function getTopping($ma_chi_tiet) {
+    	return $this->loginRepository->getTopping($ma_chi_tiet);
     }
 
     public function getToppingCart($ma_gio_hang) {

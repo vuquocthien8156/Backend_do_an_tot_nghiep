@@ -101,7 +101,7 @@ class LoginRepository {
 	}
 
 	public function getDetail($ma_don_hang) {
-		$result = DB::table('ChiTietDonHang as ctdh')->select('ma_chi_tiet', 'ma_san_pham', 'so_luong', 'don_gia', 'kich_co', 'gia_khuyen_mai', 'thanh_tien', 'ghi_chu')
+		$result = DB::table('ChiTietDonHang as ctdh')->select('ma_chi_tiet', 'ma_san_pham', 'ten' ,'so_luong', 'don_gia', 'kich_co', 'gia_khuyen_mai', 'thanh_tien', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')
 			->where('ctdh.ma_don_hang', '=', $ma_don_hang);
 		return $result->get();
 	}
@@ -343,8 +343,8 @@ class LoginRepository {
         return $result;
 	}
 
-	public function getTopping($ma_sp) {
-		$result = DB::table('ChiTietThucUong')->select('ma_san_pham', 'don_gia', 'so_luong')->where(['ma_chi_tiet' => $ma_sp])->get();
+	public function getTopping($ma_chi_tiet) {
+		$result = DB::table('ChiTietThucUong')->select('ma_san_pham', 'ten' ,'don_gia', 'so_luong')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_chi_tiet' => $ma_chi_tiet])->get();
         return $result;
 	}
 

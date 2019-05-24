@@ -216,14 +216,7 @@ class LoginController extends Controller {
 		$getUser = $this->loginService->getUser2($id_KH);
 		for ($i=0; $i < count($getAllOrder); $i++) { 
 			$getStatusOrder = $this->loginService->getStatusOrder($getAllOrder[$i]->ma_don_hang);
-			// $getDetail = $this->loginService->getDetail($getAllOrder[$i]->ma_don_hang);
-			$getAllOrder[$i]->trang_thai = $getStatusOrder;
-			// $getAllOrder[$i]->chi_tiet = $getDetail;
-			$getAllOrder[$i]->ma_khach_hang = $getUser;
-			// for ($j=0; $j < count($getDetail); $j++) { 
-			// 		$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_san_pham);
-			// 		$getDetail[$j]->topping = $getTopping;
-			// 	}	
+			$getAllOrder[$i]->trang_thai = $getStatusOrder;			
 		}
 
 		return response()->json(['status' => 'ok', 'error' => 0, 'Order' => $getAllOrder]);
@@ -363,14 +356,10 @@ class LoginController extends Controller {
     	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH);
     	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
     		$getTopping = $this->loginService->getToppingCart($getCartOfCustomer[$i]->ma_gio_hang);
-    		$topping = ['t'=>'#'];
-    		for ($j=0; $j < count($getTopping); $j++) { 
-    			array_push($topping, [$getTopping[$j]->ma_gio_hang, $getTopping[$j]->ma_san_pham, $getTopping[$j]->so_luong]);
-    		}
-    		$getCartOfCustomer[$i]->topping = $topping;
+    		
+    		$getCartOfCustomer[$i]->topping = $getTopping;
     	}
     	$getInfo =  $this->loginService->getInfoCustomer($id_KH);
-    	// return response()->json($getTopping[0]);
     	return response()->json(['status' => 'Success', 'erro' => 0, 'Cart' => $getCartOfCustomer]);
     }
 
@@ -458,9 +447,9 @@ class LoginController extends Controller {
     	$ma_don_hang = $request->get('ma_don_hang');
     	$getDetail = $this->loginService->getDetail($ma_don_hang);
     	for ($j=0; $j < count($getDetail); $j++) { 
-					$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_san_pham);
+					$getTopping = $getTopping = $this->loginService->getTopping($getDetail[$j]->ma_chi_tiet);
 					$getDetail[$j]->topping = $getTopping;
-				}	
+			}	
     	return response()->json(['status' => 'Success','error' =>  0, 'Detail' => $getDetail]);
     }
 }
