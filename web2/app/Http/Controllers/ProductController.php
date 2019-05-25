@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use App\Traits\CommonTrait;
+use Illuminate\Support\Facades\Hash;
 use Excel;
 
 class ProductController extends Controller {
@@ -37,10 +38,6 @@ class ProductController extends Controller {
     }
 
 	public function searchProduct(Request $request) {
-		$a = $request->get('gio_hang');
-		$b = $a['topping'][0];
-
-		dd($a);
 		$name = $request->get('name');
 		$ma_loai = $request->get('ma_loai');
 		$mo_ta = $request->get('mo_ta');
@@ -143,11 +140,12 @@ class ProductController extends Controller {
 		$loaisp = $request->get('loaisp');
 		$ngay_ra_mat = $request->get('ngay_ra_mat');
 		$mo_ta = $request->get('mo_ta');
+		$a = Hash::make(1);
 		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
                 $subName = 'product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
-                $filename =  $subName . '/' . $request->file('files_edit')->getClientOriginalName();
+                $filename =  $subName . '/' .$a. $request->file('files_edit')->getClientOriginalName();
                 $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
                 if (!file_exists($check)) {
                     return \Response::json(false);

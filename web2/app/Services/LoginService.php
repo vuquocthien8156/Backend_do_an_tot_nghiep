@@ -98,8 +98,8 @@ class LoginService {
 		return $this->loginRepository->productType($page);
 	}
 
-	public function getCart($id_KH) {
-		return $this->loginRepository->getCart($id_KH);
+	public function getCart() {
+		return $this->loginRepository->getCart();
 	}
 
 	public function deleteCart($id_GH) {
@@ -118,8 +118,8 @@ class LoginService {
 		return $this->loginRepository->updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping);
 	}
 
-	public function getCartOfCustomer($id_KH) {
-		return $this->loginRepository->getCartOfCustomer($id_KH);
+	public function getCartOfCustomer($id_KH, $id_GH) {
+		return $this->loginRepository->getCartOfCustomer($id_KH, $id_GH);
 	}
 
 	public function getInfoCustomer($id_KH) {
@@ -155,12 +155,12 @@ class LoginService {
     }
 
 
-    public function insertTopping($topping) {
-    	return $this->loginRepository->insertTopping($topping);
+    public function insertTopping($ma_gio_hang, $topping) {
+    	return $this->loginRepository->insertTopping($ma_gio_hang, $topping);
     }
 
-    public function getTopping($ma_sp) {
-    	return $this->loginRepository->getTopping($ma_sp);
+    public function getTopping($ma_chi_tiet) {
+    	return $this->loginRepository->getTopping($ma_chi_tiet);
     }
 
     public function getToppingCart($ma_gio_hang) {
@@ -201,5 +201,29 @@ class LoginService {
 
     public function getCamOn($ma_DG) {
     	return $this->loginRepository->getCamOn($ma_DG);
+    }
+
+    public function insertCart($idCustomer, $ma_sp, $so_luong, $size, $note) {
+    	return $this->loginRepository->insertCart($idCustomer, $ma_sp, $so_luong, $size, $note);
+    }
+
+    public function getSoLuong($ma_san_pham) {
+    	return $this->loginRepository->getSoLuong($ma_san_pham);
+    }
+
+    public function updateTopping($ma_san_pham, $sl) {
+    	return $this->loginRepository->updateTopping($ma_san_pham, $sl);
+    }
+
+    public function updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note) {
+    	return $this->loginRepository->updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note);
+    }
+
+    public function deleteToppingOfCart($idCart) {
+    	return $this->loginRepository->deleteToppingOfCart($idCart);
+    }
+
+    public function getIdImg() {
+    	return $this->loginRepository->getIdImg();
     }
 }
