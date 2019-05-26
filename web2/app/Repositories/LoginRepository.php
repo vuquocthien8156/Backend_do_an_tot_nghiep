@@ -230,14 +230,11 @@ class LoginRepository {
 
 	public function deleteCart($id_GH) {
 		$result = DB::table('GioHang')->where('ma_gio_hang' ,'=', $id_GH)->delete();
-		$result1 = DB::table('GioHang')->where('parent_id' ,'=', $id_GH)->delete();
-        
-        return $result + $result1;	
+        return $result;	
 	}
 
 	public function deleteCartCustomer($id_KH) {
-		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)
-									 ->delete();
+		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)->delete();
         return $result;	
 	}
 

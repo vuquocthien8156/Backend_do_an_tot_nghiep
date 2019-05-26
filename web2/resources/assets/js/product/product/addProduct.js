@@ -50,6 +50,43 @@ const app = new Vue({
             }
         },
         luu() {
+            if (this.selectedFile == '' || this.selectedFile == null) {
+                bootbox.alert('vui lòng chọn hình');
+                return false;
+            }
+            if (this.ten == '' || this.ten == null) {
+                bootbox.alert('vui lòng nhập tên sản phẩm');
+                return false;
+            }
+            if (this.ma == '' || this.ma == null) {
+                bootbox.alert('vui lòng nhập mã chữ sản phẩm');
+                return false;
+            }
+            if (this.gia_goc == '' || this.gia_goc == null) {
+                bootbox.alert('vui lòng nhập giá gốc sản phẩm');
+                return false;
+            }
+            if (this.gia_size_vua == '' || this.gia_size_vua == null) {
+                bootbox.alert('vui lòng nhập giá size vừa sản phẩm');
+                return false;
+            }
+            if (this.gia_size_lon == '' || this.gia_size_lon == null) {
+                bootbox.alert('vui lòng nhập giá size lớn sản phẩm');
+                return false;
+            }
+            if (this.loaisp == '' || this.loaisp == null) {
+                bootbox.alert('vui lòng nhập loại sản phẩm');
+                return false;
+            }
+            if (this.ngay_ra_mat == '' || this.ngay_ra_mat == null) {
+                bootbox.alert('vui lòng ngày ra mắt');
+                return false;
+            }
+            if (this.mo_ta == '' || this.mo_ta == null) {
+                bootbox.alert('vui lòng mô tả');
+                return false;
+            }
+            common.loading.show('body');
             var data = new FormData();
             data.append('files_edit', this.selectedFile);
             let url = $('#add').attr("action");
@@ -69,10 +106,12 @@ const app = new Vue({
                     };
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
-                        alert('Thêm thành công!!!');
+                        common.loading.hide('body');
+                        bootbox.alert('Thêm thành công!!!');
                         window.location = 'manage';
                     } else {
-                        alert('Thêm thất bại!!!');
+                        common.loading.hide('body');
+                        bootbox.alert('Thêm thất bại!!!');
                     }
                 })
         }

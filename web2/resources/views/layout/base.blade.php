@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         {{--<link rel="stylesheet" href="/css/glyphicons/glyphicons.css" type="text/css"/>--}}
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css"/>
         <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -57,7 +58,8 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
-                                     <a class="dropdown-item" href="">Danh sách loại sản phẩm</a>
+                                    <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
+                                    <a class="dropdown-item" href="">Danh sách loại sản phẩm</a>
                                 </div>
                             </li>
                         </ul>

@@ -17,22 +17,6 @@ const app = new Vue({
     },
 	
     methods: {
-        hide() {
-            $("#password1").hide();
-            $("#btn-sdt").hide();
-            $("#btn-tk").show();
-            $("#username").attr('placeholder', 'Nhập sdt');
-            $("#dn2").show();
-            $("#dn1").hide();
-        },
-        hide1() {
-            $("#dn1").show();
-            $("#dn2").hide();
-            $("#password1").show();
-            $("#btn-sdt").show();
-            $("#btn-tk").hide();
-            $("#username").attr('placeholder', 'Nhập email');
-        },
         login() {
             common.loading.show('body');
         	if (this.username == '' || this.password == '' || this.username == null || this.password == null) {
@@ -52,7 +36,6 @@ const app = new Vue({
                     data: data,
                     success: function (result) {
                         if (result.error === 0) {
-                            alert('Thành công!');
                             common.loading.hide('body');
                             window.location = 'manage/account';
                         } else {
