@@ -10,6 +10,7 @@ const app = new Vue({
             name:'',
             img:'',
             selectedFile: null,
+            imageUrl:null,
             ten:'',
             ma: '',
             gia_goc:'',
@@ -33,7 +34,7 @@ const app = new Vue({
                     idGH :1,
                     ma_sp :1,
                     ten_sp :1,
-                    gia_sp :1, // Thông tin sp lấy từ bảng sp
+                    gia_sp :1, 
                     hinh_anh :1,
                     so_luong :1,
                     size :1,
@@ -95,9 +96,10 @@ const app = new Vue({
             
         },
         seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
-            ngay_ra_mat, mo_ta, ma_loai_sp) {
+            ngay_ra_mat, mo_ta, ma_loai_sp, img) {
             // $("#edit").css('display','block');
             // $("#body").css('display','none');
+            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + img);
             $("#id_product").val(ma_so);
             $("#ten").val(ten);
             $("#ma").val(ma_chu);

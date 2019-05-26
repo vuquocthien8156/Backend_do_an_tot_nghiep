@@ -97,7 +97,7 @@ class ProductController extends Controller {
     }
 
 	public function editProduct(Request $request) {
-		$avatar_path = $request->get('avatar');
+		$avatar_path = $request->get('files_edit');
 		$ten = $request->get('ten');
 		$id = $request->get('id');
 		$so_lan_order = $request->get('so_lan_order');
@@ -110,7 +110,7 @@ class ProductController extends Controller {
 		$mo_ta = $request->get('mo_ta');
 		$now = Carbon::now();
 		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
-                $subName = 'user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $subName = 'images/product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
                 $filename =  $subName . '/' . $request->file('files_edit')->getClientOriginalName();

@@ -137,33 +137,25 @@ class LoginController extends Controller {
     }
 	
 	public function uploadImage(Request $request){
-		// $now = Carbon::now();
-		// $getIdImg = $this->loginService->getIdImg()+1;
-		// if ($request->file('avatar') != null || $request->file('avatar') != ''){
-	 //            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
-	 //            $destinationPath = config('app.resource_physical_path');
-	 //            $pathToResource = config('app.resource_url_path');
-	 //            $nameImg = 'Account_Img'.$getIdImg.strstr($request->file('avatar')->getClientOriginalName(), '.');
-	 //            // $filename =  $subName . '/'. $nameImg->getClientOriginalName();
-	 //            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $nameImg);
-  //           	if (!file_exists($check)) {
-  //               	return response()->json(['status' => 'null']);
-  //           	}
-  //           return response()->json(['filename' => 'images/' . $nameImg]);
-		
 		$now = Carbon::now();
-		$a = Hash::make(1);
+		$second = $now->second;
+		$minute = $now->minute;
+		$hour = $now->hour;
+		$date = $now->day;
+		$month = $now->month;
+		$year = $now->year;
+		$S = $second*$minute*$hour*$date*$month*$year;
 		if ($request->file('avatar') != null || $request->file('avatar') != ''){
 	            $subName = 'account/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
-	            $filename =  $subName . '/'.$a. $request->file('avatar')->getClientOriginalName();
-	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
+	            $nameImg = 'Account_Img'.$S.strstr($request->file('avatar')->getClientOriginalName(), '.');
+	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $nameImg);
             	if (!file_exists($check)) {
                 	return response()->json(['status' => 'null']);
             	}
-            return response()->json(['filename' => 'images/' . $filename]);
-        }
+            return response()->json(['filename' => 'images/' . $nameImg]);
+		}
 	}
 
 	public function requestUpdateInfo(Request $request) {
@@ -290,66 +282,70 @@ class LoginController extends Controller {
     public function addCart(Request $request) {
     	$idCustomer = $request->get('idCustomer');
     	$objectCart = $request->get('cart');
-    	$ma_sp = $objectCart['idProduct'];
-    	$so_luong = $objectCart['quantity'];
-    	$size = $objectCart['size'];
-    	$note = $objectCart['note'];
+    	$ma_sp = $objectCart['ma_san_pham'];
+    	$so_luong = $objectCart['so_luong'];
+    	$size = $objectCart['kich_co'];
+    	$note = $objectCart['ghi_chu'];
 
     	$topping = $objectCart['topping'];
     	$getCart = $this->loginService->getCart();
-    	$check = false;
-    	$updateTopping = 0;
-	    for ($i=0; $i < count($getCart); $i++) { 
+    	$check = 0;
+    	$loop = 0;
+	    for ($i=0; $i < count($getCart); $i++) {
 	    	if ($idCustomer == $getCart[$i]->ma_khach_hang && $ma_sp == $getCart[$i]->ma_san_pham && $size == $getCart[$i]->kich_co) {
-	    		$a = $i;
-	    		$check = true;
-	    		break;
+	    		$getDetailCart = $this->loginService->getDetailCart($getCart[$i]->ma_gio_hang);
+	    		$a=0;
+		    	for ($y=0; $y < count($getDetailCart); $y++) {
+		    		for ($k=0; $k < count($topping); $k++) {
+		    			if (count($topping) == count($getDetailCart)) {
+		    			 	if ($topping[$k]['ma_san_pham'] == $getDetailCart[$y]->ma_san_pham && $topping[$k]['so_luong'] == $getDetailCart[$y]->so_luong) {
+		    		 			$a = $a+1;
+		    		 			$check = 1;
+		    				}else {
+		    					$loop = $loop + 1; 
+		    				}
+		    			}
+		    		}
+		    	}
+		    	if ($a == count($topping)) {
+		    		$getQuantity = $this->loginService->getSL($getCart[$i]->ma_gio_hang);
+		    		$sl = $so_luong + $getQuantity[0]->so_luong;
+		    		$updateQuantityCart = $this->loginService->updateQuantityCart($getCart[$i]->ma_gio_hang, $sl);
+		    		if ($updateQuantityCart == 1) {
+		    			return response()->json(['status' => 'Success', 'error' => 0]);
+		    		}
+		    		return response()->json(['status' => 'fail', 'error' => 1]);
+		    	}else {
+		    		$loop = $loop + 1; 
+		    	}
+		    	if ($check == 1) {
+		    		break;
+		    	}
 	    	}else {
-	    		$check = false;
+	    		$loop = $loop + 1; 
 	    	}
 	    }
-
-	    if ($check == true) {
-	    	$getDetailCart = $this->loginService->getDetailCart($getCart[$a]->ma_gio_hang);
-	    	for ($y=0; $y < count($getDetailCart); $y++) {
-	    		for ($k=0; $k < count($topping); $k++) { 
-	    		 	if ($topping[$k]['idProduct'] == $getDetailCart[$y]->ma_san_pham) {
-	    				$getSoLuong = $this->loginService->getSoLuong($getDetailCart[$y]->ma_san_pham);
-	    				$sl = $getSoLuong[0]->so_luong + $topping[$k]['quantity'];
-						$updateTopping = $this->loginService->updateTopping($getDetailCart[$y]->ma_san_pham, $sl);
-	    			}
-	    		}
-	    	}
-	    	if ($updateTopping == 1) {
-				return response()->json(['status' => 'Success', 'error' => 0]);
-			}else {
-				$insertCart = $this->loginService->insertCart($idCustomer, $ma_sp, $so_luong, $size, $note);
-				$selectMaxId = $this->loginService->selectMaxId();
-				$insertTopping = $this->loginService->insertTopping($selectMaxId, $topping);
-				if ($insertCart == true && $insertTopping == true) {
-						return response()->json(['status' => 'Success', 'error' => 0]);
-					}
-				return response()->json(['status' => 'fail', 'error' => 1]);
-			}
-	    }else {
+	    if ($loop == count($getCart)) {
 	    	$insertCart = $this->loginService->insertCart($idCustomer, $ma_sp, $so_luong, $size, $note);
-			$selectMaxId = $this->loginService->selectMaxId();
-			$insertTopping = $this->loginService->insertTopping($selectMaxId, $topping);
+	    	if ($topping != '' || $topping != null || $topping != []) {
+	    		$selectMaxId = $this->loginService->selectMaxId();
+				$insertTopping = $this->loginService->insertTopping($selectMaxId, $topping);
+	    	}
 			if ($insertCart == true && $insertTopping == true) {
-				return response()->json(['status' => 'Success', 'error' => 0]);
-			}
+					return response()->json(['status' => 'Success', 'error' => 0]);
+				}
 			return response()->json(['status' => 'fail', 'error' => 1]);
 	    }
     }
 
     public function updateCart (Request $request) {
     	$idCustomer = $request->get('idCustomer');
-    	$idCart = $request->get('idCart');
     	$objectCart = $request->get('cart');
-    	$ma_sp = $objectCart['idProduct'];
-    	$so_luong = $objectCart['quantity'];
-    	$size = $objectCart['size'];
-    	$note = $objectCart['note'];
+    	$idCart = $objectCart['ma_gio_hang'];
+    	$ma_sp = $objectCart['ma_san_pham'];
+    	$so_luong = $objectCart['so_luong'];
+    	$size = $objectCart['kich_co'];
+    	$note = $objectCart['ghi_chu'];
 
     	$topping = $objectCart['topping'];
     	$updateCartOfCustomer = $this->loginService->updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note);
@@ -364,8 +360,9 @@ class LoginController extends Controller {
     public function deleteCart(Request $request) {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
-    	if ($deleteCart == 1) {
-    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	$deleteTopping = $this->loginService->deleteToppingOfCart($id_GH);
+    	if ($deleteCart > 0 && $deleteTopping >= 0) {
+    		return response()->json(['status' => 'Success', 'error' => 0 ]);
     	}
     	return response()->json(['status' => 'fail', 'error' => 1]);
     }
@@ -398,8 +395,7 @@ class LoginController extends Controller {
 
     public function getCartOfCustomer(Request $request) {
     	$id_KH = $request->get('id_KH');
-    	$id_GH = $request->get('id_GH');
-    	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH, $id_GH);
+    	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH);
     	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
     		$getTopping = $this->loginService->getToppingCart($getCartOfCustomer[$i]->ma_gio_hang);
     		$getCartOfCustomer[$i]->topping = $getTopping;
@@ -448,7 +444,7 @@ class LoginController extends Controller {
     		$getBranch = $this->loginService->getBranch($id_place);
     		$getPlace[$i]->Place = $getBranch;
     	}
-    	return response()->json(['status' => 'Success','Branch' =>  $getPlace]);
+    	return response()->json(['status' => 'Success', 'error' => 0,'Branch' =>  $getPlace]);
     }
 
     public function addEvaluate(Request $request) {

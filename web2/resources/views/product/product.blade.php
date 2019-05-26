@@ -26,6 +26,19 @@
                             <form id="form_edit_info" method="POST" action="edit" enctype="multipart/form-data">
                 <table border="0px" class=" table-striped w-100" style="margin-left: 2%">
                 <tr>
+                    <td>
+                        <label for="other_note1"> Hình ảnh </label>
+                        <img id="avatarcollector_edit" style="width: 150px; height: 150px;" class="d-block" :src="imageUrl" />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            
+                            <input type="file"@change="onSelectImageHandler" class="form-control" id=""  style="width: 200px;">
+                            <input type="input" hidden="true" id="id_product"  style="width: 200px;">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td style="width: 300px;">
                         <div class="form-group">
                             <label for="other_note1"> Tên sản phẩm </label>
@@ -93,13 +106,6 @@
                         <div class="form-group">
                             <label for="other_note1"> Số lần order </label>
                             <input type="text" class="form-control" id="so_lan_order"  style="width: 200px;">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label for="other_note1"> Hình ảnh </label>
-                            <input type="file"@change="onSelectImageHandler" class="form-control" id=""  style="width: 200px;">
-                            <input type="input" hidden="true" id="id_product"  style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -221,8 +227,6 @@
                     <th  class="custom-view">Mã sản phẩm</th>
                     <th  class="custom-view">Loại sản phẩm</th>
                     <th  class="custom-view">Giá gốc</th>
-                    <th  class="custom-view">Giá size vừa</th>
-                    <th  class="custom-view">Giá size lớn</th>
                     <th  class="custom-view">Số lượng Order</th>
                     <th  class="custom-view">Mô tả</th>
                     <th  class="custom-view">Ngày ra mắt</th>
@@ -237,9 +241,7 @@
                         <td  class="custom-view"><p>@{{item.ten}}<p></td>
                         <td  class="custom-view"><p>@{{item.ma_chu}}<p></td>
                         <td  class="custom-view"><p>@{{item.ten_loai_sp}}<p></td>
-                        <td  class="custom-view"><p>@{{item.gia_san_pham}}<p></td>
-                        <td class="custom-view"><p>@{{item.gia_vua}}<p></td>
-                        <td class="custom-view"><p>@{{item.gia_lon}}<p></td>
+                        <td  class="custom-view" width="250px"><p>S(@{{item.gia_san_pham}}) - M(@{{item.gia_vua}}) - L(@{{item.gia_lon}})<p></td>
                         <td class="custom-view"><p>@{{item.so_lan_dat}}<p></td>
                         <td class="custom-view"><p>@{{item.mo_ta}}<p></td>
                         <td class="custom-view"><p>@{{item.ngay_ra_mat}}<p></td>
@@ -247,7 +249,7 @@
                         <td class="custom-view" v-if="item.daxoa == 1">Đã xóa</td>
                         <td class="custom-view" v-if="item.daxoa == 0">Đã kích hoạt</td>
                         <td class="custom-view"><p>
-                            <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_so, item.ten, item.ma_chu, item.ten_loai_sp, item.gia_san_pham, item.gia_vua, item. gia_lon, item.so_lan_dat, item.ngay_ra_mat, item.mo_ta, item.ma_loai_sp);"></a>
+                            <a href="#" class="btn_edit fa fa-cloud" @click="seeMoreDetail(item.ma_so, item.ten, item.ma_chu, item.ten_loai_sp, item.gia_san_pham, item.gia_vua, item. gia_lon, item.so_lan_dat, item.ngay_ra_mat, item.mo_ta, item.ma_loai_sp, item.hinh_san_pham);"></a>
                             <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_so)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>
                     </tr>
                 </tbody>

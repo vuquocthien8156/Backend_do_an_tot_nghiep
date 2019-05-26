@@ -25,4 +25,8 @@ class AccountService {
 	public function delete($id) {
 		return $this->accountRepository->delete($id);
 	}
+
+	public function editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now) {
+		return $this->accountRepository->editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now);
+	}
 }

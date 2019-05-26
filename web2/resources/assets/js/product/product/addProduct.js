@@ -6,6 +6,7 @@ const app = new Vue({
     components: {Pagination},
     data() {
         return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             ten:'',
             ma:'',
             gia_goc:'',
@@ -100,6 +101,7 @@ const app = new Vue({
             data.append('mo_ta', this.mo_ta);
             let options = {
                         method: 'POST',
+                        _token: this.csrf,
                         data: data,
                         processData: false,
                         contentType: false,

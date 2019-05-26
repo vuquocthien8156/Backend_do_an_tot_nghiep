@@ -30,4 +30,20 @@ class AccountRepository {
 
 	}
 
+	public function editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now) {
+		$result = DB::table('users as us')->where('id','=',$id)
+		->update([
+			'avatar' => $avatar_path,
+			'ten' => $ten,
+			'sdt' => $SDT,
+			'gioi_tinh' => $gender,
+			'ngay_sinh' => $NS,
+			'diem_tich' => $diemtich,
+			'dia_chi' => $diachi,
+			'email' => $email,
+			'updated_at' => $now,
+		]);
+		return $result;
+	}
+
 }

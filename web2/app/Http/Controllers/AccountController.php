@@ -7,6 +7,7 @@ use App\Constant\SessionKey;
 use App\Enums\EStatus;
 use App\Enums\ErrorCode;
 use App\Enums\EUser;
+use App\Enums\EDateFormat;
 use App\Helpers\ConfigHelper;
 use App\Services\LoginService;
 use App\Services\AccountService;
@@ -27,7 +28,7 @@ class AccountController extends Controller {
 		$this->accountService = $accountService;
 	}
 
-	public function AccountView() {  
+	public function AccountView() {
 		return view('account.account');
 	}
 
@@ -44,9 +45,10 @@ class AccountController extends Controller {
 		$listAccount = $this->accountService->search($name, $page);
 		$tmp = $listAccount->map(function ($item) {
                 return [
+                	'id' => $item->id,
                     'ten' => $item->ten,
                     'sdt' => $item->sdt,
-                    'ngay_sinh' => $item->ngay_sinh,
+                    'ngay_sinh' => isset($item->ngay_sinh) ?$item->ngay_sinh:null,
                     'gioi_tinh' => $item->gioi_tinh,
                     'diem_tich' => $item->diem_tich,
                     'email' => $item->email,
@@ -72,15 +74,40 @@ class AccountController extends Controller {
 		return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
 	}
 
+	public function twoDigitNumber($number) {
+		return $number < 10 ? '0'.$number : $number;
+    }
+
 	public function editAccount(Request $request) {
 		if ($request->session()->has('name') == false && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 1) && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 2)) {
 		 	return redirect('api');
 		} 
+		$avatar_path = $request->get('files_edit');
+		$ten = $request->get('ten');
 		$id = $request->get('id');
-		$image = $request->get('img');
-		$destinationPath = config('app.resource_physical_path');
-        $pathToResource = config('app.resource_url_path');
-        // $result = $this->accountService->editAccount($id);
-        dd($image, $id);
+		$SDT = $request->get('SDT');
+		$NS = $request->get('NS');
+		$gender = $request->get('gender');
+		$diemtich = $request->get('diemtich');
+		$diachi = $request->get('diachi');
+		$email = $request->get('email');
+		$now = Carbon::now();
+		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
+                $subName = 'user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename =  $subName . '/' . $request->file('files_edit')->getClientOriginalName();
+                $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+        }
+        $result = $this->accountService->editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now);
+        if ($result == 1) {
+        	return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        }else{
+        	return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+        }
 	}
 }
