@@ -290,10 +290,10 @@ class LoginController extends Controller {
     public function addCart(Request $request) {
     	$idCustomer = $request->get('idCustomer');
     	$objectCart = $request->get('cart');
-    	$ma_sp = $objectCart['idProduct'];
-    	$so_luong = $objectCart['quantity'];
-    	$size = $objectCart['size'];
-    	$note = $objectCart['note'];
+    	$ma_sp = $objectCart['ma_san_pham'];
+    	$so_luong = $objectCart['so_luong'];
+    	$size = $objectCart['kich_co'];
+    	$note = $objectCart['ghi_chu'];
 
     	$topping = $objectCart['topping'];
     	$getCart = $this->loginService->getCart();
@@ -313,9 +313,9 @@ class LoginController extends Controller {
 	    	$getDetailCart = $this->loginService->getDetailCart($getCart[$a]->ma_gio_hang);
 	    	for ($y=0; $y < count($getDetailCart); $y++) {
 	    		for ($k=0; $k < count($topping); $k++) { 
-	    		 	if ($topping[$k]['idProduct'] == $getDetailCart[$y]->ma_san_pham) {
+	    		 	if ($topping[$k]['ma_san_pham'] == $getDetailCart[$y]->ma_san_pham) {
 	    				$getSoLuong = $this->loginService->getSoLuong($getDetailCart[$y]->ma_san_pham);
-	    				$sl = $getSoLuong[0]->so_luong + $topping[$k]['quantity'];
+	    				$sl = $getSoLuong[0]->so_luong + $topping[$k]['so_luong'];
 						$updateTopping = $this->loginService->updateTopping($getDetailCart[$y]->ma_san_pham, $sl);
 	    			}
 	    		}
@@ -344,12 +344,12 @@ class LoginController extends Controller {
 
     public function updateCart (Request $request) {
     	$idCustomer = $request->get('idCustomer');
-    	$idCart = $request->get('idCart');
     	$objectCart = $request->get('cart');
-    	$ma_sp = $objectCart['idProduct'];
-    	$so_luong = $objectCart['quantity'];
-    	$size = $objectCart['size'];
-    	$note = $objectCart['note'];
+    	$idCart = $objectCart['ma_gio_hang'];
+    	$ma_sp = $objectCart['ma_san_pham'];
+    	$so_luong = $objectCart['so_luong'];
+    	$size = $objectCart['kich_co'];
+    	$note = $objectCart['ghi_chu'];
 
     	$topping = $objectCart['topping'];
     	$updateCartOfCustomer = $this->loginService->updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note);
@@ -364,8 +364,9 @@ class LoginController extends Controller {
     public function deleteCart(Request $request) {
     	$id_GH = $request->get('id_GH');
     	$deleteCart = $this->loginService->deleteCart($id_GH);
-    	if ($deleteCart == 1) {
-    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	$deleteTopping = $this->loginService->deleteToppingOfCart($id_GH);
+    	if ($deleteCart > 0 && $deleteTopping >= 0) {
+    		return response()->json(['status' => 'Success', 'error' => 0 ]);
     	}
     	return response()->json(['status' => 'fail', 'error' => 1]);
     }
@@ -398,8 +399,7 @@ class LoginController extends Controller {
 
     public function getCartOfCustomer(Request $request) {
     	$id_KH = $request->get('id_KH');
-    	$id_GH = $request->get('id_GH');
-    	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH, $id_GH);
+    	$getCartOfCustomer = $this->loginService->getCartOfCustomer($id_KH);
     	for ($i=0; $i < count($getCartOfCustomer); $i++) { 
     		$getTopping = $this->loginService->getToppingCart($getCartOfCustomer[$i]->ma_gio_hang);
     		$getCartOfCustomer[$i]->topping = $getTopping;

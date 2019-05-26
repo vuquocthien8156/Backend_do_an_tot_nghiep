@@ -118,8 +118,8 @@ class LoginService {
 		return $this->loginRepository->updateCart($ma_gio_hang, $ma_topping, $ten_topping, $so_luong_topping);
 	}
 
-	public function getCartOfCustomer($id_KH, $id_GH) {
-		return $this->loginRepository->getCartOfCustomer($id_KH, $id_GH);
+	public function getCartOfCustomer($id_KH) {
+		return $this->loginRepository->getCartOfCustomer($id_KH);
 	}
 
 	public function getInfoCustomer($id_KH) {

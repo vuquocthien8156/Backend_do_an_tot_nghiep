@@ -230,14 +230,12 @@ class LoginRepository {
 
 	public function deleteCart($id_GH) {
 		$result = DB::table('GioHang')->where('ma_gio_hang' ,'=', $id_GH)->delete();
-		$result1 = DB::table('GioHang')->where('parent_id' ,'=', $id_GH)->delete();
         
-        return $result + $result1;	
+        return $result;	
 	}
 
 	public function deleteCartCustomer($id_KH) {
-		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)
-									 ->delete();
+		$result = DB::table('GioHang')->where('ma_khach_hang' , '=', $id_KH)->delete();
         return $result;	
 	}
 
@@ -268,8 +266,8 @@ class LoginRepository {
         return $result;	
 	}
 	
-	public function getCartOfCustomer($id_KH, $id_GH) {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ten' ,'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'hinh_san_pham' ,'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where(['ma_khach_hang' => $id_KH, 'ma_gio_hang' => $id_GH])->get();
+	public function getCartOfCustomer($id_KH) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ten' ,'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'hinh_san_pham' ,'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where(['ma_khach_hang' => $id_KH])->get();
         return $result;
 	}
 
@@ -331,8 +329,8 @@ class LoginRepository {
 		for ($i=0; $i < count($topping); $i++) { 
 			$result = DB::table('ChiTietGiohang')->insert([
 				'ma_gio_hang' => $ma_gio_hang,
-           		'ma_san_pham' => $topping[$i]['idProduct'],
-           		'so_luong' => $topping[$i]['quantity']
+           		'ma_san_pham' => $topping[$i]['ma_san_pham'],
+           		'so_luong' => $topping[$i]['so_luong']
         	]);	
 		}
         return $result;	
