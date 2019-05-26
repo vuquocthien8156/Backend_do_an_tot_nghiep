@@ -26,6 +26,7 @@ class VerifyCsrfToken extends Middleware
         'api/updateInfo',
         'api/login-fb',
         'api/add-cart',
+        'api/update-cart',
         'api/delete-cart',
         'api/delete-all-cart-of-customer',
         'api/cart/update-quantity',

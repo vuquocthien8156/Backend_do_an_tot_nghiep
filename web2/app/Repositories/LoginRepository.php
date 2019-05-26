@@ -217,9 +217,9 @@ class LoginRepository {
         }
 	}
 
-	public function insertCart($id_KH, $ma_sp, $so_luong, $size, $note) {
+	public function insertCart($idCustomer, $ma_sp, $so_luong, $size, $note) {
 		$result = DB::table('GioHang')->insert([
-           'ma_khach_hang' => $id_KH,
+           'ma_khach_hang' => $idCustomer,
            'ma_san_pham' => $ma_sp,
            'kich_co' => $size,
            'so_luong' => $so_luong,
@@ -268,8 +268,8 @@ class LoginRepository {
         return $result;	
 	}
 	
-	public function getCartOfCustomer($id_KH) {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ten' ,'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'hinh_san_pham' ,'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where('ma_khach_hang' , '=', $id_KH)->get();
+	public function getCartOfCustomer($id_KH, $id_GH) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ten' ,'ma_san_pham', 'gia_san_pham', 'gia_vua', 'gia_lon', 'loai_chinh', 'kich_co', 'hinh_san_pham' ,'so_luong', 'ghi_chu')->join('SanPham', 'ma_so', '=', 'ma_san_pham')->join('LoaiSanPham', 'ma_loai_sp', '=', 'loai_sp')->where(['ma_khach_hang' => $id_KH, 'ma_gio_hang' => $id_GH])->get();
         return $result;
 	}
 
@@ -327,11 +327,12 @@ class LoginRepository {
         return $result;	
 	}
 
-	public function insertTopping($topping) {
+	public function insertTopping($ma_gio_hang, $topping) {
 		for ($i=0; $i < count($topping); $i++) { 
 			$result = DB::table('ChiTietGiohang')->insert([
-           		'ma_san_pham' => $topping[$i][0],
-           		'so_luong' => $topping[$i][3]
+				'ma_gio_hang' => $ma_gio_hang,
+           		'ma_san_pham' => $topping[$i]['idProduct'],
+           		'so_luong' => $topping[$i]['quantity']
         	]);	
 		}
         return $result;	
@@ -353,8 +354,8 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getCart($id_KH) {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_khach_hang', 'ma_san_pham', 'kich_co')->where('ma_khach_hang', '=', $id_KH)->get();
+	public function getCart() {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_khach_hang', 'ma_san_pham', 'kich_co')->get();
         return $result;
 	}
 
@@ -380,16 +381,50 @@ class LoginRepository {
 
 	public function getImg($ma_sp) {
 		 $result = DB::table('HinhAnh')->select('url')->where(['object_id' => $ma_sp, 'da_xoa' => 0])->get();
-		 return $result;
+		return $result;
 	}
 
 	public function getDanhGia($ma_so) {
 		 $result = DB::table('DanhGia')->select('ma_danh_gia','so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'parent_id')->where(['ma_sp' => $ma_so])->get();
-		 return $result;
+		return $result;
 	}
 
 	public function getCamOn($ma_DG) {
 		$result = DB::table('CamOnDanhGia')->select('ma_khach_hang')->where(['ma_danh_gia' => $ma_DG])->count();
-		 return $result;
+		return $result;
+	}
+
+	public function getSoLuong($ma_san_pham) {
+		$result = DB::table('ChiTietGiohang')->select('so_luong')->where(['ma_san_pham' => $ma_san_pham])->get();
+		return $result;
+	}
+
+	public function updateTopping($ma_san_pham, $sl) {
+		$result = DB::table('ChiTietGiohang')->where('ma_san_pham', '=', $ma_san_pham)
+		->update([
+			'so_luong' => $sl,
+		]);
+		return $result;
+	}
+
+	public function updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note) {
+		$result = DB::table('GioHang')->where(['ma_khach_hang' => $idCustomer, 'ma_gio_hang' => $idCart])
+		->update([
+			'ma_san_pham' => $ma_sp,
+			'so_luong' => $so_luong,
+			'kich_co' => $size,
+			'ghi_chu' => $note,
+		]);
+		return $result;
+	}
+
+	public function deleteToppingOfCart($idCart) {
+		$result = DB::table('ChiTietGiohang')->where('ma_gio_hang', '=', $idCart)->delete();
+		return $result;
+	}
+
+	public function getIdImg() {
+		$result = DB::table('HinhAnh')->max('ma_hinh');
+		return $result;	
 	}
 }
