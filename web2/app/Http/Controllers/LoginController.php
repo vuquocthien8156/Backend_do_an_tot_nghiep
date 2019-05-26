@@ -302,7 +302,6 @@ class LoginController extends Controller {
 			    				
 			    			 	if ($topping[$k]['ma_san_pham'] == $getDetailCart[$y]->ma_san_pham && $topping[$k]['so_luong'] == $getDetailCart[$y]->so_luong) {
 			    		 			$a = $a+1;
-			    		 			$check = 1;
 			    				}
 			    			}
 			    		}
@@ -318,10 +317,6 @@ class LoginController extends Controller {
 			    	}else {
 			    		$loop = $loop + 1; 
 			    	}
-			    	if ($check == 1) {
-			    		break;
-			    	}
-	    		
 	    	}else {
 	    		$loop = $loop + 1; 
 	    	}
