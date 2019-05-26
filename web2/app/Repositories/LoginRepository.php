@@ -299,7 +299,7 @@ class LoginRepository {
 	}
 
 	public function getBranch($id_place) {
-		$result = DB::table('ChiNhanh')->select('ma_chi_nhanh', 'ten', 'dia_chi', 'latitude', 'longtitude', 'ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua')->where(['da_xoa' => 0, 'ma_khu_vuc' => $id_place])->get();
+		$result = DB::table('ChiNhanh')->select('ma_chi_nhanh', 'ten', 'dia_chi', 'latitude', 'longitude', 'ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua' , 'so_dien_thoai')->where(['da_xoa' => 0, 'ma_khu_vuc' => $id_place])->get();
         return $result;
 	}
 

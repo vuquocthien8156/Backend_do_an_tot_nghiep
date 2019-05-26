@@ -146,7 +146,7 @@ class LoginController extends Controller {
 	            $filename =  $subName . '/'.$a. $request->file('avatar')->getClientOriginalName();
 	            $check = $request->file('avatar')->move($destinationPath.'/'.$subName, $filename);
             	if (!file_exists($check)) {
-                	return response()->json(['status' => 'null');
+                	return response()->json(['filename' => 'null']);
             	}
             return response()->json(['filename' => 'images/' . $filename]);
         }
@@ -403,7 +403,7 @@ class LoginController extends Controller {
     		$getBranch = $this->loginService->getBranch($id_place);
     		$getPlace[$i]->Place = $getBranch;
     	}
-    	return response()->json(['status' => 'Success','Branch' =>  $getPlace]);
+    	return response()->json(['status' => 'Success', 'error' => 0,'Branch' =>  $getPlace]);
     }
 
     public function addEvaluate(Request $request) {
