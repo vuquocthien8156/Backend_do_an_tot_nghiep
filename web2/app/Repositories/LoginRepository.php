@@ -95,7 +95,8 @@ class LoginRepository {
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
-			$result->where('ma_khach_hang', '=', $id_KH);
+			// $result->where('ma_khach_hang', '=', $id_KH);
+			$result->where(['ma_khach_hang' => $id_KH, 'da_xoa' => 0]);
 		}
 		return $result->get();
 	}
