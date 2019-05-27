@@ -338,8 +338,8 @@ class LoginController extends Controller {
     public function updateCart (Request $request) {
     	$idCustomer = $request->get('idCustomer');
     	$objectCart = $request->get('cart');
-    	$idCart = $request->get('ma_gio_hang');
     	$ma_sp = $objectCart['ma_san_pham'];
+    	$idCart = $objectCart['ma_gio_hang'];
     	$so_luong = $objectCart['so_luong'];
     	$size = $objectCart['kich_co'];
     	$note = $objectCart['ghi_chu'];
