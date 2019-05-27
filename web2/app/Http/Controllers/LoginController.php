@@ -346,12 +346,26 @@ class LoginController extends Controller {
 
     	$topping = $objectCart['topping'];
     	$updateCartOfCustomer = $this->loginService->updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note);
-    	$deleteToppingOfCart = $this->loginService->deleteToppingOfCart($idCart);
-    	$insertTopping = $this->loginService->insertTopping($idCart, $topping);
-    	if ($updateCartOfCustomer == 1 && $insertTopping == true) {
-    		return response()->json(['status' => 'Success', 'error' => 0]);
+    	
+    	if ($updateCartOfCustomer == 1) {
+    		if($topping != null){
+		    	$deleteToppingOfCart = $this->loginService->deleteToppingOfCart($idCart);
+		    	if($deleteToppingOfCart > 0){
+		    		$insertTopping = $this->loginService->insertTopping($idCart, $topping);
+		    		if($insertTopping > 0)
+		    			return response()->json(['status' => 'Success', 'error' => 0]);
+		    		else
+		    			return response()->json(['status' => 'failAdd', 'error' => 1]);
+		    	}
+		    	else{
+    				return response()->json(['status' => 'failDelete', 'error' => 1]);
+		    	}
+		    
+	    	}
+	    	else
+    			return response()->json(['status' => 'Success', 'error' => 0]);
     	}
-    	return response()->json(['status' => 'fail', 'error' => 1]);
+    	return response()->json(['status' => 'failCart', 'error' => 1]);
     }
 
     public function deleteCart(Request $request) {
