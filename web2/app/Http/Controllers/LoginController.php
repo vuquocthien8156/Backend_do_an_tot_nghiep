@@ -294,44 +294,41 @@ class LoginController extends Controller {
 	    for ($i=0; $i < count($getCart); $i++) {
 	    	if ($idCustomer == $getCart[$i]->ma_khach_hang && $ma_sp == $getCart[$i]->ma_san_pham && $size == $getCart[$i]->kich_co) {
 	    		$getDetailCart = $this->loginService->getDetailCart($getCart[$i]->ma_gio_hang);
-	    		$a=0;
-		    	for ($y=0; $y < count($getDetailCart); $y++) {
-		    		for ($k=0; $k < count($topping); $k++) {
-		    			if (count($topping) == count($getDetailCart)) {
-		    			 	if ($topping[$k]['ma_san_pham'] == $getDetailCart[$y]->ma_san_pham && $topping[$k]['so_luong'] == $getDetailCart[$y]->so_luong) {
-		    		 			$a = $a+1;
-		    		 			$check = 1;
-		    				}else {
-		    					$loop = $loop + 1; 
-		    				}
-		    			}
-		    		}
-		    	}
-		    	if ($a == count($topping)) {
-		    		$getQuantity = $this->loginService->getSL($getCart[$i]->ma_gio_hang);
-		    		$sl = $so_luong + $getQuantity[0]->so_luong;
-		    		$updateQuantityCart = $this->loginService->updateQuantityCart($getCart[$i]->ma_gio_hang, $sl);
-		    		if ($updateQuantityCart == 1) {
-		    			return response()->json(['status' => 'Success', 'error' => 0]);
-		    		}
-		    		return response()->json(['status' => 'fail', 'error' => 1]);
-		    	}else {
-		    		$loop = $loop + 1; 
-		    	}
-		    	if ($check == 1) {
-		    		break;
-		    	}
+	    		
+	    			$a=0;
+			    	for ($y=0; $y < count($getDetailCart); $y++) {
+			    		for ($k=0; $k < count($topping); $k++) {
+			    			if (count($topping) == count($getDetailCart)) {
+			    				
+			    			 	if ($topping[$k]['ma_san_pham'] == $getDetailCart[$y]->ma_san_pham && $topping[$k]['so_luong'] == $getDetailCart[$y]->so_luong) {
+			    		 			$a = $a+1;
+			    				}
+			    			}
+			    		}
+			    	}
+			    	if ($a == count($getDetailCart) && $a == count($topping)) {
+			    		$getQuantity = $this->loginService->getSL($getCart[$i]->ma_gio_hang);
+			    		$sl = $so_luong + $getQuantity[0]->so_luong;
+			    		$updateQuantityCart = $this->loginService->updateQuantityCart($getCart[$i]->ma_gio_hang, $sl);
+			    		if ($updateQuantityCart == 1) {
+			    			return response()->json(['status' => 'Success', 'error' => 0]);
+			    		}
+			    		return response()->json(['status' => 'fail', 'error' => 1]);
+			    	}else {
+			    		$loop = $loop + 1; 
+			    	}
 	    	}else {
 	    		$loop = $loop + 1; 
 	    	}
 	    }
+	    
 	    if ($loop == count($getCart)) {
 	    	$insertCart = $this->loginService->insertCart($idCustomer, $ma_sp, $so_luong, $size, $note);
-	    	if ($topping != '' || $topping != null || $topping != []) {
+	    	if ($topping != '' && $topping != null && $topping != []) {
 	    		$selectMaxId = $this->loginService->selectMaxId();
 				$insertTopping = $this->loginService->insertTopping($selectMaxId, $topping);
 	    	}
-			if ($insertCart == true && $insertTopping == true) {
+			if ($insertCart == true) {
 					return response()->json(['status' => 'Success', 'error' => 0]);
 				}
 			return response()->json(['status' => 'fail', 'error' => 1]);
@@ -341,7 +338,7 @@ class LoginController extends Controller {
     public function updateCart (Request $request) {
     	$idCustomer = $request->get('idCustomer');
     	$objectCart = $request->get('cart');
-    	$idCart = $objectCart['ma_gio_hang'];
+    	$idCart = $request->get('ma_gio_hang');
     	$ma_sp = $objectCart['ma_san_pham'];
     	$so_luong = $objectCart['so_luong'];
     	$size = $objectCart['kich_co'];
