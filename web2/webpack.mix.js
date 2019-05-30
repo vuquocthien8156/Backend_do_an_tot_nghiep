@@ -16,6 +16,7 @@ mix.browserSync(process.env.APP_URL);
 mix
 
 	.js('resources/assets/js/common.js', 'public/js')
+    .js('resources/assets/js/Branch/Branch.js', 'public/js/Branch')
     .js('resources/assets/js/login/login/login.js', 'public/js/login/login')
     .js('resources/assets/js/permission/permission/permission.js', 'public/js/permission/permission')
     .js('resources/assets/js/account/account/account.js', 'public/js/account/account')

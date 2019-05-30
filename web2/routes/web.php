@@ -33,6 +33,15 @@ Route::prefix('product')->group(function() {
 	Route::post('edit', 'ProductController@editProduct');
 });
 
+Route::prefix('Branch')->group(function() {
+	// Route::get('add-view', 'ProductController@viewAddProduct')->name('product-add');
+	// Route::post('add-new', 'ProductController@addProduct');
+	Route::get('manage', 'BranchController@branchView')->name('manage-branch');
+	Route::post('search', 'BranchController@searchBranch');
+	// Route::post('delete', 'ProductController@deleteProduct');
+	// Route::post('edit', 'ProductController@editProduct');
+});
+
 Route::get('permission', 'PermissionController@PermissionView');
 Route::post('permission', 'Permi	ssionController@Permission');
 

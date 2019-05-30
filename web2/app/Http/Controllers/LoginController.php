@@ -154,7 +154,7 @@ class LoginController extends Controller {
             	if (!file_exists($check)) {
                 	return response()->json(['status' => 'null']);
             	}
-            return response()->json(['filename' => 'images/' . $nameImg]);
+            return response()->json(['filename' => 'images/'.$subName.'/' . $nameImg]);
 		}
 	}
 
