@@ -95,8 +95,14 @@ Route::get('api/addEvaluate', 'LoginController@addEvaluate');
 
 Route::get('api/addThanks', 'LoginController@addThanks');
 
+
+Route::get('api/getAllAddressByUser', 'LoginController@getAddressOrderUser');
+Route::post('api/insertAddressOrder', 'LoginController@insertAddresOrderUser');
+Route::post('api/updateAddressOrder', 'LoginController@updateAddresOrderUser');
+
 Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
 
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
+
 Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//new

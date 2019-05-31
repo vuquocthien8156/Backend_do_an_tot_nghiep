@@ -62,13 +62,46 @@ class LoginRepository {
 
 	public function getLikedProduct($id) {
 		$result = DB::table('SanPhamYeuThich')->select(
-			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham'
-			 , 'so_lan_dat' , 'gia_vua' , 'gia_lon' , 'mo_ta' )
+			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham', 'so_lan_dat' , 'gia_vua' , 'gia_lon' , 'mo_ta' )
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
 		->where(['users.id' => $id, 'thich' => 1])->get();
 		return $result;
 	}
+
+	public function getAddressOrderUser($idAccount) {
+		$result = DB::table('SoDiaChi')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where(['ma_tai_khoan' => $idAccount ,'da_xoa' => 0])->get();
+		return $result;	
+	}
+
+	public function insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi , $so_dien_thoai , $chinh) {
+		if($chinh == 1){
+			DB::table('SoDiaChi')->update(['chinh' => 0]);
+		}
+		$result = DB::table('SoDiaChi')->insert([
+           'ma_tai_khoan' => $ma_tai_khoan,
+           'ten_nguoi_nhan' => $ten_nguoi_nhan,
+           'dia_chi' => $dia_chi,
+           'chinh' => $chinh,
+           'so_dien_thoai' => $so_dien_thoai,
+           'da_xoa' => 0,
+        ]);
+        return $result;	
+	}
+
+	public function updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh , $da_xoa) {
+		if($chinh == 1){
+			DB::table('SoDiaChi')->update(['chinh' => 0]);
+		}
+		$result = DB::table('SoDiaChi')->where(['id' => $id])
+		->update(['ten_nguoi_nhan' => $ten_nguoi_nhan,
+				  'dia_chi' => $dia_chi,
+				  'chinh' => $chinh,
+				  'so_dien_thoai' =>  $so_dien_thoai,
+				  'da_xoa' =>  $da_xoa]);
+		return $result;	
+	}
+
 
 	public function getLike() {
 		$result = DB::table('SanPhamYeuThich')->select('ma_san_pham', 'ma_khach_hang', 'thich')->get();
@@ -428,10 +461,9 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note) {
-		$result = DB::table('GioHang')->where(['ma_khach_hang' => $idCustomer, 'ma_gio_hang' => $idCart])
+	public function updateCartOfCustomer($idCart, $so_luong, $size, $note) {
+		$result = DB::table('GioHang')->where(['ma_gio_hang' => $idCart])
 		->update([
-			'ma_san_pham' => $ma_sp,
 			'so_luong' => $so_luong,
 			'kich_co' => $size,
 			'ghi_chu' => $note,

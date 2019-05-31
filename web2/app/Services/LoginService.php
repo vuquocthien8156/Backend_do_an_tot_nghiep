@@ -46,6 +46,20 @@ class LoginService {
 		return $this->loginRepository->getLikedProduct($id);	
 	}
 
+	public function getAddressOrderUser($idAccount) {
+		return $this->loginRepository->getAddressOrderUser($idAccount);	
+	}
+
+	public function insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh) {
+		return $this->loginRepository->insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh);	
+
+	}
+
+	public function updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi  ,  $so_dien_thoai , $chinh , $da_xoa) {
+		return $this->loginRepository->updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai ,  $chinh , $da_xoa);	
+	}
+
+
 	public function getLike() {
 		return $this->loginRepository->getLike();	
 	}
@@ -235,8 +249,8 @@ class LoginService {
     	return $this->loginRepository->updateTopping($ma_san_pham, $sl);
     }
 
-    public function updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note) {
-    	return $this->loginRepository->updateCartOfCustomer($idCustomer, $idCart, $ma_sp, $so_luong, $size, $note);
+    public function updateCartOfCustomer( $idCart,  $so_luong, $size, $note) {
+    	return $this->loginRepository->updateCartOfCustomer($idCart, $so_luong, $size, $note);
     }
 
     public function deleteToppingOfCart($idCart) {
