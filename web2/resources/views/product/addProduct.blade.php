@@ -6,7 +6,7 @@
 @section('body-content')
 	<div id="manage-add-product">
         <div class="row mt-5 pt-3">
-            <div style="padding-left: 2rem;margin-top:5%">
+            <div style="padding-left: 2rem;margin-top:3%">
                 <h4 class="tag-page-custom">
                     Thêm sản phẩm
                 </h4>

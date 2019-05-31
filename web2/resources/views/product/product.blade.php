@@ -6,7 +6,7 @@
 @section('body-content')
 	<div id="manage-product">
         <div class="row mt-5 pt-3">
-            <div style="padding-left: 2rem;margin-top:5%">
+            <div style="padding-left: 2rem;margin-top:3%">
                 <h4 class="tag-page-custom">
                     Quản lý tài khoản
                 </h4>
@@ -249,7 +249,7 @@
                         <td class="custom-view" v-if="item.daxoa == 1">Đã xóa</td>
                         <td class="custom-view" v-if="item.daxoa == 0">Đã kích hoạt</td>
                         <td class="custom-view"><p>
-                            <a href="#" class="btn_edit fa fa-cloud" @click="seeMoreDetail(item.ma_so, item.ten, item.ma_chu, item.ten_loai_sp, item.gia_san_pham, item.gia_vua, item. gia_lon, item.so_lan_dat, item.ngay_ra_mat, item.mo_ta, item.ma_loai_sp, item.hinh_san_pham);"></a>
+                            <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_so, item.ten, item.ma_chu, item.ten_loai_sp, item.gia_san_pham, item.gia_vua, item. gia_lon, item.so_lan_dat, item.ngay_ra_mat, item.mo_ta, item.ma_loai_sp, item.hinh_san_pham);"></a>
                             <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_so)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>
                     </tr>
                 </tbody>
