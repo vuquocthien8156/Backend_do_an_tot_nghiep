@@ -276,18 +276,43 @@ class LoginRepository {
         return $result;
 	}
 
-	public function getEvaluate() {
-		$result = DB::table('DanhGia')->select('ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where('da_xoa' , '=', 0)->get();
+	public function getEvaluate($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getChildEvaluate($id_SP, $id_Evaluate) {
-		$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where(['da_xoa' => 0, 'ma_sp' => $id_SP, 'parent_id' => $id_Evaluate])->get();
+	public function getEvaluate5($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 5, 'ma_sp' => $ma_san_pham])->count();
+        return $result;
+	}
+
+	public function getEvaluate4($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 4, 'ma_sp' => $ma_san_pham])->count();
+        return $result;
+	}
+
+	public function getEvaluate3($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 3, 'ma_sp' => $ma_san_pham])->count();
+        return $result;
+	}
+
+	public function getEvaluate2($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 2, 'ma_sp' => $ma_san_pham])->count();
+        return $result;
+	}
+
+	public function getEvaluate1($ma_san_pham, $page) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 1, 'ma_sp' => $ma_san_pham])->count();
+        return $result;
+	}
+
+	public function getChildEvaluate($ma_danh_gia, $page) {
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['da_xoa' => 0, 'ma_danh_gia' => $ma_danh_gia])->paginate(5);
         return $result;
 	}
 
 	public function getEvaluateOfProduct($id_SP) {
-		$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk','so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh', 'parent_id', 'duyet')->where(['da_xoa' => 0, 'ma_sp' => $id_SP])->get();
+		$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk','so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'hinh_anh')->where(['da_xoa' => 0, 'ma_sp' => $id_SP])->get();
         return $result;
 	}
 
@@ -310,8 +335,6 @@ class LoginRepository {
            'noi_dung' => $noi_dung,
            'thoi_gian' => $thoi_gian,
            'hinh_anh' => $hinh_anh,
-           'parent_id' => $parent_id,
-           'duyet' => 1,
            'da_xoa' => 0,
         ]);
         return $result;	
@@ -378,7 +401,7 @@ class LoginRepository {
 	}
 
 	public function getImg($ma_sp) {
-		 $result = DB::table('HinhAnh')->select('url')->where(['object_id' => $ma_sp, 'da_xoa' => 0])->get();
+		 $result = DB::table('HinhAnh')->select('url')->where(['object_id' => $ma_sp, 'da_xoa' => 0, 'kieu' => 1])->get();
 		return $result;
 	}
 
@@ -435,5 +458,38 @@ class LoginRepository {
 		$result = DB::table('GioHang')->where(['ma_gio_hang' => $ma_gio_hang])
 		->update(['so_luong' => $sl]);
 		return $result;
+	}
+
+	public function getlistEvaluate($ma_san_pham, $page) {
+		if ($page != null && $page != '') {
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'asc')->paginate(5);
+		}else {
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'desc')->limit(2)->get();
+		}
+		return $result;	
+	}
+
+	public function getThanhks($ma_danh_gia) {
+		$result = DB::table('CamOnDanhGia')->select('ma_danh_gia')->where(['ma_danh_gia' => $ma_danh_gia])->count();
+		return $result;
+	}
+
+	public function getImgEV($ma_danh_gia) {
+		$result = DB::table('HinhAnh')->select('url')->where(['object_id' => $ma_danh_gia, 'da_xoa' => 0, 'kieu' => 3])->get();
+		return $result;
+	}
+
+	public function listChild($ma_danh_gia) {
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['ma_danh_gia' => $ma_danh_gia, 'da_xoa' => 0])->get();
+		return $result;
+	}
+
+	public function getEvaluateOfCustomer($ma_kh) {
+		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['ma_tk' => $ma_kh, 'da_xoa' => 0])->get();
+		return $result;
+	}
+
+	public function getQuantityAndPrice($ma_gh) {
+		
 	}
 }

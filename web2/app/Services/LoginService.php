@@ -126,12 +126,32 @@ class LoginService {
 		return $this->loginRepository->getInfoCustomer($id_KH);
 	}
 
-	public function getEvaluate() {
-    	return $this->loginRepository->getEvaluate();
+	public function getEvaluate($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate($ma_san_pham, $page);
     }
 
-    public function getChildEvaluate($id_SP, $id_Evaluate) {
-    	return $this->loginRepository->getChildEvaluate($id_SP, $id_Evaluate);
+	public function getEvaluate5($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate5($ma_san_pham, $page);
+    }
+
+    public function getEvaluate4($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate4($ma_san_pham, $page);
+    }
+
+    public function getEvaluate3($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate3($ma_san_pham, $page);
+    }
+
+    public function getEvaluate2($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate2($ma_san_pham, $page);
+    }
+
+    public function getEvaluate1($ma_san_pham, $page) {
+    	return $this->loginRepository->getEvaluate1($ma_san_pham, $page);
+    }
+
+    public function getChildEvaluate($ma_danh_gia, $page) {
+    	return $this->loginRepository->getChildEvaluate($ma_danh_gia, $page);
     }
 
     public function getEvaluateOfProduct($id_SP) {
@@ -233,5 +253,29 @@ class LoginService {
 
     public function updateQuantityCart($ma_gio_hang, $sl) {
     	return $this->loginRepository->updateQuantityCart($ma_gio_hang, $sl);
+    }
+
+    public function getlistEvaluate($ma_san_pham, $page) {
+    	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page);
+    }
+
+    public function getThanhks($ma_danh_gia) {
+    	return $this->loginRepository->getThanhks($ma_danh_gia);
+    }
+
+    public function getImgEV($ma_danh_gia) {
+    	return $this->loginRepository->getImgEV($ma_danh_gia);
+    }
+
+    public function listChild($ma_danh_gia) {
+    	return $this->loginRepository->listChild($ma_danh_gia);
+    }
+
+    public function getEvaluateOfCustomer($ma_kh) {
+    	return $this->loginRepository->getEvaluateOfCustomer($ma_kh);
+    }
+
+    public function getQuantityAndPrice($ma_gh) {
+    	return $this->loginRepository->getQuantityAndPrice($ma_gh);
     }
 }

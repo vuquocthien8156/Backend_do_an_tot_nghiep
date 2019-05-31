@@ -419,16 +419,47 @@ class LoginController extends Controller {
     	return view('rule.rule');
     }
 
-    public function getEvaluate() {
-    	$getEvaluate = $this->loginService->getEvaluate();
-    	return response()->json(['status' => 'Success','list' =>  $getEvaluate]);
+    public function getEvaluate(Request $request) {
+    	$ma_san_pham = $request->get('ma_san_pham');
+    	$page = $request->get('page');
+    	$Evaluate = ['Vote'=>0, 'List'=>0];
+    	$vote = ['tong'=>0, 'namdiem'=>0, 'bondiem'=>0, 'badiem'=>0, 'haidiem'=>0, 'motdiem'=>0];
+    	$total = $this->loginService->getEvaluate($ma_san_pham, $page);
+    	$getEvaluate5 = $this->loginService->getEvaluate5($ma_san_pham, $page);
+    	$getEvaluate4 = $this->loginService->getEvaluate4($ma_san_pham, $page);
+    	$getEvaluate3 = $this->loginService->getEvaluate3($ma_san_pham, $page);
+    	$getEvaluate2 = $this->loginService->getEvaluate2($ma_san_pham, $page);
+    	$getEvaluate1 = $this->loginService->getEvaluate1($ma_san_pham, $page);
+    	$vote['tong'] = $total;
+    	$vote['namdiem'] = $getEvaluate5;
+    	$vote['bondiem'] = $getEvaluate4;
+    	$vote['badiem'] = $getEvaluate3;
+    	$vote['haidiem'] = $getEvaluate2;
+    	$vote['motdiem'] = $getEvaluate1;
+    	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
+    	for ($i=0; $i < count($getlist); $i++) { 
+    		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
+    		$getImg = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
+    		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
+    		$getlist[$i]->so_cam_on = $getThanhks;
+    		$getlist[$i]->Hinh_anh = $getImg;
+    		$getlist[$i]->danh_gia_con = $listChild;
+
+    	}
+    	if ($page != null && $page != '') {
+    		$Evaluate['Vote'] = $vote;
+    		$Evaluate['List'] = $getlist;
+    	}else {
+    		$Evaluate['List'] = $getlist;
+    	}
+    	return response()->json(['status' => 'Success','Danh_gia' =>  $Evaluate]);
 
     }
 
     public function getChildEvaluate(Request $request) {
-    	$id_SP = $request->get('id_SP');
-    	$id_Evaluate = $request->get('id_Evaluate');
-    	$getChildEvaluate = $this->loginService->getChildEvaluate($id_SP, $id_Evaluate);
+    	$ma_danh_gia = $request->get('ma_danh_gia');
+    	$page = $request->get('page');
+    	$getChildEvaluate = $this->loginService->getChildEvaluate($ma_danh_gia, $page);
     	return response()->json(['status' => 'Success','list' =>  $getChildEvaluate]);
 
     }
@@ -503,5 +534,23 @@ class LoginController extends Controller {
 					$getDetail[$j]->topping = $getTopping;
 			}	
     	return response()->json(['status' => 'Success','error' =>  0, 'Detail' => $getDetail]);
+    }
+
+    public function getChildImage(Request $request) {
+    	$ma_sp = $request->get('ma_san_pham');
+    	$listImg = $this->loginService->getImg($ma_sp);
+    	return response()->json(['status' => 'Success','error' =>  0, 'listImage' => $listImg]);
+    }
+
+    public function getEvaluateOfCustomer(Request $request) {
+    	$ma_kh = $request->get('ma_kh');
+    	$getEvaluateOfCustomer = $this->loginService->getEvaluateOfCustomer($ma_kh);
+    	return response()->json(['status' => 'Success','error' =>  0, 'list' => $getEvaluateOfCustomer]);
+    }
+
+    public function getQuantityAndPrice(Request $request) {
+    	$ma_gh = $request->get('ma_gh');
+    	$getQuantityAndPrice = $this->loginService->getQuantityAndPrice($ma_gh);
+    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getQuantityAndPrice]);
     }
 }

@@ -83,17 +83,21 @@ Route::post('api/add-cart', 'LoginController@addCart');
 Route::post('api/update-cart', 'LoginController@updateCart');
 Route::post('api/delete-cart', 'LoginController@deleteCart');
 Route::post('api/delete-all-cart-of-customer', 'LoginController@deleteCartCustomer');
-Route::post('api/cart/updateToppingCart', 'LoginController@updateToppingCart'); // new
+Route::post('api/cart/updateToppingCart', 'LoginController@updateToppingCart');
 Route::get('api/getCartOfCustomer', 'LoginController@getCartOfCustomer');
 
-Route::get('api/getEvaluate', 'LoginController@getEvaluate');
-Route::get('api/getChildEvaluate', 'LoginController@getChildEvaluate');
+Route::get('api/getEvaluate', 'LoginController@getEvaluate');//new
+Route::get('api/getChildEvaluate', 'LoginController@getChildEvaluate');//new
 
-Route::get('api/getBranch', 'LoginController@getBranch');//new
+Route::get('api/getBranch', 'LoginController@getBranch');
 
 Route::get('api/addEvaluate', 'LoginController@addEvaluate');
 
 Route::get('api/addThanks', 'LoginController@addThanks');
 
-Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder'); //new
-Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');//new
+Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
+Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
+
+Route::get('api/getChildImage', 'LoginController@getChildImage');//new
+Route::get('api/getEvaluateOfCustomer', 'LoginController@getEvaluateOfCustomer');//new
+Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//new
