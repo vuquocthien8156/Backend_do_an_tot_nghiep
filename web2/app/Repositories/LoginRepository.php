@@ -70,15 +70,15 @@ class LoginRepository {
 	}
 
 	public function getAddressOrderUser($idAccount) {
-		$result = DB::table('thongtingiaohang')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where(['ma_tai_khoan' => $idAccount ,'da_xoa' => 0])->get();
+		$result = DB::table('SoDiaChi')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where(['ma_tai_khoan' => $idAccount ,'da_xoa' => 0])->get();
 		return $result;	
 	}
 
 	public function insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi , $so_dien_thoai , $chinh) {
 		if($chinh == 1){
-			DB::table('thongtingiaohang')->update(['chinh' => 0]);
+			DB::table('SoDiaChi')->update(['chinh' => 0]);
 		}
-		$result = DB::table('thongtingiaohang')->insert([
+		$result = DB::table('SoDiaChi')->insert([
            'ma_tai_khoan' => $ma_tai_khoan,
            'ten_nguoi_nhan' => $ten_nguoi_nhan,
            'dia_chi' => $dia_chi,
@@ -91,9 +91,9 @@ class LoginRepository {
 
 	public function updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh , $da_xoa) {
 		if($chinh == 1){
-			DB::table('thongtingiaohang')->update(['chinh' => 0]);
+			DB::table('SoDiaChi')->update(['chinh' => 0]);
 		}
-		$result = DB::table('thongtingiaohang')->where(['id' => $id])
+		$result = DB::table('SoDiaChi')->where(['id' => $id])
 		->update(['ten_nguoi_nhan' => $ten_nguoi_nhan,
 				  'dia_chi' => $dia_chi,
 				  'chinh' => $chinh,
