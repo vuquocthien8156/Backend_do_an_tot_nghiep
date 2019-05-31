@@ -21,9 +21,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         {{--<link rel="stylesheet" href="/css/glyphicons/glyphicons.css" type="text/css"/>--}}
-       <!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
         <!-- <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-        <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"> -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}" type="text/css"/>
         <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -60,7 +60,18 @@
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
                                     <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
-                                    <a class="dropdown-item" href="">Danh sách loại sản phẩm</a>
+                                    <!-- <a class="dropdown-item" href="">Danh sách loại sản phẩm</a> -->
+                                </div>
+                            </li>
+                            <li class="nav-item d-none d-lg-block dropdown">
+                                    <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                                        style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       CHI NHÁNH
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">Xem danh sách</a>
+                                    <!-- <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a> -->
+                                    <!-- <a class="dropdown-item" href="">Danh sách loại sản phẩm</a> -->
                                 </div>
                             </li>
                         </ul>
