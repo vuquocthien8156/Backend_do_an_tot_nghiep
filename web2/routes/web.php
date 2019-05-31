@@ -99,5 +99,4 @@ Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
 
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
-Route::get('api/getEvaluateOfCustomer', 'LoginController@getEvaluateOfCustomer');//new
 Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//new

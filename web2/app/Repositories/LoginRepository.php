@@ -484,8 +484,8 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getEvaluateOfCustomer($ma_kh) {
-		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['ma_tk' => $ma_kh, 'da_xoa' => 0])->get();
+	public function getThankYouOfCustomer($ma_kh) {
+		$result = DB::table('CamOnDanhGia')->select('ma_danh_gia')->where(['ma_kh' => $ma_kh])->get();
 		return $result;
 	}
 

@@ -271,8 +271,8 @@ class LoginService {
     	return $this->loginRepository->listChild($ma_danh_gia);
     }
 
-    public function getEvaluateOfCustomer($ma_kh) {
-    	return $this->loginRepository->getEvaluateOfCustomer($ma_kh);
+    public function getThankYouOfCustomer($ma_kh) {
+    	return $this->loginRepository->getThankYouOfCustomer($ma_kh);
     }
 
     public function getQuantityAndPrice($ma_gh) {

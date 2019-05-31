@@ -421,9 +421,12 @@ class LoginController extends Controller {
 
     public function getEvaluate(Request $request) {
     	$ma_san_pham = $request->get('ma_san_pham');
+    	$ma_kh = $request->get('ma_kh');
     	$page = $request->get('page');
-    	$Evaluate = ['Vote'=>0, 'List'=>0];
-    	$vote = ['tong'=>0, 'namdiem'=>0, 'bondiem'=>0, 'badiem'=>0, 'haidiem'=>0, 'motdiem'=>0];
+    	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'ListThank'=>null, 'ListImg'=>null];
+    	$vote = ['tong'=>null, 'namdiem'=>null, 'bondiem'=>null, 'badiem'=>null, 'haidiem'=>null, 'motdiem'=>null];
+    	$getEvaluateOfCustomer = $this->loginService->getThankYouOfCustomer($ma_kh);
+    	$getImg = $this->loginService->getImg($ma_san_pham);
     	$total = $this->loginService->getEvaluate($ma_san_pham, $page);
     	$getEvaluate5 = $this->loginService->getEvaluate5($ma_san_pham, $page);
     	$getEvaluate4 = $this->loginService->getEvaluate4($ma_san_pham, $page);
@@ -448,9 +451,11 @@ class LoginController extends Controller {
     	}
     	if ($page != null && $page != '') {
     		$Evaluate['Vote'] = $vote;
-    		$Evaluate['List'] = $getlist;
+    		$Evaluate['ListEv'] = $getlist;
+    		$Evaluate['ListThank'] = $getEvaluateOfCustomer;
+    		$Evaluate['ListImg'] = $getImg;
     	}else {
-    		$Evaluate['List'] = $getlist;
+    		$Evaluate['ListEv'] = $getlist;
     	}
     	return response()->json(['status' => 'Success','Danh_gia' =>  $Evaluate]);
 
@@ -542,9 +547,9 @@ class LoginController extends Controller {
     	return response()->json(['status' => 'Success','error' =>  0, 'listImage' => $listImg]);
     }
 
-    public function getEvaluateOfCustomer(Request $request) {
+    public function getThankYouOfCustomer(Request $request) {
     	$ma_kh = $request->get('ma_kh');
-    	$getEvaluateOfCustomer = $this->loginService->getEvaluateOfCustomer($ma_kh);
+    	$getEvaluateOfCustomer = $this->loginService->getThankYouOfCustomer($ma_kh);
     	return response()->json(['status' => 'Success','error' =>  0, 'list' => $getEvaluateOfCustomer]);
     }
 
