@@ -88,3 +88,7 @@ Route::get('api/addThanks', 'LoginController@addThanks');
 
 Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder'); //new
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');//new
+
+Route::get('api/getAllAddressByUser', 'LoginController@getAddressOrderUser');//new
+Route::post('api/insertAddressOrder', 'LoginController@insertAddresOrderUser');
+Route::post('api/updateAddressOrder', 'LoginController@updateAddresOrderUser');
