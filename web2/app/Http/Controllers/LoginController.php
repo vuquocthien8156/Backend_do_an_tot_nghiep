@@ -418,8 +418,16 @@ class LoginController extends Controller {
     	$page = $request->get('page');
     	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'ListThank'=>null, 'ListImg'=>null];
     	$vote = ['tong'=>null, 'namdiem'=>null, 'bondiem'=>null, 'badiem'=>null, 'haidiem'=>null, 'motdiem'=>null];
-    	$getEvaluateOfCustomer = $this->loginService->getThankYouOfCustomer($ma_kh);
-    	$getImg = $this->loginService->getImg($ma_san_pham);
+    	$getEvaluateOfCustomer = [];
+    	$getEvaluateOfCustomerTemp = $this->loginService->getThankYouOfCustomer($ma_kh);
+    	for ($i=0; $i < count($getEvaluateOfCustomerTemp); $i++) { 
+    		array_push($getEvaluateOfCustomer, $getEvaluateOfCustomerTemp[$i]->ma_danh_gia);
+    	}
+    	$getImg = [];
+    	$getImgTemp = $this->loginService->getImg($ma_san_pham);
+    	for ($i=0; $i < count($getImgTemp); $i++) { 
+    		array_push($getImg, $getImgTemp[$i]->url);
+    	}
     	$total = $this->loginService->getEvaluate($ma_san_pham, $page);
     	$getEvaluate5 = $this->loginService->getEvaluate5($ma_san_pham, $page);
     	$getEvaluate4 = $this->loginService->getEvaluate4($ma_san_pham, $page);
@@ -432,25 +440,33 @@ class LoginController extends Controller {
     	$vote['badiem'] = $getEvaluate3;
     	$vote['haidiem'] = $getEvaluate2;
     	$vote['motdiem'] = $getEvaluate1;
+    	$getImgEv = [];
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
     	for ($i=0; $i < count($getlist); $i++) { 
     		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
-    		$getImg1 = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
+    		$getImgEvTemp = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
+    		for ($i=0; $i < count($getImgEvTemp); $i++) { 
+    			array_push($getImgEv, $getImgEvTemp[$i]->url);
+    		}
     		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
     		$getlist[$i]->so_cam_on = $getThanhks;
-    		$getlist[$i]->Hinh_anh = $getImg1;
+    		$getlist[$i]->Hinh_anh = $getImgEv;
     		$getlist[$i]->danh_gia_con = $listChild;
 
     	}
-    	if ($page != null && $page != '') {
-    		$Evaluate['Vote'] = $vote;
-    		$Evaluate['ListEv'] = $getlist;
-    		$Evaluate['ListThank'] = $getEvaluateOfCustomer;
-    		$Evaluate['ListImg'] = $getImg;
-    	}else {
-    		$Evaluate['ListEv'] = $getlist;
+    	$getlistEv = [];
+    	for ($i=0; $i < count($getlist); $i++) { 
+    		array_push($getlistEv, $getlist[$i]);
     	}
-    	return response()->json(['status' => 'Success','Danh_gia' =>  $Evaluate]);
+    	if ($page != null && $page != '') {
+    		$Evaluate['ListEv'] = $getlistEv;
+    		return response()->json(['status' => 'Success','obj' =>  $Evaluate]);
+    	}
+    	$Evaluate['Vote'] = $vote;
+    	$Evaluate['ListEv'] = $getlistEv;
+    	$Evaluate['ListThank'] = $getEvaluateOfCustomer;
+    	$Evaluate['ListImg'] = $getImg;
+    	return response()->json(['status' => 'Success','obj' => $Evaluate]);
 
     }
 
@@ -494,21 +510,20 @@ class LoginController extends Controller {
     	$tieu_de = $request->get('tieu_de'); 
     	$noi_dung = $request->get('noi_dung');
     	$thoi_gian = $request->get('thoi_gian');
-    	$hinh_anh = $request->get('hinh_anh');
-    	$parent_id = $request->get('parent_id');
-    	if ($request->file('hinh_anh') != null || $request->file('hinh_anh') != '') {
-                $subName = 'user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
-                $destinationPath = config('app.resource_physical_path');
-                $pathToResource = config('app.resource_url_path');
-                $filename =  $subName . '/' . $request->file('hinh_anh')->getClientOriginalName();
-                $check = $request->file('hinh_anh')->move($destinationPath.'/'.$subName, $filename);
-                if (!file_exists($check)) {
-                    return \Response::json(false);
-                }
-                $hinh_anh = $filename;
-        }
-    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id);
+    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian);
     	if ($addEvaluate == true) {
+    		return response()->json(['status' => 'Success','error' =>  0]);
+    	}
+    	return response()->json(['status' => 'Fail','error' =>  1]);
+    }
+
+    public function addChildEvaluate(Request $request) {
+    	$id_Evaluate = $request->get('ma_danh_gia');
+    	$id_tk = $request->get('ma_tk');
+    	$noi_dung = $request->get('noi_dung');
+    	$thoi_gian = $request->get('thoi_gian');
+    	$addChildEvaluate = $this->loginService->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian);
+    	if ($addChildEvaluate == true) {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	}
     	return response()->json(['status' => 'Fail','error' =>  1]);
@@ -586,15 +601,55 @@ class LoginController extends Controller {
 
     public function getQuantityAndPrice(Request $request) {
     	$ma_kh = $request->get('ma_kh');
+    	$TotalCart = 0;
     	$getTotalQuantity = $this->loginService->getQuantityAndPrice($ma_kh);
     	$getSp = $this->loginService->getSp($ma_kh);
     	for ($i=0; $i < count($getSp); $i++) {
     		$getSLTP = $this->loginService->getSLTP($getSp[$i]->ma_gio_hang);
+    		for ($y=0; $y < count($getSLTP); $y++) { 
+    			$PriceTopping = $getSLTP[$y]->gia_san_pham*$getSLTP[$y]->so_luong;
+    			$getSLTP[$y]->total = $PriceTopping;
+    		}
+    		$totalTopping = 0;
+    		for ($e=0; $e < count($getSLTP); $e++) { 
+    			$totalTopping += $getSLTP[$e]->total;
+    		}
     		if ($getSp[$i]->kich_co == 'L') {
-    			$getSL = $this->loginService->getSLSP($getSp[$i]->ma_gio_hang);
-    			$getSp[$i]->a = $getSL;
+    			$getSL = $this->loginService->getSLSP($getSp[$i]->ma_gio_hang, $getSp[$i]->kich_co);
+    			for ($z=0; $z < count($getSL); $z++) { 
+    				$PriceSP = $getSL[$z]->gia_lon;
+    				$getSL[$z]->gia_lon = $PriceSP;
+    				$getSp[$i]->gia_lon = $getSL[$z]->gia_lon;
+    			}
+    			$getSp[$i]->totalTopping = $totalTopping;
+    			$getSp[$i]->Total = ($getSp[$i]->totalTopping + $getSp[$i]->gia_lon)*$getSp[$i]->so_luong;
+    			$TotalCart += $getSp[$i]->Total;
+    		}
+    		if ($getSp[$i]->kich_co == 'S') {
+    			$getSL = $this->loginService->getSLSP($getSp[$i]->ma_gio_hang, $getSp[$i]->kich_co);
+    			for ($z=0; $z < count($getSL); $z++) { 
+    				$PriceSP = $getSL[$z]->gia_san_pham;
+    				$getSL[$z]->gia_lon = $PriceSP;
+    				$getSp[$i]->gia_lon = $getSL[$z]->gia_lon;
+    			}
+    			$getSp[$i]->totalTopping = $totalTopping;
+    			$getSp[$i]->Total = ($getSp[$i]->totalTopping + $getSp[$i]->gia_lon)*$getSp[$i]->so_luong;
+    			$TotalCart += $getSp[$i]->Total;
+    		}
+    		if ($getSp[$i]->kich_co == 'M') {
+    			$getSL = $this->loginService->getSLSP($getSp[$i]->ma_gio_hang, $getSp[$i]->kich_co);
+    			for ($z=0; $z < count($getSL); $z++) { 
+    				$PriceSP = $getSL[$z]->gia_vua;
+    				$getSL[$z]->gia_lon = $PriceSP;
+    				$getSp[$i]->gia_lon = $getSL[$z]->gia_lon;
+    			}
+    			$getSp[$i]->totalTopping = $totalTopping;
+    			$getSp[$i]->Total = ($getSp[$i]->totalTopping + $getSp[$i]->gia_lon)*$getSp[$i]->so_luong;
+    			$TotalCart += $getSp[$i]->Total;
     		}
     	}
-    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getSLTP]);
+    	$getInfo['TotalCart'] = $TotalCart;
+    	$getInfo['TotalQuantity'] = $getTotalQuantity;
+    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getInfo]);
     }
 }

@@ -180,8 +180,12 @@ class LoginService {
     	return $this->loginRepository->getBranch($id_place);
     }
 
-    public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id){
-    	return $this->loginRepository->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id);
+    public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian){
+    	return $this->loginRepository->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian);
+    }
+
+    public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian) {
+        return $this->loginRepository->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian);
     }
 
     public function addThanks($id_Evaluate, $id_KH) {
@@ -301,7 +305,7 @@ class LoginService {
         return $this->loginRepository->getSLTP($ma_gio_hang);   
     }
 
-    public function getSLSP($ma_gio_hang) {
-        return $this->loginRepository->getSLSP($ma_gio_hang);   
+    public function getSLSP($ma_gio_hang, $kich_co) {
+        return $this->loginRepository->getSLSP($ma_gio_hang, $kich_co);   
     }
 }

@@ -340,7 +340,10 @@ class LoginRepository {
 	}
 
 	public function getChildEvaluate($ma_danh_gia, $page) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['da_xoa' => 0, 'ma_danh_gia' => $ma_danh_gia])->paginate(5);
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		->leftjoin('users', 'ma_tk', '=', 'id')
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
+		->paginate(5);
         return $result;
 	}
 
@@ -359,7 +362,7 @@ class LoginRepository {
         return $result;
 	}
 
-	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id) {
+	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian) {
 		$result = DB::table('DanhGia')->insert([
            'ma_tk' => $id_tk,
            'ma_sp' => $id_sp,
@@ -367,7 +370,17 @@ class LoginRepository {
            'tieu_de' => $tieu_de,
            'noi_dung' => $noi_dung,
            'thoi_gian' => $thoi_gian,
-           'hinh_anh' => $hinh_anh,
+           'da_xoa' => 0,
+        ]);
+        return $result;	
+	}
+
+	public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian) {
+		$result = DB::table('DanhGia')->insert([
+           'ma_danh_gia' => $id_Evaluate,
+           'ma_tk' => $id_tk,
+           'noi_dung' => $noi_dung,
+           'thoi_gian' => $thoi_gian,
            'da_xoa' => 0,
         ]);
         return $result;	
@@ -494,9 +507,15 @@ class LoginRepository {
 
 	public function getlistEvaluate($ma_san_pham, $page) {
 		if ($page != null && $page != '') {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'asc')->paginate(5);
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			->leftjoin('users', 'ma_tk', '=', 'id')
+			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
+			->orderBy('ma_danh_gia', 'asc')->paginate(5);
 		}else {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'desc')->limit(2)->get();
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			->leftjoin('users', 'ma_tk', '=', 'id')
+			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
+			->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		}
 		return $result;	
 	}
@@ -512,7 +531,10 @@ class LoginRepository {
 	}
 
 	public function listChild($ma_danh_gia) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['ma_danh_gia' => $ma_danh_gia, 'da_xoa' => 0])->get();
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		->leftjoin('users', 'ma_tk', '=', 'id')
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
+		->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		return $result;
 	}
 
@@ -532,12 +554,22 @@ class LoginRepository {
 	}
 
 	public function getSLTP($ma_gio_hang) {
-		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong', 'gia_san_pham')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
 		return $result;
 	}	
 
-	public function getSLSP($ma_gio_hang) {
-		$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_lon')->leftjoin( 'SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
-		return $result;
+	public function getSLSP($ma_gio_hang, $kich_co) {
+		if ($kich_co == 'S') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_san_pham')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
+		if ($kich_co == 'M') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_vua')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
+		if ($kich_co == 'L') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_lon')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
 	}	
 }
