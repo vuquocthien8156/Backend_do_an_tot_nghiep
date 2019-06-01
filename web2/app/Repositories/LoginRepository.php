@@ -521,7 +521,23 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getQuantityAndPrice($ma_gh) {
-		
+	public function getQuantityAndPrice($ma_kh) {
+		$result = DB::table('GioHang')->where(['ma_khach_hang' => $ma_kh])->sum('so_luong');
+		return $result;
 	}
+
+	public function getSp($ma_kh) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong', 'kich_co')->where(['ma_khach_hang' => $ma_kh])->get();
+		return $result;
+	}
+
+	public function getSLTP($ma_gio_hang) {
+		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		return $result;
+	}	
+
+	public function getSLSP($ma_gio_hang) {
+		$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_lon')->leftjoin( 'SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		return $result;
+	}	
 }

@@ -289,7 +289,19 @@ class LoginService {
     	return $this->loginRepository->getThankYouOfCustomer($ma_kh);
     }
 
-    public function getQuantityAndPrice($ma_gh) {
-    	return $this->loginRepository->getQuantityAndPrice($ma_gh);
+    public function getQuantityAndPrice($ma_kh) {
+    	return $this->loginRepository->getQuantityAndPrice($ma_kh);
+    }
+
+    public function getSp($ma_kh){
+        return $this->loginRepository->getSp($ma_kh);
+    }
+
+    public function getSLTP($ma_gio_hang) {
+        return $this->loginRepository->getSLTP($ma_gio_hang);   
+    }
+
+    public function getSLSP($ma_gio_hang) {
+        return $this->loginRepository->getSLSP($ma_gio_hang);   
     }
 }

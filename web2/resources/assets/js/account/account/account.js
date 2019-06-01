@@ -77,7 +77,6 @@ const app = new Vue({
             }
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
-            console.log(avatar);
             $("#avatarcollector_edit").attr('src', 'http://localhost:8888/images/' + avatar);
             $("#id_user").val(id);
             $("#ten").val(ten);

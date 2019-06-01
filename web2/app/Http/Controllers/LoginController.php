@@ -435,10 +435,10 @@ class LoginController extends Controller {
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
     	for ($i=0; $i < count($getlist); $i++) { 
     		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
-    		$getImg = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
+    		$getImg1 = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
     		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
     		$getlist[$i]->so_cam_on = $getThanhks;
-    		$getlist[$i]->Hinh_anh = $getImg;
+    		$getlist[$i]->Hinh_anh = $getImg1;
     		$getlist[$i]->danh_gia_con = $listChild;
 
     	}
@@ -585,8 +585,16 @@ class LoginController extends Controller {
     }
 
     public function getQuantityAndPrice(Request $request) {
-    	$ma_gh = $request->get('ma_gh');
-    	$getQuantityAndPrice = $this->loginService->getQuantityAndPrice($ma_gh);
-    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getQuantityAndPrice]);
+    	$ma_kh = $request->get('ma_kh');
+    	$getTotalQuantity = $this->loginService->getQuantityAndPrice($ma_kh);
+    	$getSp = $this->loginService->getSp($ma_kh);
+    	for ($i=0; $i < count($getSp); $i++) {
+    		$getSLTP = $this->loginService->getSLTP($getSp[$i]->ma_gio_hang);
+    		if ($getSp[$i]->kich_co == 'L') {
+    			$getSL = $this->loginService->getSLSP($getSp[$i]->ma_gio_hang);
+    			$getSp[$i]->a = $getSL;
+    		}
+    	}
+    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getSLTP]);
     }
 }
