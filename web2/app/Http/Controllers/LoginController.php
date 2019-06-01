@@ -435,22 +435,28 @@ class LoginController extends Controller {
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
     	for ($i=0; $i < count($getlist); $i++) { 
     		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
-    		$getImg = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
+    		$getImgEv = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
     		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
     		$getlist[$i]->so_cam_on = $getThanhks;
-    		$getlist[$i]->Hinh_anh = $getImg;
+    		$getlist[$i]->Hinh_anh = array_map(function ($prod) {
+													    return $prod->url;
+													}, $getImgEv->toArray());
     		$getlist[$i]->danh_gia_con = $listChild;
 
     	}
     	if ($page != null && $page != '') {
+    		$Evaluate['ListEv'] = $getlist;
+    	}else {
     		$Evaluate['Vote'] = $vote;
     		$Evaluate['ListEv'] = $getlist;
-    		$Evaluate['ListThank'] = $getEvaluateOfCustomer;
-    		$Evaluate['ListImg'] = $getImg;
-    	}else {
-    		$Evaluate['ListEv'] = $getlist;
+    		$Evaluate['ListThank'] = array_map(function ($prod) {
+													    return $prod->ma_danh_gia;
+													}, $getEvaluateOfCustomer->toArray());
+    		$Evaluate['ListImg'] = array_map(function ($prod) {
+													    return $prod->url;
+													}, $getImg->toArray());
     	}
-    	return response()->json(['status' => 'Success','Danh_gia' =>  $Evaluate]);
+    	return response()->json(['status' => 'Success','data' =>  $Evaluate]);
 
     }
 

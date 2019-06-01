@@ -340,7 +340,7 @@ class LoginRepository {
 	}
 
 	public function getChildEvaluate($ma_danh_gia, $page) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['da_xoa' => 0, 'ma_danh_gia' => $ma_danh_gia])->paginate(5);
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet' , 'thoi_gian')->where(['da_xoa' => 0, 'ma_danh_gia' => $ma_danh_gia])->paginate(5);
         return $result;
 	}
 
@@ -494,9 +494,15 @@ class LoginRepository {
 
 	public function getlistEvaluate($ma_san_pham, $page) {
 		if ($page != null && $page != '') {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'asc')->paginate(5);
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			->leftjoin('users', 'ma_tk', '=', 'id')
+			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
+			->orderBy('ma_danh_gia', 'asc')->paginate(5);
 		}else {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')->where(['ma_sp' => $ma_san_pham])->orderBy('ma_danh_gia', 'desc')->limit(2)->get();
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			->leftjoin('users', 'ma_tk', '=', 'id')
+			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
+			->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		}
 		return $result;	
 	}
@@ -512,7 +518,10 @@ class LoginRepository {
 	}
 
 	public function listChild($ma_danh_gia) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet')->where(['ma_danh_gia' => $ma_danh_gia, 'da_xoa' => 0])->get();
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		->leftjoin('users', 'ma_tk', '=', 'id')
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
+		->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		return $result;
 	}
 
