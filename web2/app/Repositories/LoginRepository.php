@@ -340,7 +340,10 @@ class LoginRepository {
 	}
 
 	public function getChildEvaluate($ma_danh_gia, $page) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'noi_dung', 'duyet' , 'thoi_gian')->where(['da_xoa' => 0, 'ma_danh_gia' => $ma_danh_gia])->paginate(5);
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		->leftjoin('users', 'ma_tk', '=', 'id')
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
+		->paginate(5);
         return $result;
 	}
 
