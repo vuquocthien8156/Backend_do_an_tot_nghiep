@@ -92,6 +92,7 @@ Route::get('api/getChildEvaluate', 'LoginController@getChildEvaluate');//new
 Route::get('api/getBranch', 'LoginController@getBranch');
 
 Route::get('api/addEvaluate', 'LoginController@addEvaluate');
+Route::get('api/addChildEvaluate', 'LoginController@addChildEvaluate');
 
 Route::get('api/addThanks', 'LoginController@addThanks');
 

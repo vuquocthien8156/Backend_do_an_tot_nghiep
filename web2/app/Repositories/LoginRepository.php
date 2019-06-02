@@ -362,7 +362,7 @@ class LoginRepository {
         return $result;
 	}
 
-	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian, $hinh_anh, $parent_id) {
+	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian) {
 		$result = DB::table('DanhGia')->insert([
            'ma_tk' => $id_tk,
            'ma_sp' => $id_sp,
@@ -370,7 +370,17 @@ class LoginRepository {
            'tieu_de' => $tieu_de,
            'noi_dung' => $noi_dung,
            'thoi_gian' => $thoi_gian,
-           'hinh_anh' => $hinh_anh,
+           'da_xoa' => 0,
+        ]);
+        return $result;	
+	}
+
+	public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian) {
+		$result = DB::table('DanhGia')->insert([
+           'ma_danh_gia' => $id_Evaluate,
+           'ma_tk' => $id_tk,
+           'noi_dung' => $noi_dung,
+           'thoi_gian' => $thoi_gian,
            'da_xoa' => 0,
         ]);
         return $result;	
@@ -533,7 +543,33 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getQuantityAndPrice($ma_gh) {
-		
+	public function getQuantityAndPrice($ma_kh) {
+		$result = DB::table('GioHang')->where(['ma_khach_hang' => $ma_kh])->sum('so_luong');
+		return $result;
 	}
+
+	public function getSp($ma_kh) {
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong', 'kich_co')->where(['ma_khach_hang' => $ma_kh])->get();
+		return $result;
+	}
+
+	public function getSLTP($ma_gio_hang) {
+		$result = DB::table('ChiTietGiohang')->select('ma_gio_hang', 'ma_san_pham', 'so_luong', 'gia_san_pham')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+		return $result;
+	}	
+
+	public function getSLSP($ma_gio_hang, $kich_co) {
+		if ($kich_co == 'S') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_san_pham')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
+		if ($kich_co == 'M') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_vua')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
+		if ($kich_co == 'L') {
+			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_lon')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
+			return $result;
+		}
+	}	
 }
