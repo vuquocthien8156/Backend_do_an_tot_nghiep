@@ -309,32 +309,32 @@ class LoginRepository {
         return $result;
 	}
 
-	public function getEvaluate($ma_san_pham, $page) {
+	public function getEvaluate($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getEvaluate5($ma_san_pham, $page) {
+	public function getEvaluate5($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 5, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getEvaluate4($ma_san_pham, $page) {
+	public function getEvaluate4($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 4, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getEvaluate3($ma_san_pham, $page) {
+	public function getEvaluate3($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 3, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getEvaluate2($ma_san_pham, $page) {
+	public function getEvaluate2($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 2, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}
 
-	public function getEvaluate1($ma_san_pham, $page) {
+	public function getEvaluate1($ma_san_pham) {
 		$result = DB::table('DanhGia')->select('ma_danh_gia')->where(['da_xoa' => 0, 'so_diem' => 1, 'ma_sp' => $ma_san_pham])->count();
         return $result;
 	}

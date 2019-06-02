@@ -428,12 +428,12 @@ class LoginController extends Controller {
     	for ($i=0; $i < count($getImgTemp); $i++) { 
     		array_push($getImg, $getImgTemp[$i]->url);
     	}
-    	$total = $this->loginService->getEvaluate($ma_san_pham, $page);
-    	$getEvaluate5 = $this->loginService->getEvaluate5($ma_san_pham, $page);
-    	$getEvaluate4 = $this->loginService->getEvaluate4($ma_san_pham, $page);
-    	$getEvaluate3 = $this->loginService->getEvaluate3($ma_san_pham, $page);
-    	$getEvaluate2 = $this->loginService->getEvaluate2($ma_san_pham, $page);
-    	$getEvaluate1 = $this->loginService->getEvaluate1($ma_san_pham, $page);
+    	$total = $this->loginService->getEvaluate($ma_san_pham);
+    	$getEvaluate5 = $this->loginService->getEvaluate5($ma_san_pham);
+    	$getEvaluate4 = $this->loginService->getEvaluate4($ma_san_pham);
+    	$getEvaluate3 = $this->loginService->getEvaluate3($ma_san_pham);
+    	$getEvaluate2 = $this->loginService->getEvaluate2($ma_san_pham);
+    	$getEvaluate1 = $this->loginService->getEvaluate1($ma_san_pham);
     	$vote['tong'] = $total;
     	$vote['namdiem'] = $getEvaluate5;
     	$vote['bondiem'] = $getEvaluate4;
@@ -442,21 +442,21 @@ class LoginController extends Controller {
     	$vote['motdiem'] = $getEvaluate1;
     	$getImgEv = [];
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
+    	$getlistEv = [];
+    	for ($i=0; $i < count($getlist); $i++) { 
+    		array_push($getlistEv, $getlist[$i]);
+    	}
     	for ($i=0; $i < count($getlist); $i++) { 
     		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
     		$getImgEvTemp = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
-    		for ($i=0; $i < count($getImgEvTemp); $i++) { 
-    			array_push($getImgEv, $getImgEvTemp[$i]->url);
+    		for ($g=0; $g < count($getImgEvTemp); $g++) { 
+    			array_push($getImgEv, $getImgEvTemp[$g]->url);
     		}
     		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
     		$getlist[$i]->so_cam_on = $getThanhks;
     		$getlist[$i]->Hinh_anh = $getImgEv;
     		$getlist[$i]->danh_gia_con = $listChild;
 
-    	}
-    	$getlistEv = [];
-    	for ($i=0; $i < count($getlist); $i++) { 
-    		array_push($getlistEv, $getlist[$i]);
     	}
     	if ($page != null && $page != '') {
     		$Evaluate['ListEv'] = $getlistEv;
@@ -473,8 +473,12 @@ class LoginController extends Controller {
     public function getChildEvaluate(Request $request) {
     	$ma_danh_gia = $request->get('ma_danh_gia');
     	$page = $request->get('page');
+    	$list = [];
     	$getChildEvaluate = $this->loginService->getChildEvaluate($ma_danh_gia, $page);
-    	return response()->json(['status' => 'Success','list' =>  $getChildEvaluate]);
+    	for ($i=0; $i < count($getChildEvaluate); $i++) { 
+    		array_push($list, $getChildEvaluate[$i]);
+    	}
+    	return response()->json(['status' => 'Success', 'error' => 0,'list' =>  $list]);
 
     }
 

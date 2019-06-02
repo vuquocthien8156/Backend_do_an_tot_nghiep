@@ -91,10 +91,10 @@ Route::get('api/getChildEvaluate', 'LoginController@getChildEvaluate');//new
 
 Route::get('api/getBranch', 'LoginController@getBranch');
 
-Route::get('api/addEvaluate', 'LoginController@addEvaluate');
-Route::get('api/addChildEvaluate', 'LoginController@addChildEvaluate');
+Route::post('api/addEvaluate', 'LoginController@addEvaluate');
+Route::post('api/addChildEvaluate', 'LoginController@addChildEvaluate');
 
-Route::get('api/addThanks', 'LoginController@addThanks');
+Route::post('api/addThanks', 'LoginController@addThanks');
 
 
 Route::get('api/getAllAddressByUser', 'LoginController@getAddressOrderUser');

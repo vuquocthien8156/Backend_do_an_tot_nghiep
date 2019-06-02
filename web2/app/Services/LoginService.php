@@ -140,28 +140,28 @@ class LoginService {
 		return $this->loginRepository->getInfoCustomer($id_KH);
 	}
 
-	public function getEvaluate($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate($ma_san_pham, $page);
+	public function getEvaluate($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate($ma_san_pham);
     }
 
-	public function getEvaluate5($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate5($ma_san_pham, $page);
+	public function getEvaluate5($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate5($ma_san_pham);
     }
 
-    public function getEvaluate4($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate4($ma_san_pham, $page);
+    public function getEvaluate4($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate4($ma_san_pham);
     }
 
-    public function getEvaluate3($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate3($ma_san_pham, $page);
+    public function getEvaluate3($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate3($ma_san_pham);
     }
 
-    public function getEvaluate2($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate2($ma_san_pham, $page);
+    public function getEvaluate2($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate2($ma_san_pham);
     }
 
-    public function getEvaluate1($ma_san_pham, $page) {
-    	return $this->loginRepository->getEvaluate1($ma_san_pham, $page);
+    public function getEvaluate1($ma_san_pham) {
+    	return $this->loginRepository->getEvaluate1($ma_san_pham);
     }
 
     public function getChildEvaluate($ma_danh_gia, $page) {
