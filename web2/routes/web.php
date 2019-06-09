@@ -57,8 +57,10 @@ Route::post('api/login' , 'LoginController@loginAPI');
 Route::get('api/getInfoByEmail' , 'LoginController@getInfoByEmail');
 Route::post('api/login-by-phone', 'LoginController@loginsdtAPI');
 Route::get('api/checkLoginExist', 'LoginController@check');
+Route::post('api/updatePhone', 'LoginController@updateNumberPhone');
 
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
+Route::post('api/changePassword', 'LoginController@updatePassword');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 
 // Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin

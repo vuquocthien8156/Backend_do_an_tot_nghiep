@@ -260,7 +260,7 @@ class LoginController extends Controller {
         for ($i=0; $i < count($list); $i++) { 
              $list[$i]->pathToResource = $pathToResource;
         }
-		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);
+		return response()->json(['status' => 'Success', 'error' => 0, 'listNews'=>$list]);
     }
 
     public function productType (Request $request) {
@@ -416,12 +416,12 @@ class LoginController extends Controller {
     	$ma_san_pham = $request->get('ma_san_pham');
     	$ma_kh = $request->get('ma_kh');
     	$page = $request->get('page');
-    	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'ListThank'=>null, 'ListImg'=>null];
+    	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'list_thank'=>null, 'ListImg'=>null];
     	$vote = ['tong'=>null, 'namdiem'=>null, 'bondiem'=>null, 'badiem'=>null, 'haidiem'=>null, 'motdiem'=>null];
     	$getEvaluateOfCustomer = [];
     	$getEvaluateOfCustomerTemp = $this->loginService->getThankYouOfCustomer($ma_kh);
     	for ($i=0; $i < count($getEvaluateOfCustomerTemp); $i++) { 
-    		array_push($getEvaluateOfCustomer, $getEvaluateOfCustomerTemp[$i]->ma_danh_gia);
+    		array_push($getEvaluateOfCustomer, (string) $getEvaluateOfCustomerTemp[$i]->ma_danh_gia);
     	}
     	$getImg = [];
     	$getImgTemp = $this->loginService->getImg($ma_san_pham);
@@ -464,7 +464,7 @@ class LoginController extends Controller {
     	}
     	$Evaluate['Vote'] = $vote;
     	$Evaluate['ListEv'] = $getlistEv;
-    	$Evaluate['ListThank'] = $getEvaluateOfCustomer;
+    	$Evaluate['list_thank'] = $getEvaluateOfCustomer;
     	$Evaluate['ListImg'] = $getImg;
     	return response()->json(['status' => 'Success','obj' => $Evaluate]);
 
@@ -509,12 +509,13 @@ class LoginController extends Controller {
 
     public function addEvaluate(Request $request) {
     	$id_tk = $request->get('id_tk');
-    	$id_sp = $request->get('id_sp');
+    	$id_sp = $request->get('ma_san_pham');
     	$so_diem = $request->get('so_diem');
     	$tieu_de = $request->get('tieu_de'); 
     	$noi_dung = $request->get('noi_dung');
     	$thoi_gian = $request->get('thoi_gian');
-    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian);
+    	$duyet = $request->get('duyet');
+    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet );
     	if ($addEvaluate == true) {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	}
@@ -526,7 +527,8 @@ class LoginController extends Controller {
     	$id_tk = $request->get('ma_tk');
     	$noi_dung = $request->get('noi_dung');
     	$thoi_gian = $request->get('thoi_gian');
-    	$addChildEvaluate = $this->loginService->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian);
+    	$duyet = $request->get('duyet');
+    	$addChildEvaluate = $this->loginService->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian , $duyet);
     	if ($addChildEvaluate == true) {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	}
@@ -577,7 +579,6 @@ class LoginController extends Controller {
 	public function updateAddresOrderUser(Request $request){
 		
 		$id = $request->get('id');
-		$ma_tai_khoan = $request->get('ma_tai_khoan');
     	$ten_nguoi_nhan = $request->get('ten_nguoi_nhan');
     	$so_dien_thoai = $request->get('so_dien_thoai');
     	$dia_chi = $request->get('dia_chi');
@@ -652,8 +653,32 @@ class LoginController extends Controller {
     			$TotalCart += $getSp[$i]->Total;
     		}
     	}
-    	$getInfo['TotalCart'] = $TotalCart;
-    	$getInfo['TotalQuantity'] = $getTotalQuantity;
-    	return response()->json(['status' => 'Success','error' =>  0, 'obj' => $getInfo]);
+    	
+    	return response()->json(['status' => 'Success','error' =>  0, 
+    		'TotalCart' => (int)$TotalCart , 'TotalQuantity' => $getTotalQuantity]);
+    }
+
+    public function updatePassword(Request $request){
+    	$idUser = $request->get('ma_kh');
+    	$password = $request->get('password');
+
+    	$result = $this->loginService->updatePassword($idUser , $password);
+
+    	if($result > 0)
+    		return response()->json(['status' => 'Success','error' =>  0]);
+    	else
+    		return response()->json(['status' => 'error','error' =>  0]);
+    }
+
+    public function updateNumberPhone(Request $request){
+		$idUser = $request->get('ma_kh');
+    	$phone = $request->get('phone');
+
+    	$result = $this->loginService->updateNumberPhone($idUser , $phone);
+
+    	if($result > 0)
+    		return response()->json(['status' => 'Success','error' =>  0]);
+    	else
+    		return response()->json(['status' => 'error','error' =>  0]);
     }
 }
