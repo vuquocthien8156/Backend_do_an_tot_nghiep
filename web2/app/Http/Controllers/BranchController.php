@@ -7,6 +7,7 @@ use App\Constant\SessionKey;
 use App\Enums\EStatus;
 use App\Enums\EUser;
 use App\Enums\ErrorCode;
+use App\Enums\ECodePermissionGroup;
 use App\Helpers\ConfigHelper;
 use App\Services\BranchService;
 use Illuminate\Http\Request;
@@ -25,16 +26,63 @@ class BranchController extends Controller {
 		$this->branchService = $branchService;
 	}
 
-	public function branchView() {
-		$list = $this->branchService->listPlace();
-    	return view('branch.branch', ['list' => $list]);
+	public function branchView(Request $request) {
+		$name = $request->get('name');
+		$place = $request->get('place');
+		$listPlace = $this->branchService->listPlace();
+		$listBranch = $this->branchService->listBranch($name, $place);
+    	return view('branch.branch', ['list' => $listPlace, 'listBranch' => $listBranch]);
     }
 
     public function searchBranch(Request $request) {
-		$name = $request->get('name');
-		$place = $request->get('place');
+		if ($request->get('page') === null) {
+            $page = $request->get('page');
+        }else {
+        	$page = 1;
+        }
         $pathToResource = config('app.resource_url_path');
-        $listBranch = $this->branchService->listBranch($name, $place);
+        $listBranch = $this->branchService->listBranch($page);
 		return response()->json(['listBranch'=>$listBranch]);  
+	}
+
+	public function saveBranch(Request $request){
+		$name = $request->get('name_branch');
+		$latitude = $request->get('latitude');
+		$longitude = $request->get('longitude');
+		$phone_branch = $request->get('phone_branch');
+		$address = $request->get('address');
+		$id_kv = $request->get('id_kv');
+		$saveBranch = $this->branchService->saveBranch($name, $latitude, $longitude, $phone_branch, $address, $id_kv);
+		if ($saveBranch == true) {
+			return response()->json(['status' => 'error', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'error', 'error' => 1]);
+		}
+	}
+
+	public function deleteBranch(Request $request) {
+		$id = $request->get('id_branch');
+		$deleteBranch = $this->branchService->deleteBranch($id);
+		if ($deleteBranch == 1) {
+			return response()->json(['status' => 'error', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'error', 'error' => 1]);
+		}
+	}
+
+	public function updateBranch(Request $request) {
+		$id_branch_update = $request->get('id_branch_update');
+		$address_update = $request->get('address_update');
+		$phone_branch_update = $request->get('phone_branch_update');
+		$name_branch_update = $request->get('name_branch_update');
+		$longitude_update = $request->get('longitude_update');
+		$latitude_update = $request->get('latitude_update');
+		$id_kv = $request->get('id_kv');
+		$updateBranch = $this->branchService->updateBranch($id_branch_update, $address_update, $phone_branch_update, $name_branch_update, $latitude_update, $longitude_update, $id_kv);
+		if ($updateBranch == 1) {
+			return response()->json(['status' => 'error', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'error', 'error' => 1]);
+		}
 	}
 }

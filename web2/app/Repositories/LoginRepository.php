@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
-        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar')
         ->where(['email' => $user, 
         		'password' => $pass, 
         		'us.da_xoa' => 0])->get();
@@ -216,13 +214,13 @@ class LoginRepository {
 
 	public function news($page) {
 		if ($page == null) {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
+            $result = DB::table('TinTuc')->select('ma_tin_tuc', 'ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
         	return $result->limit(4)->orderBy('ngay_tao', 'desc')->get();
         }else {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
+            $result = DB::table('TinTuc')->select('ma_tin_tuc', 'ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);

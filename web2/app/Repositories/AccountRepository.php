@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountRepository {
 
-	public function search($name, $page = 1, $pageSize = 15) {
+	public function search($name, $phone, $page=1) {
 		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi');
         
         if ($name != '' && $name != null) {
@@ -21,11 +21,17 @@ class AccountRepository {
          
             });
         }
+        if ($phone != '' && $phone != null) {
+            $result->where(function($where) use ($phone) {
+                $where->whereRaw('us.sdt like ? ', ['%' . $phone . '%']);
+         
+            });
+        }
 		return $result->orderBy('us.id', 'asc')->paginate(15);
 	}
 
 	public function delete($id) {
-		$result = DB::table('users as us')->where('id','=',$id)->update(['da_xoa' => -1]);
+		$result = DB::table('users as us')->where('id','=',$id)->update(['da_xoa' => 1]);
 		return $result;
 
 	}

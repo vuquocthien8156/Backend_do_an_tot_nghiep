@@ -32,13 +32,34 @@ class ProductController extends Controller {
     	return view('product.product',['list' => $list]);
     }
 
+    public function newsView(Request $request) {
+    	$id = $request->get('id');
+    	$path = config('app.resource_url_path');
+    	$searchNews = $this->productService->searchNews($id);
+    	foreach ($searchNews as $key) {
+    		$key->ten_tin_tuc = mb_strtoupper($key->ten_tin_tuc, 'UTF-8');
+    	}
+    	return view('product.news', ['list' => $searchNews, 'path' => $path]);
+    }
+
 	public function viewAddProduct() {
 		$list = $this->productService->loaisp();
     	return view('product.addProduct',['list' => $list]);
     }
 
+    public function detailView(Request $request) {
+    	$id = $request->get('id');
+    	$path = config('app.resource_url_path');
+    	$searchProduct = $this->productService->searchProductById($id);
+    	foreach ($searchProduct as $key) {
+    		$key->ngay_ra_mat = date_format(Carbon::parse($key->ngay_ra_mat),'d-m-Y');
+    	}
+    	return view('productdetail.detail', ['list' => $searchProduct, 'path' => $path]);
+    }
+
 	public function searchProduct(Request $request) {
 		$name = $request->get('name');
+        $masp = $request->get('masp');
 		$ma_loai = $request->get('ma_loai');
 		$mo_ta = $request->get('mo_ta');
 		$page = 1;
@@ -46,9 +67,10 @@ class ProductController extends Controller {
                 $page = $request->get('page');
         }
         $pathToResource = config('app.resource_url_path');
-        $listProduct = $this->productService->searchProduct($name, $page, $ma_loai, $mo_ta);
+        $listProduct = $this->productService->searchProduct($name, $page, $ma_loai, $mo_ta, $masp);
         for ($i=0; $i < count($listProduct); $i++) { 
-             $listProduct[$i]->pathToResource = $pathToResource;
+            $listProduct[$i]->pathToResource = $pathToResource;
+            $listProduct[$i]->ngay_ra_mat = date_format(Carbon::parse($listProduct[$i]->ngay_ra_mat), 'd-m-Y');
         }
 		return response()->json(['listSearch'=>$listProduct]);  
 	}

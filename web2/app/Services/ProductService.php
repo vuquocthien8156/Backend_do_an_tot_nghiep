@@ -18,8 +18,8 @@ class ProductService {
         $this->productRepository = $productRepository;
     }
 
-    public function searchProduct($name, $page, $ma_loai, $mo_ta) {
-        return $this->productRepository->searchProduct($name, $page, $ma_loai, $mo_ta);
+    public function searchProduct($name, $page, $ma_loai, $mo_ta, $masp) {
+        return $this->productRepository->searchProduct($name, $page, $ma_loai, $mo_ta, $masp);
     }
 
     public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
@@ -57,4 +57,13 @@ class ProductService {
     public function getlist($id) {
         return $this->productRepository->getlist($id);
     }
+
+    public function searchProductById($id) {
+        return $this->productRepository->searchProductById($id);
+    }
+
+    public function searchNews($id) {
+        return $this->productRepository->searchNews($id);
+    }
+
 }

@@ -22,8 +22,20 @@ class BranchService {
         return $this->branchRepository->listPlace();
     }
 
-    public function listBranch($name, $place) {
-        return $this->branchRepository->listBranch($name, $place);
+    public function listBranch($page) {
+        return $this->branchRepository->listBranch($page);
+    }
+
+    public function saveBranch($name, $latitude, $longitude, $phone_branch, $address, $id_kv) {
+        return $this->branchRepository->saveBranch($name, $latitude, $longitude, $phone_branch, $address, $id_kv);
+    }
+
+    public function deleteBranch($id) {
+        return $this->branchRepository->deleteBranch($id);
+    }
+
+    public function updateBranch($id_branch_update, $address_update, $phone_branch_update, $name_branch_update, $latitude_update, $longitude_update, $id_kv) {
+        return $this->branchRepository->updateBranch($id_branch_update, $address_update, $phone_branch_update, $name_branch_update, $latitude_update, $longitude_update, $id_kv);
     }
 
 }

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductRepository {
 
-	public function searchProduct($name, $page, $ma_loai, $mo_ta) {
+	public function searchProduct($name, $page, $ma_loai, $mo_ta, $masp) {
         $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' )
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
@@ -35,6 +35,13 @@ class ProductRepository {
         if ($mo_ta != '' && $mo_ta != null) {
             $result->where(function($where) use ($mo_ta) {
                 $where->whereRaw('lower(sp.mo_ta) like ? ', ['%' . trim(mb_strtolower($mo_ta, 'UTF-8')) . '%']);
+         
+            });
+        }
+
+        if ($masp != '' && $masp != null) {
+            $result->where(function($where) use ($masp) {
+                $where->whereRaw('lower(sp.ma_chu) like ? ', ['%' . trim(mb_strtolower($masp, 'UTF-8')) . '%']);
          
             });
         }
@@ -169,5 +176,22 @@ class ProductRepository {
     public function getlist($id) {
        $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon' , 'hinh_san_pham')->where('ma_so', '=', $id);
        return $result->get();
+    }
+
+    public function searchProductById($id) {
+        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'sp.ma_so' => $id,
+        ]);
+        return $result->get();
+    }
+
+    public function searchNews($id) {
+        $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'hinh_tin_tuc')
+        ->where([
+            'ma_tin_tuc' => $id,
+        ]);
+        return $result->get();
     }
 }

@@ -12,6 +12,7 @@ use App\Helpers\ConfigHelper;
 use App\Services\LoginService;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
+use App\Services\PermissionService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
@@ -24,8 +25,9 @@ class LoginController extends Controller {
 
 	private $vehicleService;
 
-	public function __construct(LoginService $loginService) {
+	public function __construct(LoginService $loginService, PermissionService $permissionService) {
 		$this->loginService = $loginService;
+		$this->permissionService = $permissionService;
 	}
 
 	public function loginView(Request $request) {
@@ -51,10 +53,7 @@ class LoginController extends Controller {
 		}
 	}
 
-	public function login(Request $request) {
-	if ($request->session()->has('name') == true) {
-	  		return redirect()->route('home');
-	  	}  
+	public function login(Request $request) {  
 		$user = $request->get("username");
 		$pass = md5($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
@@ -62,8 +61,8 @@ class LoginController extends Controller {
 			session()->put('id',$check[0]->user_id);
 			session()->put('name',$check[0]->ten);
 			session()->put('login',true);
-			session()->put('vaitro',$check[0]->id_vai_tro);
-			session()->put('quyen_he_thong',$check[0]->quyen_he_thong);
+			$getRoll = $this->permissionService->getRoll($check[0]->user_id);
+			session()->put('ten_vai_tro',$getRoll);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}
 		else
@@ -155,6 +154,30 @@ class LoginController extends Controller {
                 	return response()->json(['filename' => 'null']);
             	}
 
+            return response()->json(['filename' => 'images/'.$subName.'/' . $nameImg]);
+		}
+	}
+
+	public function uploadManyImage(Request $request){
+		$now = Carbon::now();
+		$second = $now->second;
+		$minute = $now->minute;
+		$hour = $now->hour;
+		$date = $now->day;
+		$month = $now->month;
+		$year = $now->year;
+		$S = $second*$minute*$hour*$date*$month*$year;
+		if ($request->file('avatar') != null || $request->file('avatar') != ''){
+			foreach ($request->file('avatar') as $key) {
+				$subName = 'news/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $destinationPath = config('app.resource_physical_path');
+	            $pathToResource = config('app.resource_url_path');
+	            $nameImg = 'News_Img'.$S.strstr($key->getClientOriginalName(), '.');
+	            $check = $key->move($destinationPath.'/'.$subName, $nameImg);
+            	if (!file_exists($check)) {
+                	return response()->json(['filename' => 'null']);
+            	}
+			}
             return response()->json(['filename' => 'images/'.$subName.'/' . $nameImg]);
 		}
 	}
@@ -257,9 +280,9 @@ class LoginController extends Controller {
     	for ($i=0; $i < count($getNews); $i++) { 
         	$list[] = $getNews[$i];
         }
-        for ($i=0; $i < count($list); $i++) { 
-             $list[$i]->pathToResource = $pathToResource;
-        }
+        // for ($i=0; $i < count($list); $i++) { 
+        //      $list[$i]->pathToResource = $pathToResource;
+        // }
 		return response()->json(['status' => 'Success', 'error' => 0, 'listSearch'=>$list]);
     }
 

@@ -18,8 +18,8 @@ class AccountService {
 		$this->accountRepository = $accountRepository;
 	}
 
-	public function search($name, $page = 1, $pageSize = 15) {
-		return $this->accountRepository->search($name, $page = 1, $pageSize = 15);
+	public function search($name, $phone, $page) {
+		return $this->accountRepository->search($name, $phone, $page);
 	}
 
 	public function delete($id) {

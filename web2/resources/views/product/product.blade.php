@@ -6,8 +6,8 @@
 @section('body-content')
 	<div id="manage-product">
         <div class="row mt-5 pt-3">
-            <div style="padding-left: 2rem;margin-top:3%">
-                <h4 class="tag-page-custom">
+            <div style="padding-left: 2rem;margin-top:3%;">
+                <h4 class="tag-page-custom" style="color: blue">
                     Quản lý tài khoản
                 </h4>
             </div>
@@ -119,7 +119,33 @@
                         </div>
                     </div>
         </div>
-
+        <div class="modal fade" id="ModalShowDescription" tabindex="-1" role="dialog" aria-labelledby="ModalShowDescription" aria-hidden="true">
+                    <div class="modal-dialog" role="document" style="width: 470px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>                     
+                            <div class="modal-body">
+                                <table class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
+                                    <thead style="">
+                                        <tr class="text-center blue-opacity">
+                                            <th class="custom-view"> Mô tả </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-cloak>
+                                            <td class="custom-view text-left" id="description_show"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Huỷ bỏ </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="max-width: 500px">
                         <div class="modal-content">
@@ -214,11 +240,10 @@
                     </div>
         </div>
         <div id="body" class="set-row background-contact w-100">
-            <input id="code" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
+            <input id="" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
+            <input id="" type="text" class="input-app mr-4"  placeholder="Mã sản phẩm"  style="width: 200px;margin-bottom: 10px" v-model="masp">
+            <input id="" type="text" class="input-app mr-4"  placeholder="Mô tả"  style="width: 200px;margin-bottom: 10px" v-model="mo_ta">
             <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
-            <div class="row">
-                <button class="button-app" @click="add()" style="margin-left: 85.6%;margin-bottom: 2%">Thêm sản phẩm</button>
-            </div>
             <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                 <thead>
                 <tr class="text-center blue-opacity">
@@ -241,11 +266,18 @@
                         <td  class="custom-view"><p>@{{item.ten}}<p></td>
                         <td  class="custom-view"><p>@{{item.ma_chu}}<p></td>
                         <td  class="custom-view"><p>@{{item.ten_loai_sp}}<p></td>
-                        <td  class="custom-view" width="250px"><p>S(@{{item.gia_san_pham}}) - M(@{{item.gia_vua}}) - L(@{{item.gia_lon}})<p></td>
-                        <td class="custom-view"><p>@{{item.so_lan_dat}}<p></td>
-                        <td class="custom-view"><p>@{{item.mo_ta}}<p></td>
+                        <td  class="custom-view" width="150px"><div style="text-align: left; width: 100px; height: 100px; margin-left: 15%"><p>S(@{{item.gia_san_pham}}) VNĐ</p><p> M(@{{item.gia_vua}}) VNĐ</p><p>L(@{{item.gia_lon}}) VNĐ</p></td>
+                        <td class="custom-view"><p>@{{item.so_lan_dat}}<p></div></td>
+                         <td class="custom-view text-left" style="width: 150px;" v-if="item.mo_ta != null">
+                            <span v-if="item.mo_ta.length < 30">@{{ item.mo_ta}}</span>
+                            <span v-if="item.mo_ta.length > 30">@{{ item.mo_ta | contentSubstr}}<a v-if="item.mo_ta.length > 30" style="cursor: pointer; color: #55bde7;" @click="showDescription(item.mo_ta)" class="see_more_less"><b>...Xem thêm mô tả</b></a></span>  
+                        </td>
                         <td class="custom-view"><p>@{{item.ngay_ra_mat}}<p></td>
-                        <td class="custom-view"><img :src="item.pathToResource+'/'+item.hinh_san_pham" width="50px" height="50px"></td>
+                        <td class="custom-view">
+                                    <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.hinh_san_pham">
+                                        <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_san_pham">
+                                    </a>
+                        </td>
                         <td class="custom-view" v-if="item.daxoa == 1">Đã xóa</td>
                         <td class="custom-view" v-if="item.daxoa == 0">Đã kích hoạt</td>
                         <td class="custom-view"><p>
@@ -266,6 +298,7 @@
            <script type="text/javascript">
 				@php
 					include public_path('/js/product/product/product.js');
+                    include public_path('/js/product/product/jquery.fancybox.min.js');
 				@endphp
 			</script>
 @endsection

@@ -37,12 +37,13 @@ class AccountController extends Controller {
 	 	return redirect('api');
 	 } 
 		$name = $request->get('name');
+		$phone = $request->get('phone');
 		$page = 1;
         if ($request->get('page') !== null) {
             $page = $request->get('page');
         }
         $pathToResource = config('app.resource_url_path');
-		$listAccount = $this->accountService->search($name, $page);
+		$listAccount = $this->accountService->search($name, $phone, $page);
 		$tmp = $listAccount->map(function ($item) {
                 return [
                 	'id' => $item->id,
@@ -57,7 +58,8 @@ class AccountController extends Controller {
                 ];
             });
 		for ($i=0; $i < count($listAccount); $i++) { 
-             $listAccount[$i]->pathToResource = $pathToResource;
+			$listAccount[$i]->ngay_sinh = date_format(Carbon::parse($listAccount[$i]->ngay_sinh),'d-m-Y');
+            $listAccount[$i]->pathToResource = $pathToResource;
         }
 		return response()->json(['listSearch'=>$listAccount]);
 	}
@@ -93,7 +95,7 @@ class AccountController extends Controller {
 		$email = $request->get('email');
 		$now = Carbon::now();
 		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
-                $subName = 'user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $subName = 'images/user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
                 $filename =  $subName . '/' . $request->file('files_edit')->getClientOriginalName();
