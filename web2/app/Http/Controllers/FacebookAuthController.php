@@ -80,16 +80,17 @@ class FacebookAuthController extends Controller
         $id_fb = $request->get('id_fb');
         $email = $request->get('email');
         $name = $request->get('name');
+        $avatar = $request->get('avatar');
 
         $checkIdFB = $this->loginService->check($id_fb);
         $checkEmail =  $this->loginService->check($email);
 
         // 'type' => 3
         if (!isset($checkIdFB[0]->fb_id) && !isset($checkEmail[0]->email)) {
-            $create = $this->loginService->create($id_fb, $email , $name);
+            $create = $this->loginService->create($id_fb, $email , $name , $avatar);
             if ($create == 1) {
                $idMax = $this->loginService->idMax();
-               return response()->json(['status' => 'ok', 'error' => 0  , 'info' => ['user_id' => $idMax , 'ten'=>$name , 'email'=> $email] ]);
+               return response()->json(['status' => 'ok', 'error' => 0  , 'info' => ['user_id' => $idMax , 'ten'=>$name , 'email'=> $email , 'avatar' => $avatar , 'fb_id' => $id_fb ] ]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }
@@ -107,13 +108,13 @@ class FacebookAuthController extends Controller
         // 'type' => 2
         if (!isset($checkIdFB[0]->fb_id) && isset($checkEmail[0]->email)) {
             $email = null;
-            $create = $this->loginService->create($id_fb, $email , $name);
+            $create = $this->loginService->create($id_fb, $email , $name , $avatar);
 
             if ($create == 1) {
                 $idMax = $this->loginService->idMax();
                return response()->json( ['status' => 'ok',
                      'error' => 0 , 
-                     'info' => ['user_id' => $idMax , 'ten'=>$name] ]);
+                     'info' => ['user_id' => $idMax , 'ten'=>$name , 'avatar' => $avatar , 'fb_id' => $id_fb ] ]);
             }
             return response()->json(['status' => 'fail', 'error' => 1]);
         }

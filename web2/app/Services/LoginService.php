@@ -59,6 +59,13 @@ class LoginService {
 		return $this->loginRepository->updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai ,  $chinh , $da_xoa);	
 	}
 
+    public function updateNumberPhone($idUser , $numberPhone){
+        return $this->loginRepository->updateNumberPhone($idUser , $numberPhone);
+    }
+    
+    public function updatePassword($idUser , $password){
+        return $this->loginRepository->updatePassword($idUser , $password);
+    }
 
 	public function getLike() {
 		return $this->loginRepository->getLike();	
@@ -100,8 +107,8 @@ class LoginService {
 		return $this->loginRepository->loginfb($id_fb);
 	}
 	
-	public function create($id_fb, $email , $name) {
-		return $this->loginRepository->create($id_fb, $email  , $name);
+	public function create($id_fb, $email , $name , $avatar) {
+		return $this->loginRepository->create($id_fb, $email  , $name , $avatar);
 	}
 
 	public function news($page) {
@@ -180,12 +187,12 @@ class LoginService {
     	return $this->loginRepository->getBranch($id_place);
     }
 
-    public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian){
-    	return $this->loginRepository->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian);
+    public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet){
+    	return $this->loginRepository->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet);
     }
 
-    public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian) {
-        return $this->loginRepository->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian);
+    public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian , $duyet) {
+        return $this->loginRepository->addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian , $duyet);
     }
 
     public function addThanks($id_Evaluate, $id_KH) {
@@ -273,8 +280,8 @@ class LoginService {
     	return $this->loginRepository->updateQuantityCart($ma_gio_hang, $sl);
     }
 
-    public function getlistEvaluate($ma_san_pham, $page) {
-    	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page);
+    public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
+    	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian);
     }
 
     public function getThanhks($ma_danh_gia) {

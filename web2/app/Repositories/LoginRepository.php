@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
+        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
+        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
         ->where(['email' => $user, 
         		'password' => $pass, 
         		'us.da_xoa' => 0])->get();
@@ -22,12 +24,12 @@ class LoginRepository {
 	}
 
 	public function getInfoByEmail($email) {
-		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh' , 'avatar')->where('email', '=', $email)->get();
+		$result = DB::table('users')->select('id as user_id','ten', 'email', 'sdt' , 'gioi_tinh', 'fb_id', 'diem_tich' , 'ngay_sinh' , 'avatar' , 'password')->where('email', '=', $email)->get();
 		return $result;
 	}
 
 	public function loginsdt($user) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' )
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
         ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
@@ -73,6 +75,7 @@ class LoginRepository {
 	}
 
 	public function insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi , $so_dien_thoai , $chinh) {
+		
 		if($chinh == 1){
 			DB::table('SoDiaChi')->update(['chinh' => 0]);
 		}
@@ -83,23 +86,48 @@ class LoginRepository {
            'chinh' => $chinh,
            'so_dien_thoai' => $so_dien_thoai,
            'da_xoa' => 0,
-        ]);
+        ]) ;
+		
+		
         return $result;	
 	}
 
 	public function updateAddressOrderUser($id , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh , $da_xoa) {
-		if($chinh == 1){
-			DB::table('SoDiaChi')->update(['chinh' => 0]);
+		
+		$result = DB::table('SoDiaChi')->where(['id' => $id]);
+
+		if($chinh != -1){
+			if($chinh == 1){
+				DB::table('SoDiaChi')->update(['chinh' => 0]);
+			}
+			$result = $result->update(['ten_nguoi_nhan' => $ten_nguoi_nhan,
+					  'dia_chi' => $dia_chi,
+					  'chinh' => $chinh,
+					  'so_dien_thoai' => $so_dien_thoai,
+					  'da_xoa' =>  $da_xoa]);
 		}
-		$result = DB::table('SoDiaChi')->where(['id' => $id])
-		->update(['ten_nguoi_nhan' => $ten_nguoi_nhan,
-				  'dia_chi' => $dia_chi,
-				  'chinh' => $chinh,
-				  'so_dien_thoai' =>  $so_dien_thoai,
-				  'da_xoa' =>  $da_xoa]);
+		else{
+			$result = $result->update(['ten_nguoi_nhan' => $ten_nguoi_nhan,
+					  'dia_chi' => $dia_chi,
+					  'so_dien_thoai' =>  $so_dien_thoai,
+					  'da_xoa' =>  $da_xoa]);
+		}
 		return $result;	
 	}
 
+	public function updateNumberPhone($idUser , $numberPhone){
+		$result = DB::table('users')->where(['id' => $idUser])
+			->update(['sdt' => $numberPhone]);
+
+		return $result;	
+	}
+
+	public function updatePassword($idUser , $password){
+		$result = DB::table('users')->where(['id' => $idUser])
+			->update(['password' => $password]);
+
+		return $result;
+	}
 
 	public function getLike() {
 		$result = DB::table('SanPhamYeuThich')->select('ma_san_pham', 'ma_khach_hang', 'thich')->get();
@@ -146,7 +174,7 @@ class LoginRepository {
 	}
 
 	public function getUser($id_KH) {
-		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' );
+		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password' );
 		if ($id_KH != null && $id_KH != '') {
 			$result->where('id', '=', $id_KH);
 		}
@@ -179,13 +207,12 @@ class LoginRepository {
 	}
 
 	public function getInfo($id_fb) {
-		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' )->where('fb_id', '=', $id_fb)->get();
+		$result = DB::table('users')->select('ten', 'id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')->where('fb_id', '=', $id_fb)->get();
 		return $result;
 	}
 
 	public function loginfb($id_fb) {
-		
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong')
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
 	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
@@ -194,18 +221,20 @@ class LoginRepository {
 			return $result;
 	}
 
-	public function create($id_fb, $email , $name) {
+	public function create($id_fb, $email , $name , $avatar) {
 		if ($email != null && $email != '') {
 			$result = DB::table('users')->insert([
 						   'email' => $email,
 				           'fb_id' => $id_fb,
 				           'ten' => $name,
+				           'avatar' => $avatar,
 				           'da_xoa' => 0,
        			 ]);
 		}else {
 			$result = DB::table('users')->insert([
 				           'fb_id' => $id_fb,
 				           'ten' => $name,
+				           'avatar' => $avatar,
 				           'da_xoa' => 0,
        			 ]);
 		}
@@ -338,10 +367,10 @@ class LoginRepository {
 	}
 
 	public function getChildEvaluate($ma_danh_gia, $page) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk' ,  'ten', 'noi_dung', 'duyet' , 'thoi_gian')
 		->leftjoin('users', 'ma_tk', '=', 'id')
-		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
-		->paginate(5);
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0 , 'duyet' => 1])
+		->paginate(10);
         return $result;
 	}
 
@@ -360,7 +389,7 @@ class LoginRepository {
         return $result;
 	}
 
-	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian) {
+	public function addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet) {
 		$result = DB::table('DanhGia')->insert([
            'ma_tk' => $id_tk,
            'ma_sp' => $id_sp,
@@ -368,17 +397,19 @@ class LoginRepository {
            'tieu_de' => $tieu_de,
            'noi_dung' => $noi_dung,
            'thoi_gian' => $thoi_gian,
+           'duyet' => $duyet,
            'da_xoa' => 0,
         ]);
         return $result;	
 	}
 
-	public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian) {
-		$result = DB::table('DanhGia')->insert([
+	public function addChildEvaluate($id_Evaluate, $id_tk, $noi_dung, $thoi_gian , $duyet) {
+		$result = DB::table('DanhGiaCon')->insert([
            'ma_danh_gia' => $id_Evaluate,
            'ma_tk' => $id_tk,
            'noi_dung' => $noi_dung,
            'thoi_gian' => $thoi_gian,
+           'duyet' => $duyet,
            'da_xoa' => 0,
         ]);
         return $result;	
@@ -503,23 +534,34 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getlistEvaluate($ma_san_pham, $page) {
+	public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
 		if ($page != null && $page != '') {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' ,'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
 			->leftjoin('users', 'ma_tk', '=', 'id')
-			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
-			->orderBy('ma_danh_gia', 'asc')->paginate(5);
+			->where(['ma_sp' => $ma_san_pham , 
+					 'DanhGia.da_xoa' => 0 ,
+					 'duyet' => 1]);
+
+			if($so_diem != null)
+				$result = $result->where(['so_diem' => $so_diem]);
+
+			if($thoi_gian != null)
+				$result = $result->orderBy('thoi_gian', 'asc')->paginate(8);
+			else
+				$result = $result->orderBy('thoi_gian', 'desc')->paginate(8);
+
 		}else {
-			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
+			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' , 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
 			->leftjoin('users', 'ma_tk', '=', 'id')
-			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0])
+			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0 , 'duyet' => 1])
 			->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		}
 		return $result;	
 	}
 
 	public function getThanhks($ma_danh_gia) {
-		$result = DB::table('CamOnDanhGia')->select('ma_danh_gia')->where(['ma_danh_gia' => $ma_danh_gia])->count();
+		$result = DB::table('CamOnDanhGia')->select('ma_danh_gia')
+		->where(['ma_danh_gia' => $ma_danh_gia])->count();
 		return $result;
 	}
 
@@ -529,9 +571,9 @@ class LoginRepository {
 	}
 
 	public function listChild($ma_danh_gia) {
-		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
+		$result = DB::table('DanhGiaCon')->select('ma_danh_gia_con', 'ma_danh_gia', 'ma_tk', 'ten', 'noi_dung', 'duyet' , 'thoi_gian')
 		->leftjoin('users', 'ma_tk', '=', 'id')
-		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0])
+		->where(['ma_danh_gia' => $ma_danh_gia , 'DanhGiaCon.da_xoa' => 0  , 'duyet' => 1])
 		->orderBy('thoi_gian', 'desc')->limit(2)->get();
 		return $result;
 	}

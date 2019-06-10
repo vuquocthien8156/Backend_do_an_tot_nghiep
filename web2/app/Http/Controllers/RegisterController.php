@@ -31,7 +31,7 @@ class RegisterController extends Controller {
 	}
 	public function register(Request $request) {  
 		$username = $request->get("username");
-		$password = md5($request->get("password"));
+		$password = $request->get("password");
 		$name = $request->get("name");
 		$gender = $request->get("gender");
 		$birthday = $request->get("birthday");
