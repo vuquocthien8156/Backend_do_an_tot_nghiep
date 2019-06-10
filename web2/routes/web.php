@@ -11,7 +11,7 @@
 |
 */
 Auth::routes();
-Route::get('login', 'LoginController@loginView')->name('login');
+Route::get('loginView', 'LoginController@loginView')->name('login');
 Route::post('dangnhap', 'LoginController@login', '_token');
 Route::post('dangnhapsdt', 'LoginController@loginsdt', '_token');
 Route::get('logout', 'LoginController@logout');
@@ -69,10 +69,8 @@ Route::post('api/login' , 'LoginController@loginAPI');
 Route::get('api/getInfoByEmail' , 'LoginController@getInfoByEmail');
 Route::post('api/login-by-phone', 'LoginController@loginsdtAPI');
 Route::get('api/checkLoginExist', 'LoginController@check');
-Route::post('api/updatePhone', 'LoginController@updateNumberPhone');
 
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
-Route::post('api/changePassword', 'LoginController@updatePassword');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 
@@ -118,6 +116,7 @@ Route::post('api/updateAddressOrder', 'LoginController@updateAddresOrderUser');
 
 Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
+Route::get('api/addOrder', 'LoginController@addOrder');
 
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
 

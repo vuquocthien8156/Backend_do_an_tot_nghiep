@@ -31,12 +31,7 @@ class LoginController extends Controller {
 	}
 
 	public function loginView(Request $request) {
-		if ($request->session()->has('name') == false) {
-	  		return view('login.login2');
-	  	}
-	  	else {
-	  		return redirect()->route('home');
-	  	}  
+	  	return view('login.login2');
 	}
 	
 	public function check(Request $request) {
@@ -245,6 +240,44 @@ class LoginController extends Controller {
 		}
 
 		return response()->json(['status' => 'ok', 'error' => 0, 'Order' => $getAllOrder]);
+	}
+
+	public function addOrder(Request $request) {
+		$ma_kh = $request->get('ma_kh');
+		$thong_tin_ship = $request->get('thong_tin_ship');
+		$khuyen_mai = $request->get('khuyen_mai');
+		$phi_ship = $request->get('phi_ship');
+		$tong_tien = $request->get('tong_tien');
+		$ghi_chu = $request->get('ghi_chu');
+		$ngay_lap = Carbon::now();
+
+		$Detail = $request->get('Detail');
+		$check = true;
+		$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap);
+		if ($insertOrder == true) {
+			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
+
+			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
+
+			for ($i=0; $i < count($Detail); $i++) {
+				$topping = $Detail[$i]['topping'];
+				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_sp'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['Gia_KM'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu_sp'], $Detail[$i]['kich_co']);
+				if ($insertOrderDetail == false) {
+					return response()->json(['status' => 'fail', 'error' => 1]);
+				}
+				for ($j=0; $j < count($topping); $j++) { 
+					$insertToppingOrder = $this->loginService->insertToppingOrder($Detail[$i]['ma_sp'], $topping[$j]['ma_topping'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
+					if ($insertToppingOrder == false) {
+						return response()->json(['status' => 'fail', 'error' => 1]);
+					}
+				}
+			}
+			if ($check == true) {
+					return response()->json(['status' => 'ok', 'error' => 0]);
+				}	
+		}else{
+			return response()->json(['status' => 'fail', 'error' => 1]);
+		}
 	}
 
 	public function updateIdFB(Request $request)

@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
-        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar')
         ->where(['email' => $user, 
         		'password' => $pass, 
         		'us.da_xoa' => 0])->get();
@@ -611,5 +609,58 @@ class LoginRepository {
 			$result = DB::table('GioHang')->select('so_luong', 'kich_co', 'gia_lon')->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->where(['ma_gio_hang' => $ma_gio_hang])->get();
 			return $result;
 		}
+	}
+
+	public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap) {
+		$result = DB::table('DonHang')->insert([
+				'thong_tin_giao_hang' => $thong_tin_ship,
+           		'ma_khach_hang' => $ma_kh,
+           		'ngay_lap' => $ngay_lap,
+           		'khuyen_mai' => $khuyen_mai,
+           		'phi_ship' => $phi_ship,
+           		'tong_tien' => $tong_tien,
+           		'ghi_chu' => $ghi_chu,
+           		'da_xoa' => 0,
+        	]);
+		return $result;
+	}
+
+	public function getMaxIdOrder() {
+		$result = DB::table('DonHang')->max('ma_don_hang');
+		return $result;
+	}
+
+	public function insertStatusOrder($getMaxIdOrder) {
+		$result = DB::table('ChiTietTrangThaiDonHang')->insert([
+				'ma_don_hang' => $getMaxIdOrder,
+				'trang_thai' => 1,
+				'da_xoa' => 0,
+           		
+        	]);
+		return $result;;
+	}
+
+	public function insertOrderDetail($getMaxIdOrder, $ma_sp, $so_luong, $don_gia, $Gia_KM, $thanh_tien, $ghi_chu_sp, $kich_co) {
+		$result = DB::table('ChiTietDonHang')->insert([
+				'ma_don_hang' => $getMaxIdOrder,
+           		'ma_san_pham' => $ma_sp,
+           		'so_luong' => $so_luong,
+           		'don_gia' => $don_gia,
+           		'kich_co' => $kich_co,
+           		'gia_khuyen_mai' => $Gia_KM,
+           		'thanh_tien' => $thanh_tien,
+           		'ghi_chu' => $ghi_chu_sp,
+        	]);
+		return $result;
+	}
+
+	public function insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia) {
+		$result = DB::table('ChiTietThucUong')->insert([
+				'ma_chi_tiet' => $ma_sp,
+           		'ma_san_pham' => $ma_topping,
+           		'don_gia' => $don_gia,
+           		'so_luong' => $so_luong,
+        	]);
+		return $result;
 	}	
 }
