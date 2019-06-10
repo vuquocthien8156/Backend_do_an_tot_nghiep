@@ -39,7 +39,6 @@ class LoginController extends Controller {
 	
 	public function check(Request $request) {
 		$user = $request->get("username");
-		$pass = $request->get("password");
 		// $id_fb = $request->get("id_fb");
 		$check = $this->loginService->check($user);
 		if (isset($check[0]->user_id)) {
@@ -74,7 +73,7 @@ class LoginController extends Controller {
 
 	public function loginAPI(Request $request) {  
 		$user = $request->get("username");
-		$pass = md5($request->get("password"));
+		$pass = $request->get("password");
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
@@ -416,6 +415,9 @@ class LoginController extends Controller {
     	$ma_san_pham = $request->get('ma_san_pham');
     	$ma_kh = $request->get('ma_kh');
     	$page = $request->get('page');
+    	$so_diem = $request->get('so_diem');
+    	$thoi_gian = $request->get('thoi_gian');
+
     	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'list_thank'=>null, 'ListImg'=>null];
     	$vote = ['tong'=>null, 'namdiem'=>null, 'bondiem'=>null, 'badiem'=>null, 'haidiem'=>null, 'motdiem'=>null];
     	$getEvaluateOfCustomer = [];
@@ -441,7 +443,7 @@ class LoginController extends Controller {
     	$vote['haidiem'] = $getEvaluate2;
     	$vote['motdiem'] = $getEvaluate1;
     	$getImgEv = [];
-    	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page);
+    	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page, $so_diem , $thoi_gian);
     	$getlistEv = [];
     	for ($i=0; $i < count($getlist); $i++) { 
     		array_push($getlistEv, $getlist[$i]);
@@ -449,14 +451,14 @@ class LoginController extends Controller {
     	for ($i=0; $i < count($getlist); $i++) { 
     		$getThanhks = $this->loginService->getThanhks($getlist[$i]->ma_danh_gia);
     		$getImgEvTemp = $this->loginService->getImgEV($getlist[$i]->ma_danh_gia);
-    		for ($g=0; $g < count($getImgEvTemp); $g++) { 
+    		$getImgEv = [];
+    		for ($g=0; $g < count($getImgEvTemp); $g++) {
     			array_push($getImgEv, $getImgEvTemp[$g]->url);
     		}
     		$listChild = $this->loginService->listChild($getlist[$i]->ma_danh_gia);
     		$getlist[$i]->so_cam_on = $getThanhks;
     		$getlist[$i]->Hinh_anh = $getImgEv;
     		$getlist[$i]->danh_gia_con = $listChild;
-
     	}
     	if ($page != null && $page != '') {
     		$Evaluate['ListEv'] = $getlistEv;

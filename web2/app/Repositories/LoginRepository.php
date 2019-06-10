@@ -534,12 +534,22 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getlistEvaluate($ma_san_pham, $page) {
+	public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
 		if ($page != null && $page != '') {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' ,'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
 			->leftjoin('users', 'ma_tk', '=', 'id')
-			->where(['ma_sp' => $ma_san_pham , 'DanhGia.da_xoa' => 0 , 'duyet' => 1])
-			->orderBy('ma_danh_gia', 'asc')->paginate(8);
+			->where(['ma_sp' => $ma_san_pham , 
+					 'DanhGia.da_xoa' => 0 ,
+					 'duyet' => 1]);
+
+			if($so_diem != null)
+				$result = $result->where(['so_diem' => $so_diem]);
+
+			if($thoi_gian != null)
+				$result = $result->orderBy('thoi_gian', 'asc')->paginate(8);
+			else
+				$result = $result->orderBy('thoi_gian', 'desc')->paginate(8);
+
 		}else {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' , 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
 			->leftjoin('users', 'ma_tk', '=', 'id')

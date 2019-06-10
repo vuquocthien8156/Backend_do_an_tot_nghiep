@@ -280,8 +280,8 @@ class LoginService {
     	return $this->loginRepository->updateQuantityCart($ma_gio_hang, $sl);
     }
 
-    public function getlistEvaluate($ma_san_pham, $page) {
-    	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page);
+    public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
+    	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian);
     }
 
     public function getThanhks($ma_danh_gia) {
