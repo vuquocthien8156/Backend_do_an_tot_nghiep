@@ -11,7 +11,6 @@
 |
 */
 Auth::routes();
-Route::get('home', 'logintestController@d')->name('home');
 Route::get('login', 'LoginController@loginView')->name('login');
 Route::post('dangnhap', 'LoginController@login', '_token');
 Route::post('dangnhapsdt', 'LoginController@loginsdt', '_token');
@@ -24,26 +23,39 @@ Route::get('manage/search', 'AccountController@search');
 Route::post('manage/delete', 'AccountController@deleteAccount');
 Route::post('manage/edit', 'AccountController@editAccount');
 
-Route::prefix('product')->group(function() {
+
+Route::prefix('products')->group(function() {
 	Route::get('add-view', 'ProductController@viewAddProduct')->name('product-add');
 	Route::post('add-new', 'ProductController@addProduct');
-	Route::get('manage', 'ProductController@productView')->name('manage-product');
+	Route::get('manage-product', 'ProductController@productView')->name('manage-product');
 	Route::get('search', 'ProductController@searchProduct');
 	Route::post('delete', 'ProductController@deleteProduct');
 	Route::post('edit', 'ProductController@editProduct');
+	Route::get('productDetail', 'ProductController@detailView')->name('details');
+	Route::get('news', 'ProductController@newsView')->name('news');
 });
 
 Route::prefix('Branch')->group(function() {
 	// Route::get('add-view', 'ProductController@viewAddProduct')->name('product-add');
 	// Route::post('add-new', 'ProductController@addProduct');
 	Route::get('manage', 'BranchController@branchView')->name('manage-branch');
-	Route::post('search', 'BranchController@searchBranch');
+	Route::get('search', 'BranchController@searchBranch');
+	Route::post('save', 'BranchController@saveBranch');
+	Route::post('delete', 'BranchController@deleteBranch');
+	Route::post('update', 'BranchController@updateBranch');
 	// Route::post('delete', 'ProductController@deleteProduct');
 	// Route::post('edit', 'ProductController@editProduct');
 });
 
-Route::get('permission', 'PermissionController@PermissionView');
-Route::post('permission', 'Permi	ssionController@Permission');
+Route::prefix('permission')->group(function() {
+	Route::get('manage', 'PermissionController@PermissionView')->name('permission');
+	Route::get('listPermission', 'PermissionController@listPermissionUser');
+	Route::post('create', 'PermissionController@createPermission');
+	Route::post('update', 'PermissionController@updatePermission');
+	Route::post('delete', 'PermissionController@deletePermission');
+});
+
+
 
 Route::get('auth/facebook', 'FacebookAuthController@redirectToProvider')->name('facebook.login') ;
 Route::get('auth/facebook/callback', 'FacebookAuthController@handleProviderCallback');
@@ -62,6 +74,7 @@ Route::post('api/updatePhone', 'LoginController@updateNumberPhone');
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/changePassword', 'LoginController@updatePassword');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
+Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 
 // Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 // Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');

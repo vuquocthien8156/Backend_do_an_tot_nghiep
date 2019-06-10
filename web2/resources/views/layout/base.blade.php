@@ -31,7 +31,7 @@
         @section('stylesheet')
         @show
     </head>
-    <body >
+    <body style="background: white">
          @if(Session::has('login') && Session::get('login') == true && Session::has('name'))
         <div class="header bg-white fixed-top">
             <nav class="navbar box-shadow container" id="navbar-example2">
@@ -43,37 +43,49 @@
                     </div>
                     <div class="d-none d-md-block flex-md-grow-1 justify-content-center">
                         <ul id="header-navbar" class="nav justify-content-center font-weight-bold">
-                            <li class="nav-item d-none d-lg-block dropdown">
-                                    <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
-                                        style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       TÀI KHOẢN
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route("manage-account", [], false)}}">Xem danh sách</a>
-                                </div>
-                            </li>
-                            <li class="nav-item d-none d-lg-block dropdown">
-                                    <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                            @if(Session::has('ten_vai_tro'))
+                              @foreach (Session::get('ten_vai_tro') as $value)
+                                @if($value->ten_vai_tro == 'quản lý khách hàng')
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                                            style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           TÀI KHOẢN
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{route("manage-account", [], false)}}">Xem danh sách</a>
+                                        </div>
+                                    </li>
+                                @endif
+                                @if($value->ten_vai_tro == 'quản lý sản phẩm')
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                        SẢN PHẨM
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
-                                    <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
-                                    <!-- <a class="dropdown-item" href="">Danh sách loại sản phẩm</a> -->
-                                </div>
-                            </li>
-                            <li class="nav-item d-none d-lg-block dropdown">
-                                    <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
+                                            <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
+                                        </div>
+                                    </li>
+                                @endif
+                                @if($value->ten_vai_tro == 'Chi nhánh')
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                        CHI NHÁNH
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">Xem danh sách</a>
-                                    <!-- <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a> -->
-                                    <!-- <a class="dropdown-item" href="">Danh sách loại sản phẩm</a> -->
-                                </div>
-                            </li>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">Xem danh sách</a>
+                                        </div>
+                                    </li>
+                                @endif
+                                @if($value->ten_vai_tro == 'phân quyền')
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
+                                    </li>
+                                @endif
+                              @endforeach
+                            @endif
                         </ul>
                     </div>
                     <div class="btn-group d-flex align-items-center">

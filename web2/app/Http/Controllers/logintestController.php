@@ -22,7 +22,7 @@ class logintestController extends Controller {
 	private $vehicleService;
 
 	public function d() {  
-		return view('test.test');
+		return view('productdetail.detail');
 	}
 
 	public function index() {  

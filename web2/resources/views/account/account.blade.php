@@ -6,17 +6,18 @@
 @section('body-content')
 	<div id="manage-account">
         <div class="row mt-5 pt-3">
-            <div style="padding-left: 2rem; margin-top:5%">
-                <h4 class="tag-page-custom">
+            <div style="padding-left: 2rem; margin-top:2%">
+                <h4 class="tag-page-custom" style="color: blue">
                     Quản lý tài khoản
                 </h4>
             </div>
         </div>
         <div class="row">
             <div class="set-row background-contact w-100" style="min-height: 150px">
-                <input id="code" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
+                <input id="" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
+                 <input id="" type="text" class="input-app mr-4"  placeholder="sdt"  style="width: 200px;margin-bottom: 10px" v-model="phone">
                 <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
-               <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
+               <table class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                     <thead>
                     <tr class="text-center blue-opacity">
                         <th class="custom-view">STT</th>
@@ -33,7 +34,7 @@
                     </tr>
                     </thead>
                     <tbody v-cloak>
-                        <tr class="text-center" v-for="(item,index) in results.data">
+                        <tr class="text-center" style="font-weight: bold" v-for="(item,index) in results.data">
                             <td class="custom-view td-grey">@{{index + 1}}</td>
                             <td  class="custom-view">@{{item.ten}}</td>
                             <td  class="custom-view">@{{item.sdt}}</td>
@@ -46,7 +47,9 @@
                             <td  class="custom-view">@{{item.dia_chi}}</td>
                             <td  class="custom-view" v-if="item.email != null">@{{item.email}}</td>
                             <td  class="custom-view" v-if="item.email == null">Chưa có</td>
-                            <td  class="custom-view"><img :src="item.pathToResource+'images/'+item.avatar" width="50px" height="50px"></td>
+                            <td  class="custom-view"> <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.avatar">
+                                        <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.avatar">
+                                    </a></td>
                             <td  class="custom-view" v-if="item.da_xoa == 1">Đã xóa</td>
                             <td  class="custom-view" v-if="item.da_xoa == 0">Đã kích hoạt</td>
                             <td  class="custom-view">
@@ -125,7 +128,7 @@
                     <td>
                         <div class="form-group" style="margin-left: 15%">
                             <label for="other_note1"> Địa chỉ </label>
-                            <input type="text" class="form-control" id="diachi" style="width: 200px;">
+                            <textarea type="text" class="form-control" id="diachi" style="width: 200px;"></textarea>
                         </div>
                     </td>
                 </tr>
@@ -156,6 +159,7 @@
            <script type="text/javascript">
 				@php
 					include public_path('/js/account/account/account.js');
+                    include public_path('/js/account/account/jquery.fancybox.min.js');
 				@endphp
 			</script>
 @endsection

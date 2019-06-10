@@ -8,6 +8,7 @@ const app = new Vue({
         return {
             results:{},
             name:'',
+            phone:'',
             selectedFile: null,
             imageUrl: null,
         };
@@ -19,6 +20,7 @@ const app = new Vue({
     methods: {
         search(page) {
             var data = {
+                phone:this.phone,
                 name: this.name,
             };
             if (page) {
@@ -31,7 +33,7 @@ const app = new Vue({
                     common.loading.hide('body');
                 })
                 .fail(error => {
-                    alert('Error!');
+                    bootbox.alert('Error!');
                 })
         },
         onSelectImageHandler(e) {
@@ -65,19 +67,38 @@ const app = new Vue({
             var data = {
                 id:id
             }
-            var r = confirm('bạn muốn xóa');
-            if (r == true) {
+            bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có xoá sản phẩm này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        alert("xóa thành công !!");
-                        window.location = 'account';
+                        bootbox.alert("xóa thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
                     }
                 })
-            }
+                    }
+                }
+            });
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
             $("#avatarcollector_edit").attr('src', 'http://localhost:8888/images/' + avatar);
+            this.selectedFile = avatar;
             $("#id_user").val(id);
             $("#ten").val(ten);
             $("#SDT").val(sdt);
@@ -89,7 +110,7 @@ const app = new Vue({
             $('#update').modal('show');
         },
         edit() {
-           common.loading.show('body');
+            common.loading.show('body');
             var data = new FormData();
             let url = $('#form_edit_info').attr("action");
             data.append('files_edit', this.selectedFile);
@@ -110,11 +131,12 @@ const app = new Vue({
            
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
-                        alert('Thành công!!!');
-                        window.location.reload();
+                       bootbox.alert("thành công !!", function() {
+                             window.location.reload();
+                        });
                         common.loading.hide('body');
                     } else {
-                        alert('Thất bại!!!');
+                        bootbox.alert('Thất bại!!!');
                     }
                 })
         },

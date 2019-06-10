@@ -13,6 +13,7 @@ const app = new Vue({
             imageUrl:null,
             ten:'',
             ma: '',
+            masp:'',
             gia_goc:'',
             gia_size_vua:'',
             gia_size_lon:'',
@@ -25,28 +26,20 @@ const app = new Vue({
 	created() {
         this.search();
     },
+
+    filters: {
+        contentSubstr:function(string) {
+            return string.substring(0,30)
+        },
+    },
+
     methods: {
         search(page) {
             common.loading.show('body');
-            var data1 = {
-                name: this.name,
-                gio_hang : {
-                    idGH :1,
-                    ma_sp :1,
-                    ten_sp :1,
-                    gia_sp :1, 
-                    hinh_anh :1,
-                    so_luong :1,
-                    size :1,
-                    note :1,
-                    topping : {
-                        0:[1,2,3,4],
-                        1:[5,6,7,8]
-                    }
-                }
-            };
             var data = {
                 name: this.name,
+                masp: this.masp,
+                mo_ta:this.mo_ta,
             };
             if (page) {
                 data.page = page;
@@ -59,6 +52,10 @@ const app = new Vue({
                 .fail(error => {
                     alert('Error!');
                 })
+        },
+        showDescription(description) {
+            $('#ModalShowDescription').modal('show');
+            $('#description_show').text(description);
         },
         deleted(id) {
             var data = {
@@ -83,8 +80,9 @@ const app = new Vue({
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        bootbox.alert("xóa thành công !!");
-                        window.location.reload();
+                        bootbox.alert("xóa thành công !!", function() {
+                             window.location.reload();
+                        });
                         common.loading.hide('body');
                     }
                 })
@@ -100,6 +98,7 @@ const app = new Vue({
             // $("#edit").css('display','block');
             // $("#body").css('display','none');
             $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + img);
+            this.selectedFile = img;
             $("#id_product").val(ma_so);
             $("#ten").val(ten);
             $("#ma").val(ma_chu);
@@ -139,11 +138,12 @@ const app = new Vue({
            
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
-                        alert('Thành công!!!');
-                        window.location.reload();
+                        bootbox.alert("Sửa thành công !!", function() {
+                             window.location.reload();
+                        });
                         common.loading.hide('body');
                     } else {
-                        alert('Thất bại!!!');
+                        bootbox.alert('Thất bại!!!');
                     }
                 })
         },

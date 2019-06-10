@@ -243,13 +243,13 @@ class LoginRepository {
 
 	public function news($page) {
 		if ($page == null) {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
+            $result = DB::table('TinTuc')->select('ma_tin_tuc', 'ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
         	return $result->limit(4)->orderBy('ngay_tao', 'desc')->get();
         }else {
-            $result = DB::table('TinTuc')->select('ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
+            $result = DB::table('TinTuc')->select('ma_tin_tuc', 'ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);

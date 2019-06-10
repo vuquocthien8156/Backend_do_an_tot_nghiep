@@ -43,5 +43,66 @@ class PermissionController extends Controller {
 			return response()->json(['status' => 'error','error' => 1]);
 		}
 	}
+
+	public function listPermissionUser() {
+		$list = $this->permissionService->listPermissionUser();
+		for ($i=0; $i < count($list); $i++) { 
+			$getRoll = $this->permissionService->getRoll($list[$i]->tai_khoan);
+			$list[$i]->listRoll = $getRoll;
+		}
+		return response()->json(['status' => 'ok', 'error' => 0, 'list' => $list]);
+	}
+
+	public function createPermission(Request $request) {
+		$name = $request->get('name');
+		$phone = $request->get('phone');
+		$email = $request->get('email');
+		$password = $request->get('password');
+		$permission_group = $request->get('permission_group');
+		$inserUser = $this->permissionService->inserUser($name, $phone, $email, $password);
+		$getMaxId  = $this->permissionService->getMaxId();
+		for ($i=0; $i < count($permission_group); $i++) { 
+			$inserPermission = $this->permissionService->inserPermission($getMaxId, $permission_group[$i]);
+			if ($inserPermission == true) {
+				$t = 1;
+			}else {
+				$t=0;
+			}
+		}
+		if ($t == 1) {
+			return response()->json(['status' => 'ok', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'ok', 'error' => 1]);
+		}
+	}
+
+	public function updatePermission(Request $request) {
+		$user_id = $request->get('user_id');
+		$permission_group = $request->get('permission_group');
+		$deletePermission = $this->permissionService->deletePermission($user_id);
+		for ($i=0; $i < count($permission_group); $i++) { 
+			$inserPermission = $this->permissionService->inserPermission($user_id, $permission_group[$i]);
+			if ($inserPermission == true) {
+				$t = 1;
+			}else {
+				$t=0;
+			}
+		}
+		if ($t == 1) {
+			return response()->json(['status' => 'ok', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'ok', 'error' => 1]);
+		}
+	}
+
+	public function deletePermission(Request $request){
+		$user_id = $request->get('user_id');
+		$deletePermission = $this->permissionService->deletePermission($user_id);
+		if ($deletePermission > 0) {
+			return response()->json(['status' => 'ok', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'ok', 'error' => 1]);
+		}
+	}
 	
 }

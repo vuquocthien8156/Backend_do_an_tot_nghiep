@@ -1,7 +1,4 @@
 @extends('layout.base')
-@section('stylesheet')
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css"/>
-@endsection
 @section('body-content')
 	<div id="test"> 
 		<div id="story" class="light-wrapper" >
