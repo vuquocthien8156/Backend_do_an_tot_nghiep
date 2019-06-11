@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountRepository {
 
-	public function search($name, $phone, $page=1) {
+	public function search($name, $phone, $page=1, $gender) {
 		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi');
         
         if ($name != '' && $name != null) {
@@ -26,6 +26,9 @@ class AccountRepository {
                 $where->whereRaw('us.sdt like ? ', ['%' . $phone . '%']);
          
             });
+        }
+        if ($gender != '' && $gender != null) {
+        	$result->where('us.gioi_tinh', '=', $gender);
         }
 		return $result->orderBy('us.id', 'asc')->paginate(15);
 	}

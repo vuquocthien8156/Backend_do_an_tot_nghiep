@@ -16,10 +16,10 @@
     <div class="container pl-0 pr-0 pb-5">
         <div class="w-100" style="min-height: 150px">
             <div class=" form-box col-12 m-auto">
-                <div class="mx-auto px-sm-5 py-sm-3 form-box-shadow" style="max-width: 37rem;">
+                <div class="mx-auto px-sm-5 py-sm-3 form-box-shadow" style="max-width: 37rem;border: 1px solid black">
                     <form class="form-inline"> 
                         <input type="hidden" name="_token" :value="csrf">
-                        <div class="text-center mx-auto mb-3"> <h2>TẠO USER</h2> </div>
+                        <div class="text-center mx-auto mb-3"> <h2>Tạo tài khoản admin</h2> </div>
                         <div class="form-group w-100 mb-3">
                             <label for="name_user" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Tên</label>
                             <div class="col-md-8 p-0 input-group">
@@ -50,7 +50,7 @@
                                 @foreach ($listPermission as $value)
                                     <div class="col-md-8 p-0 mb-2">
                                         <div class="form-group">
-                                            <input type="checkbox" name="chk_permission_group[]" class="input_type_check" id="permission_{{$value->id}}" value="{{$value->id}}"> 
+                                            <input style="width: 20px; height: 20px" type="checkbox" name="chk_permission_group[]" class="input_type_check" id="permission_{{$value->id}}" value="{{$value->id}}"> 
                                             <label for="customer_type"> {{$value->ten_vai_tro}} </label><br>
                                         </div>
                                     </div>
@@ -108,30 +108,30 @@
                     </div>                     
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="name_user_update" class="col-sm-4"> Tên </label>
+                            <label for="name_user_update" class="col-sm-4"><b> Tên </b></label>
                             <div class="col-sm-8">
                                 <input type="text" readonly="true" id="name_user_update" class="form-control" v-model="name_user_update">
                             </div>
                         </div> 
                         <div class="form-group row">
-                            <label for="email_user_update" class="col-sm-4"> Email </label>
+                            <label for="email_user_update" class="col-sm-4"> <b>Email</b> </label>
                             <div class="col-sm-8">
                                 <input type="text" readonly="true" id="email_user_update" class="form-control" v-model="email_user_update">
                             </div>
                         </div> 
                         <div class="form-group row">
-                            <label for="phone_user_update" class="col-sm-4"> Số điện thoại </label>
+                            <label for="phone_user_update" class="col-sm-4"> <b>Số điện thoại </b></label>
                             <div class="col-sm-8">
                                 <input type="text" readonly="true" id="phone_user_update" class="form-control" v-model="phone_user_update">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="info_user_update" class="col-sm-4"> Cho phép truy cập </label>
+                            <label for="info_user_update" class="col-sm-4"> <b>Cho phép truy cập </b></label>
                             <div class="col-sm-8">
                                 @foreach ($listPermission as $value)
                                     <div class="col-md-8">
                                         <div>
-                                            <input type="checkbox" name="chk_permission_group_update[]" class="input_type_check" id="permission_update_{{$value->id}}" value="{{$value->id}}"> 
+                                            <input style="width: 20px; height: 20px" type="checkbox" name="chk_permission_group_update[]" class="input_type_check" id="permission_update_{{$value->id}}" value="{{$value->id}}"> 
                                             <label for="permission_update_{{$value->id}}"> {{$value->ten_vai_tro}} </label><br>
                                         </div>
                                     </div>

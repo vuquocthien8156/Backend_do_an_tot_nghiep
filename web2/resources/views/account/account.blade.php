@@ -15,8 +15,14 @@
         <div class="row">
             <div class="set-row background-contact w-100" style="min-height: 150px">
                 <input id="" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
-                 <input id="" type="text" class="input-app mr-4"  placeholder="sdt"  style="width: 200px;margin-bottom: 10px" v-model="phone">
+                <input id="" type="text" class="input-app mr-4"  placeholder="sdt"  style="width: 200px;margin-bottom: 10px" v-model="phone">
+                <select class="input-app mr-4" v-model="gender" style="width: 200px; height: 33px; cursor: pointer;">
+                        <option value=""> Chọn giới tính </option>
+                        <option value="1"> Nam </option>
+                        <option value="2"> Nữ </option>
+                    </select>
                 <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
+                <a :href="'excel-account?name='+exportaccount.name+'&phone='+exportaccount.phone+'&gender='+exportaccount.gender" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a>
                <table class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                     <thead>
                     <tr class="text-center blue-opacity">
@@ -58,7 +64,7 @@
                         <tr>
                     </tbody>
                 </table>
-                <div class="col-12">
+                <div class="col-12" style="margin-left: 80%">
                         <pagination :data="results" @pagination-change-page="search"></pagination> 
                 </div>
                 <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="update" aria-hidden="true">
@@ -76,8 +82,8 @@
                 <table border="0px" class=" table-striped w-100" style="margin-left: 2%">
                 <tr>
                     <td>
-                        <label for="other_note1"> Hình ảnh </label>
-                        <img id="avatarcollector_edit" style="width: 150px; height: 150px;" class="d-block" :src="imageUrl" />
+                        <label for=""><b>Hình ảnh</b></label>
+                        <img id="avatarcollector_edit" style="width: 100px; height: 100px;" class="d-block" :src="imageUrl" />
                     </td>
                     <td>
                         <div class="form-group">
@@ -89,13 +95,13 @@
                 <tr>
                     <td style="width: 300px;">
                         <div class="form-group">
-                            <label for="other_note1"> Tên</label>
+                            <label for=""> <b>Tên</b></label>
                             <input type="text" class="form-control" id="ten" style="width: 200px;">
                         </div>
                     </td>
                     <td style="width: 300px;">
                         <div class="form-group" style="margin-left: 15%">
-                            <label for="other_note1"> SDT </label>
+                            <label for=""><b> SDT</b> </label>
                             <input type="text" class="form-control" id="SDT" style="width: 200px;">
                         </div>
                     </td>
@@ -103,13 +109,13 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="other_note1"> Ngày sinh </label>
+                            <label for=""> <b>Ngày sinh</b> </label>
                             <input type="text" class="form-control" id="NS" style="width: 200px;">
                         </div>
                     </td>
                     <td>
                         <div class="form-group" style="margin-left: 15%">
-                            <label for="other_note1"> giới tính </label>
+                            <label for=""> <b>giới tính </b></label>
                             <select id="gender" class="form-control" style="width: 200px;">
                                 <option value="">Chọn giới tính</option>
                                 <option value="1">Nam</option>
@@ -121,13 +127,13 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="other_note1"> Điểm tích </label>
+                            <label for=""> <b>Điểm tích</b> </label>
                             <input type="text" class="form-control" id="diemtich" style="width: 200px;">
                         </div>
                     </td>
                     <td>
                         <div class="form-group" style="margin-left: 15%">
-                            <label for="other_note1"> Địa chỉ </label>
+                            <label for=""> <b>Địa chỉ</b> </label>
                             <textarea type="text" class="form-control" id="diachi" style="width: 200px;"></textarea>
                         </div>
                     </td>
@@ -135,7 +141,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="other_note1">Tên tài khoản </label>
+                            <label for=""><b>Tên tài khoản</b> </label>
                             <input type="text" class="form-control" id="email"  style="width: 200px;">
                         </div>
                     </td>

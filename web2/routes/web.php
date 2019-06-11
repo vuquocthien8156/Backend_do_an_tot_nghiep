@@ -20,6 +20,7 @@ Route::post('dangky', 'RegisterController@register');
 
 Route::get('manage/account', 'AccountController@AccountView')->name('manage-account');
 Route::get('manage/search', 'AccountController@search');
+Route::get('manage/excel-account', 'AccountController@exportAccount');
 Route::post('manage/delete', 'AccountController@deleteAccount');
 Route::post('manage/edit', 'AccountController@editAccount');
 
@@ -33,6 +34,8 @@ Route::prefix('products')->group(function() {
 	Route::post('edit', 'ProductController@editProduct');
 	Route::get('productDetail', 'ProductController@detailView')->name('details');
 	Route::get('news', 'ProductController@newsView')->name('news');
+	Route::get('discount', 'ProductController@KM')->name('news');
+	Route::get('excel-product', 'ProductController@exportProduct');
 });
 
 Route::prefix('Branch')->group(function() {

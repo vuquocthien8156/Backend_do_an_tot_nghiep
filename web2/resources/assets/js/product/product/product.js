@@ -7,6 +7,7 @@ const app = new Vue({
     data() {
         return {
             results:{},
+            exportproduct:{},
             name:'',
             img:'',
             selectedFile: null,
@@ -47,6 +48,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.exportproduct = response.infoExportExcel;
                     common.loading.hide('body');
                 })
                 .fail(error => {

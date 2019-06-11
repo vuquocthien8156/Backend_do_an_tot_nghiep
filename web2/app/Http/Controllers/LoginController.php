@@ -122,7 +122,7 @@ class LoginController extends Controller {
 
 	public function logout(Request $request) {  
 		session()->flush();
-		return redirect('login');
+		return redirect('loginView');
 	}
 
 	public function twoDigitNumber($number) {
@@ -160,19 +160,20 @@ class LoginController extends Controller {
 		$date = $now->day;
 		$month = $now->month;
 		$year = $now->year;
-		$S = $second*$minute*$hour*$date*$month*$year;
-		if ($request->file('avatar') != null || $request->file('avatar') != ''){
-			foreach ($request->file('avatar') as $key) {
-				$subName = 'news/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+		$a = $request->file('avatar');
+		if ($a != null || $a != ''){
+			for($i = 0; $i < count($a); $i++) {
+				$S = $second*$minute*$hour*$date*$month*$year;
+				$subName = 'EV/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
-	            $nameImg = 'News_Img'.$S.strstr($key->getClientOriginalName(), '.');
-	            $check = $key->move($destinationPath.'/'.$subName, $nameImg);
+	            $nameImg = 'News_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
+	            $check = $a[$i]->move($destinationPath.'/'.$subName, $nameImg);
             	if (!file_exists($check)) {
                 	return response()->json(['filename' => 'null']);
             	}
 			}
-            return response()->json(['filename' => 'images/'.$subName.'/' . $nameImg]);
+            return response()->json(['error' => 0]);
 		}
 	}
 

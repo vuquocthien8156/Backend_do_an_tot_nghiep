@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use App\Traits\CommonTrait;
+use App\Exports\ProductExport;
 use Illuminate\Support\Facades\Hash;
 use Excel;
 
@@ -42,6 +43,16 @@ class ProductController extends Controller {
     	return view('product.news', ['list' => $searchNews, 'path' => $path]);
     }
 
+    public function KM(Request $request) {
+        $id = $request->get('id');
+        $path = config('app.resource_url_path');
+        $searchKM = $this->productService->searchKM($id);
+        foreach ($searchKM as $key) {
+            $key->ten_khuyen_mai = mb_strtoupper($key->ten_khuyen_mai, 'UTF-8');
+        }
+        return view('product.KM', ['list' => $searchKM, 'path' => $path]);
+    }
+
 	public function viewAddProduct() {
 		$list = $this->productService->loaisp();
     	return view('product.addProduct',['list' => $list]);
@@ -67,12 +78,13 @@ class ProductController extends Controller {
                 $page = $request->get('page');
         }
         $pathToResource = config('app.resource_url_path');
+        $infoExportExcel = ['name' => $name, 'masp' => $masp, 'ma_loai' => $ma_loai, 'mo_ta' => $mo_ta];
         $listProduct = $this->productService->searchProduct($name, $page, $ma_loai, $mo_ta, $masp);
         for ($i=0; $i < count($listProduct); $i++) { 
             $listProduct[$i]->pathToResource = $pathToResource;
             $listProduct[$i]->ngay_ra_mat = date_format(Carbon::parse($listProduct[$i]->ngay_ra_mat), 'd-m-Y');
         }
-		return response()->json(['listSearch'=>$listProduct]);  
+		return response()->json(['listSearch'=>$listProduct, 'infoExportExcel' => $infoExportExcel]);  
 	}
 
 	public function searchProductAPI(Request $request) {
@@ -182,6 +194,14 @@ class ProductController extends Controller {
         }
 
 	}
+
+    public function exportProduct(Request $request) {
+        $name = $request->get('name');
+        $masp = $request->get('masp');
+        $ma_loai = $request->get('ma_loai');
+        $mo_ta = $request->get('mo_ta');
+        return Excel::download(new ProductExport($name, $masp, $mo_ta, $ma_loai), 'product-t&t.xlsx');
+    }
 
 	public function getIdSp() {
 		$getIdSp = $this->productService->getIdSp();

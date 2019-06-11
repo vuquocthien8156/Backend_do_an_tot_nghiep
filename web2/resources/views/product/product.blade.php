@@ -14,7 +14,7 @@
         </div>
         <div class="row">
         <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="update" aria-hidden="true">
-                    <div class="modal-dialog" role="document" style="max-width: 500px">
+                    <div class="modal-dialog" role="document" style="max-width: 800px">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa</h5>
@@ -25,14 +25,13 @@
                         <div class="modal-body">
                             <form id="form_edit_info" method="POST" action="edit" enctype="multipart/form-data">
                 <table border="0px" class=" table-striped w-100" style="margin-left: 2%">
-                <tr>
+                <tr style="background: #f2f2f2">
                     <td>
                         <label for="other_note1"> Hình ảnh </label>
                         <img id="avatarcollector_edit" style="width: 150px; height: 150px;" class="d-block" :src="imageUrl" />
                     </td>
-                    <td>
+                    <td colspan="2">
                         <div class="form-group">
-                            
                             <input type="file"@change="onSelectImageHandler" class="form-control" id=""  style="width: 200px;">
                             <input type="input" hidden="true" id="id_product"  style="width: 200px;">
                         </div>
@@ -51,22 +50,20 @@
                             <input type="text" class="form-control" id="ma" style="width: 200px;">
                         </div>
                     </td>
-                </tr>
-                <tr>
-                    <td>
+                     <td>
                         <div class="form-group">
                             <label for="other_note1"> Giá gốc </label>
                             <input type="text" class="form-control" id="gia_goc" style="width: 200px;">
                         </div>
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <div class="form-group">
                             <label for="other_note1"> Giá size vừa </label>
                             <input type="text" class="form-control" id="gia_size_vua" style="width: 200px;">
                         </div>
                     </td>
-                </tr>
-                <tr>
                     <td>
                         <div class="form-group">
                             <label for="other_note1"> Giá size lớn </label>
@@ -100,8 +97,6 @@
                             <textarea class="form-control" id="mo_ta"  style="width: 200px;"></textarea>
                         </div>
                     </td>
-                </tr>
-                <tr>
                     <td>
                         <div class="form-group">
                             <label for="other_note1"> Số lần order </label>
@@ -244,6 +239,7 @@
             <input id="" type="text" class="input-app mr-4"  placeholder="Mã sản phẩm"  style="width: 200px;margin-bottom: 10px" v-model="masp">
             <input id="" type="text" class="input-app mr-4"  placeholder="Mô tả"  style="width: 200px;margin-bottom: 10px" v-model="mo_ta">
             <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
+            <a :href="'excel-product?name='+exportproduct.name+'&masp='+exportproduct.masp+'&ma_loai='+exportproduct.ma_loai+'&mo_ta='+exportproduct.mo_ta" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a>
             <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                 <thead>
                 <tr class="text-center blue-opacity">
@@ -251,7 +247,7 @@
                     <th  class="custom-view">Tên sản phẩm</th>
                     <th  class="custom-view">Mã sản phẩm</th>
                     <th  class="custom-view">Loại sản phẩm</th>
-                    <th  class="custom-view">Giá gốc</th>
+                    <th  class="custom-view">Giá sản phẩm</th>
                     <th  class="custom-view">Số lượng Order</th>
                     <th  class="custom-view">Mô tả</th>
                     <th  class="custom-view">Ngày ra mắt</th>
@@ -286,7 +282,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-12">
+            <div class="col-12" style="margin-left: 80%">
                     <pagination :data="results" @pagination-change-page="search"></pagination> 
             </div>
         </div>
