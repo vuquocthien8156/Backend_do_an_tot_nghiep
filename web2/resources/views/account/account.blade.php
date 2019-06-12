@@ -53,8 +53,8 @@
                             <td  class="custom-view">@{{item.dia_chi}}</td>
                             <td  class="custom-view" v-if="item.email != null">@{{item.email}}</td>
                             <td  class="custom-view" v-if="item.email == null">Chưa có</td>
-                            <td  class="custom-view"> <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.avatar">
-                                        <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.avatar">
+                            <td  class="custom-view"> <a data-fancybox="gallery" :href="item.pathToResource+'images/'+item.avatar">
+                                        <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'images/'+item.avatar">
                                     </a></td>
                             <td  class="custom-view" v-if="item.da_xoa == 1">Đã xóa</td>
                             <td  class="custom-view" v-if="item.da_xoa == 0">Đã kích hoạt</td>

@@ -161,6 +161,7 @@ class LoginController extends Controller {
 		$month = $now->month;
 		$year = $now->year;
 		$a = $request->file('avatar');
+		$arr = [];
 		if ($a != null || $a != ''){
 			for($i = 0; $i < count($a); $i++) {
 				$S = $second*$minute*$hour*$date*$month*$year;
@@ -169,11 +170,12 @@ class LoginController extends Controller {
 	            $pathToResource = config('app.resource_url_path');
 	            $nameImg = 'News_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
 	            $check = $a[$i]->move($destinationPath.'/'.$subName, $nameImg);
+	            array_push($arr, 'images/'.$subName.'/' . $nameImg);
             	if (!file_exists($check)) {
                 	return response()->json(['filename' => 'null']);
             	}
 			}
-            return response()->json(['error' => 0]);
+            return response()->json(['status' => 'success', 'error' => 0, 'arr' => $arr]);
 		}
 	}
 

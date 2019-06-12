@@ -32,58 +32,6 @@
         @show
     </head>
     <body style="background: white">
-        <div class="header bg-black fixed-top">
-            <nav class="navbar box-shadow container" id="navbar-example2" style="background: black">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <div class="d-flex align-items-center flex-grow-1 flex-md-grow-0">
-                        <a href="/customer/manage" class="navbar-brand p-0 m-0 d-flex">
-                            <img src="/images/logo1.png" alt="" style="width: 70px; height: 65px">
-                        </a>
-                    </div>
-                    <div class="d-none d-md-block flex-md-grow-1 justify-content-center">
-                        <ul id="header-navbar" class="nav justify-content-center font-weight-bold">
-                           
-                                    <li class="nav-item d-none d-lg-block dropdown" style="">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
-                                            style="font-size: 16px; color: white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                           TÀI KHOẢN
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route("manage-account", [], false)}}">Xem danh sách</a>
-                                        </div>
-                                    </li>
-                               
-                                    <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
-                                        style="font-size: 16px; color: white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       SẢN PHẨM
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
-                                            <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
-                                        </div>
-                                    </li>
-                               
-                                    <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
-                                        style="font-size: 16px; color: white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       CHI NHÁNH
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">Xem danh sách</a>
-                                        </div>
-                                    </li>
-                                
-                                    <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px; color: white" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
-                                    </li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    
             @section('body-content')
             @show
       
