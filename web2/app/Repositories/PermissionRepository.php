@@ -58,6 +58,7 @@ class PermissionRepository {
             'sdt' => $phone,
             'email' => $email,
             'password' => $password,
+            'avatar' => 'images/logo1.png',
             'da_xoa' => 0
         ]);
         return $result;

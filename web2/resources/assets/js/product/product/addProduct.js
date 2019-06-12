@@ -15,6 +15,7 @@ const app = new Vue({
             ngay_ra_mat:'',
             loaisp:'',
             mo_ta:'',
+            imageUrl:null,
             selectedFile: null,
         };
     },

@@ -7,10 +7,12 @@ const app = new Vue({
     data() {
         return {
             results:{},
+            exportaccount: {},
             name:'',
             phone:'',
             selectedFile: null,
             imageUrl: null,
+            gender: '',
         };
     },
 
@@ -22,6 +24,7 @@ const app = new Vue({
             var data = {
                 phone:this.phone,
                 name: this.name,
+                gender:this.gender,
             };
             if (page) {
                 data.page = page;
@@ -30,6 +33,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.exportaccount = response.infoExportExcel;
                     common.loading.hide('body');
                 })
                 .fail(error => {

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
+use App\Exports\AccountExport;
 use Illuminate\Support\Facades\Gate;
 use Excel;
 
@@ -38,12 +39,14 @@ class AccountController extends Controller {
 	 } 
 		$name = $request->get('name');
 		$phone = $request->get('phone');
+		$gender = $request->get('gender');
+		$infoExportExcel = ['name' => $name, 'phone' => $phone, 'gender' => $gender];
 		$page = 1;
         if ($request->get('page') !== null) {
             $page = $request->get('page');
         }
         $pathToResource = config('app.resource_url_path');
-		$listAccount = $this->accountService->search($name, $phone, $page);
+		$listAccount = $this->accountService->search($name, $phone, $page, $gender);
 		$tmp = $listAccount->map(function ($item) {
                 return [
                 	'id' => $item->id,
@@ -61,7 +64,7 @@ class AccountController extends Controller {
 			$listAccount[$i]->ngay_sinh = date_format(Carbon::parse($listAccount[$i]->ngay_sinh),'d-m-Y');
             $listAccount[$i]->pathToResource = $pathToResource;
         }
-		return response()->json(['listSearch'=>$listAccount]);
+		return response()->json(['listSearch'=>$listAccount, 'infoExportExcel'=> $infoExportExcel]);
 	}
 
 	public function deleteAccount(Request $request) {
@@ -78,6 +81,13 @@ class AccountController extends Controller {
 
 	public function twoDigitNumber($number) {
 		return $number < 10 ? '0'.$number : $number;
+    }
+
+    public function exportAccount(Request $request) {
+        $name = $request->get('name');
+        $phone = $request->get('phone');
+        $gender = $request->get('gender');
+        return Excel::download(new AccountExport($name, $phone, $gender), 'account-t&t.xlsx');
     }
 
 	public function editAccount(Request $request) {

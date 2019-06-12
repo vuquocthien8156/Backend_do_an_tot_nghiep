@@ -66,4 +66,8 @@ class ProductService {
         return $this->productRepository->searchNews($id);
     }
 
+    public function searchKM($id) {
+        return $this->productRepository->searchKM($id);
+    }
+
 }

@@ -194,4 +194,12 @@ class ProductRepository {
         ]);
         return $result->get();
     }
+
+    public function searchKM($id) {
+        $result = DB::table('KhuyenMai')->select('hinh_anh', 'ten_khuyen_mai', 'mo_ta', 'so_phan_tram')
+        ->where([
+            'ma_khuyen_mai' => $id,
+        ]);
+        return $result->get();
+    }
 }
