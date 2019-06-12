@@ -615,7 +615,8 @@ class LoginController extends Controller {
 
 	public function getAddressOrderUser(Request $request) {
     	$account = $request->get('ma_tai_khoan');
-    	$listInfoAddress = $this->loginService->getAddressOrderUser($account);
+    	$main = $request->get('main');
+    	$listInfoAddress = $this->loginService->getAddressOrderUser($account , $main);
     	return response()->json(['status' => 'Success','error' =>  0, 'listAddress' => $listInfoAddress]);
 	}
 

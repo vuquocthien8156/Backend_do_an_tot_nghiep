@@ -46,8 +46,8 @@ class LoginService {
 		return $this->loginRepository->getLikedProduct($id);	
 	}
 
-	public function getAddressOrderUser($idAccount) {
-		return $this->loginRepository->getAddressOrderUser($idAccount);	
+	public function getAddressOrderUser($idAccount , $main) {
+		return $this->loginRepository->getAddressOrderUser($idAccount, $main);	
 	}
 
 	public function insertAddressOrderUser($ma_tai_khoan , $ten_nguoi_nhan , $dia_chi ,  $so_dien_thoai  , $chinh) {
