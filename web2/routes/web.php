@@ -72,6 +72,8 @@ Route::post('api/login' , 'LoginController@loginAPI');
 Route::get('api/getInfoByEmail' , 'LoginController@getInfoByEmail');
 Route::post('api/login-by-phone', 'LoginController@loginsdtAPI');
 Route::get('api/checkLoginExist', 'LoginController@check');
+Route::post('api/changePassword', 'LoginController@updatePassword');
+Route::post('api/updatePhone', 'LoginController@updateNumberPhone');
 
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
@@ -111,7 +113,6 @@ Route::post('api/addEvaluate', 'LoginController@addEvaluate');
 Route::post('api/addChildEvaluate', 'LoginController@addChildEvaluate');
 
 Route::post('api/addThanks', 'LoginController@addThanks');
-
 
 Route::get('api/getAllAddressByUser', 'LoginController@getAddressOrderUser');
 Route::post('api/insertAddressOrder', 'LoginController@insertAddresOrderUser');
