@@ -5,22 +5,20 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div id="detail">
-        <div>
-            @foreach($list as $key)
-            <div class="row" style="padding-left: 2rem;margin-top:8%">
+        <div class="container-fluid">
+         @foreach($list as $key)
+            <div class="row">
                 <div class="col-sm-12">
-                     <h5 class="tag-page-custom"><b style="color: #33333373">
+                    <h5 class="tag-page-custom"><b style="color: #33333373; margin-top: 8%">
                         MENU/ {{$key->ten_loai_sp}}/ {{$key->ten}}
                 </b></h5>
                 </div>
             </div>
-            <div style="width: 100%" class="row">
-                <div class="col-sm-6" style="padding-left: 2rem;margin-top:0%;margin-left:0%;float: left;width: 40%">
-                    <h5 class="tag-page-custom" style="margin-top: 8%">
-                        <img src="{{$path}}{{$key->hinh_san_pham}}" width="100%" height="100%">
-                    </h5>
+            <div class="row">
+                <div class="col-sm-6">
+                     <img src="{{$path}}{{$key->hinh_san_pham}}" width="100%" height="100%">
                 </div>
-                <div class="col-sm-6" style="padding-left: 2rem;margin-top:3%;margin-left:0%;float: left;width: 40%">
+                <div class="col-sm-6">
                     <div style="margin-top:3%;margin-left:8%;">
                         <h1>{{$key->ten}}</h1>
                     </div>
@@ -40,7 +38,7 @@
                        <p style="font-size: 20px;color: orange">Size Lớn: {{$key->gia_lon}} VNĐ</p>
                     </div>
                 </div>
-            </div>
+            </div> 
             @endforeach
         </div>
     </div>

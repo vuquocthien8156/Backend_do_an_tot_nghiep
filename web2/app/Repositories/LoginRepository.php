@@ -662,5 +662,30 @@ class LoginRepository {
            		'so_luong' => $so_luong,
         	]);
 		return $result;
+	}
+
+	public function getIdMaxEV() {
+		$result = DB::table('DanhGia')->max('ma_danh_gia');
+		return $result;
+	}
+
+	public function insertImg($getIdMaxEV, $img) {
+		$result = DB::table('HinhAnh')->insert([
+           'object_id' => $getIdMaxEV,
+           'kieu' => 3,
+           'url' => $img,
+           'da_xoa' => 0,
+        ]) ;
+		
+		
+        return $result;
+	}
+
+	public function getSlideShow() {
+		$result = DB::table('KhuyenMai')->select('ma_khuyen_mai', 'ma_code', 'hinh_anh', 'ten_khuyen_mai', 'mo_ta', 'so_phan_tram', 'so_tien', 'so_sp_qui_dinh', 'ngay_bat_dau', 'ngay_ket_thuc', 'so_tien_qui_dinh_toi_thieu')->where([
+			'hien_slider' => 0,
+			'da_xoa' => 0,
+		])->get(); 
+		return $result;
 	}	
 }

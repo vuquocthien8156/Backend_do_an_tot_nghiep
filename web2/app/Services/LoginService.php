@@ -335,4 +335,16 @@ class LoginService {
     public function insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia) {
         return $this->loginRepository->insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia);
     }
+
+    public function getIdMaxEV() {
+        return $this->loginRepository->getIdMaxEV();
+    }
+
+    public function insertImg($getIdMaxEV, $img) {
+        return $this->loginRepository->insertImg($getIdMaxEV, $img);
+    }
+
+    public function getSlideShow() {
+        return $getSlideShow = $this->loginRepository->getSlideShow();
+    }
 }

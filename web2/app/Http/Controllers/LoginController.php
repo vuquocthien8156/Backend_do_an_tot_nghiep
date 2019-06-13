@@ -575,6 +575,30 @@ class LoginController extends Controller {
     	$thoi_gian = $request->get('thoi_gian');
     	$duyet = $request->get('duyet');
     	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet );
+    	$getIdMaxEV = $this->loginService->getIdMaxEV();
+    	$now = Carbon::now();
+		$second = $now->second;
+		$minute = $now->minute;
+		$hour = $now->hour;
+		$date = $now->day;
+		$month = $now->month;
+		$year = $now->year;
+		$a = $request->file('avatar');
+		if ($a != null || $a != ''){
+			for($i = 0; $i < count($a); $i++) {
+				$S = $second*$minute*$hour*$date*$month*$year;
+				$subName = 'images/EV/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+	            $destinationPath = config('app.resource_physical_path');
+	            $pathToResource = config('app.resource_url_path');
+	            $nameImg = 'News_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
+	            $check = $a[$i]->move($destinationPath.'/'.$subName, $nameImg);
+	            $img = $subName.'/'.$nameImg;
+	            $insertImg = $this->loginService->insertImg($getIdMaxEV, $img);
+            	if (!file_exists($check)) {
+                	return response()->json(['filename' => 'null']);
+            	}
+			}
+		}
     	if ($addEvaluate == true) {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	}
@@ -739,5 +763,13 @@ class LoginController extends Controller {
     		return response()->json(['status' => 'Success','error' =>  0]);
     	else
     		return response()->json(['status' => 'error','error' =>  0]);
+    }
+
+    public function getSlideShow(){
+    	$getSlideShow = $this->loginService->getSlideShow();
+    	if (isset($getSlideShow[0]->ma_khuyen_mai)) {
+    		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
+    	}
+    	return response()->json(['status' => 'fail', 'error' =>  1]);
     }
 }

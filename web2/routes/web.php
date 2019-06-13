@@ -124,3 +124,4 @@ Route::get('api/addOrder', 'LoginController@addOrder');
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
 
 Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//new
+Route::get('api/getSlideShow', 'LoginController@getSlideShow');
