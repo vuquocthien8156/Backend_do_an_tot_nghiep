@@ -51,7 +51,7 @@ class ProductRepository {
 
     public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
        if ($page == null) {
-            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta',  'lsp.loai_chinh')
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta',  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
@@ -80,7 +80,7 @@ class ProductRepository {
 
         return $result->orderBy('sp.ma_so', 'asc')->get();
         }else {
-            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' =>0,
@@ -109,12 +109,24 @@ class ProductRepository {
     }
 
     public function searchRankProduct() {
-        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
-        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
+        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
         ->where([
-            'lsp.da_xoa' => 0,
-        ]);
-        return $result->orderBy('sp.so_lan_dat', 'asc')->limit(10)->get();
+            'dh.da_xoa' => 0,
+        ])->DISTINCT();
+        return $result->get();
+    }
+
+    public function countProduct($id) {
+        $now = Carbon::now();
+        $from_date = Carbon::now()->subDay(7);
+        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
+        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
+        ->where([
+            'ctdh.ma_san_pham' => $id,
+        ])->where([['ngay_lap', '<=' , $now],['ngay_lap', '>=' , $from_date]])
+        ->get();
+        return $result;
     }
 
     public function delete($id) {
