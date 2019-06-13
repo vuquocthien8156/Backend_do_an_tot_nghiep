@@ -160,7 +160,7 @@ class LoginController extends Controller {
 		$date = $now->day;
 		$month = $now->month;
 		$year = $now->year;
-		$a = $request->file('avatar');
+		$a = $request->file('imgEv');
 		$arr = [];
 		if ($a != null || $a != ''){
 			for($i = 0; $i < count($a); $i++) {
@@ -168,14 +168,14 @@ class LoginController extends Controller {
 				$subName = 'EV/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
 	            $destinationPath = config('app.resource_physical_path');
 	            $pathToResource = config('app.resource_url_path');
-	            $nameImg = 'News_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
+	            $nameImg = 'EV_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
 	            $check = $a[$i]->move($destinationPath.'/'.$subName, $nameImg);
 	            array_push($arr, 'images/'.$subName.'/' . $nameImg);
             	if (!file_exists($check)) {
-                	return response()->json(['filename' => 'null']);
+                	return response()->json(['status' => 'error', 'error' => 0]);
             	}
 			}
-            return response()->json(['status' => 'success', 'error' => 0, 'arr' => $arr]);
+            return response()->json(['status' => 'Success', 'error' => 0, 'arr' => $arr]);
 		}
 	}
 
@@ -576,34 +576,23 @@ class LoginController extends Controller {
     	$noi_dung = $request->get('noi_dung');
     	$thoi_gian = $request->get('thoi_gian');
     	$duyet = $request->get('duyet');
-    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet );
+    	$mang_hinh = $request->get('Hinh_anh');
+    	$addEvaluate = $this->loginService->addEvaluate($id_tk, $id_sp, $so_diem, $tieu_de, $noi_dung, $thoi_gian , $duyet);
     	$getIdMaxEV = $this->loginService->getIdMaxEV();
-    	$now = Carbon::now();
-		$second = $now->second;
-		$minute = $now->minute;
-		$hour = $now->hour;
-		$date = $now->day;
-		$month = $now->month;
-		$year = $now->year;
-		$a = $request->file('avatar');
-		if ($a != null || $a != ''){
-			for($i = 0; $i < count($a); $i++) {
-				$S = $second*$minute*$hour*$date*$month*$year;
-				$subName = 'images/EV/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
-	            $destinationPath = config('app.resource_physical_path');
-	            $pathToResource = config('app.resource_url_path');
-	            $nameImg = 'News_Img'.$S.$i.strstr($a[$i]->getClientOriginalName(), '.');
-	            $check = $a[$i]->move($destinationPath.'/'.$subName, $nameImg);
-	            $img = $subName.'/'.$nameImg;
-	            $insertImg = $this->loginService->insertImg($getIdMaxEV, $img);
-            	if (!file_exists($check)) {
-                	return response()->json(['filename' => 'null']);
-            	}
-			}
-		}
-    	if ($addEvaluate == true) {
-    		return response()->json(['status' => 'Success','error' =>  0]);
+    	
+    	$i = 0;
+    	if(count($mang_hinh) > 0){
+    		for( ; $i < count($mang_hinh) ; $i++){
+	    		$insertImg = $this->loginService->insertImg($getIdMaxEV, $mang_hinh[$i]);
+	    		if($insertImg == 0)
+	    			break;
+    		}
     	}
+
+    	if(count($mang_hinh) == $i)	
+	    	if ($addEvaluate == true) {
+	    		return response()->json(['status' => 'Success','error' =>  0]);
+	    	}
     	return response()->json(['status' => 'Fail','error' =>  1]);
     }
 

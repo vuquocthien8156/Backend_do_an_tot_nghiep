@@ -676,6 +676,7 @@ class LoginRepository {
 	}
 
 	public function insertImg($getIdMaxEV, $img) {
+		
 		$result = DB::table('HinhAnh')->insert([
            'object_id' => $getIdMaxEV,
            'kieu' => 3,
