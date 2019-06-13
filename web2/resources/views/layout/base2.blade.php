@@ -32,7 +32,6 @@
         @show
     </head>
     <body style="background: white">
-    
             @section('body-content')
             @show
       

@@ -1,5 +1,4 @@
-@extends('layout.base2')
-@section('body-content')
+
 <body data-spy="scroll" data-target="#navbar" data-offset="120" style="background: #f5f5f5">
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -43,4 +42,3 @@
         </div>
     </div>
 </body>
-@endsection

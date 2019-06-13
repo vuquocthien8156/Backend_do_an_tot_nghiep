@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')
         ->where(['email' => $user, 
         		'password' => $pass, 
         		'us.da_xoa' => 0])->get();
@@ -67,8 +67,14 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function getAddressOrderUser($idAccount) {
-		$result = DB::table('SoDiaChi')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where(['ma_tai_khoan' => $idAccount ,'da_xoa' => 0])->get();
+	public function getAddressOrderUser($idAccount , $main) {
+		$condition = ['ma_tai_khoan' => $idAccount ,'da_xoa' => 0];
+		if($main != null)
+			$condition['chinh'] = 1;	
+
+		$result = DB::table('SoDiaChi')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where($condition)->get();
+		
+
 		return $result;	
 	}
 
