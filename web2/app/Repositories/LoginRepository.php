@@ -60,7 +60,7 @@ class LoginRepository {
 
 	public function getLikedProduct($id) {
 		$result = DB::table('SanPhamYeuThich')->select(
-			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham', 'so_lan_dat' , 'gia_vua' , 'gia_lon' , 'mo_ta' )
+			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham', 'gia_vua' , 'gia_lon' , 'mo_ta' )
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
 		->where(['users.id' => $id, 'thich' => 1])->get();
@@ -470,7 +470,7 @@ class LoginRepository {
 	}
 
 	public function getInfoProduct($id_SP) {
-		 $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham as hinh_chinh', 'sp.mo_ta',  'lsp.loai_chinh')
+		 $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham' , 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham as hinh_chinh', 'sp.mo_ta',  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
