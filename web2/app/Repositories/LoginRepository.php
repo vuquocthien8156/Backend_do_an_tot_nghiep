@@ -687,11 +687,13 @@ class LoginRepository {
         return $result;
 	}
 
-	public function getSlideShow() {
+	public function getSlideShow($slide) {
 		$result = DB::table('KhuyenMai')->select('ma_khuyen_mai', 'ma_code', 'hinh_anh', 'ten_khuyen_mai', 'mo_ta', 'so_phan_tram', 'so_tien', 'so_sp_qui_dinh', 'ngay_bat_dau', 'ngay_ket_thuc', 'so_tien_qui_dinh_toi_thieu')->where([
-			'hien_slider' => 0,
 			'da_xoa' => 0,
-		])->get(); 
+		]);
+		if ($slide != null && $slide != '') {
+		 	$result = $result->where(['hien_slider' => 1, 'da_xoa' => 0]);
+		 } 
 		return $result;
 	}	
 }

@@ -344,7 +344,7 @@ class LoginService {
         return $this->loginRepository->insertImg($getIdMaxEV, $img);
     }
 
-    public function getSlideShow() {
-        return $getSlideShow = $this->loginRepository->getSlideShow();
+    public function getSlideShow($slide) {
+        return $getSlideShow = $this->loginRepository->getSlideShow($slide);
     }
 }
