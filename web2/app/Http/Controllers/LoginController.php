@@ -476,6 +476,7 @@ class LoginController extends Controller {
     	$page = $request->get('page');
     	$so_diem = $request->get('so_diem');
     	$thoi_gian = $request->get('thoi_gian');
+    	$refresh =  $request->get('refresh');
 
     	$Evaluate = ['Vote'=>null, 'ListEv'=>null, 'list_thank'=>null, 'ListImg'=>null];
     	$vote = ['tong'=>null, 'namdiem'=>null, 'bondiem'=>null, 'badiem'=>null, 'haidiem'=>null, 'motdiem'=>null];
@@ -521,6 +522,9 @@ class LoginController extends Controller {
     	}
     	if ($page != null && $page != '') {
     		$Evaluate['ListEv'] = $getlistEv;
+    		if($refresh != null){
+    			$Evaluate['Vote'] = $vote;
+    		}
     		return response()->json(['status' => 'Success','obj' =>  $Evaluate]);
     	}
     	$Evaluate['Vote'] = $vote;
@@ -757,8 +761,9 @@ class LoginController extends Controller {
     		return response()->json(['status' => 'error','error' =>  0]);
     }
 
-    public function getSlideShow(){
-    	$getSlideShow = $this->loginService->getSlideShow();
+    public function getSlideShow(Request $request){
+    	$slide = $request->get('slide');
+    	$getSlideShow = $this->loginService->getSlideShow($slide);
     	if (isset($getSlideShow[0]->ma_khuyen_mai)) {
     		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
     	}

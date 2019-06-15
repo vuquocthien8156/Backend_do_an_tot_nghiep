@@ -70,4 +70,8 @@ class ProductService {
         return $this->productRepository->searchKM($id);
     }
 
+    public function countProduct($id) {
+        return $this->productRepository->countProduct($id);
+    }
+
 }

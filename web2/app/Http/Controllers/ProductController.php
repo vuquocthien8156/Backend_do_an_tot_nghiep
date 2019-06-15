@@ -111,10 +111,36 @@ class ProductController extends Controller {
         }
         $pathToResource = config('app.resource_url_path');
         $listRankProduct = $this->productService->searchRankProduct();
+        $arr = [];
         for ($i=0; $i < count($listRankProduct); $i++) { 
-             $listRankProduct[$i]->pathToResource = $pathToResource;
+            $countProduct = $this->productService->countProduct($listRankProduct[$i]->ma_san_pham);
+            array_push($arr, $countProduct);
         }
-		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$listRankProduct]);  
+
+        for ($i = 0; $i < count($arr) - 1; $i++)
+        {
+            $max = $i;
+            for ($j = $i + 1; $j < count($arr); $j++){
+                if ($arr[$j] > $arr[$max]){
+                    $max = $j;
+                }
+            }
+            $temp = $arr[$i];
+            $arr[$i] = $arr[$max];
+            $arr[$max] = $temp;
+        }
+
+        for ($i=0; $i < count($arr); $i++) {
+            $b[] = $arr[$i][0]->ma_san_pham;
+        }
+
+        for ($i=0; $i < count($b); $i++) {
+            if ($i < 10) {
+                $getlist[] = $this->productService->getlist($b[$i])[0];
+            }
+        }
+
+		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
 	}
 
 	public function deleteProduct(Request $request) {

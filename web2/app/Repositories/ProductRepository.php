@@ -80,7 +80,7 @@ class ProductRepository {
 
         return $result->orderBy('sp.ma_so', 'asc')->get();
         }else {
-            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' ,  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' =>0,
@@ -109,18 +109,29 @@ class ProductRepository {
     }
 
     public function searchRankProduct() {
-        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
-        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
+        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
         ->where([
-            'lsp.da_xoa' => 0,
-        ]);
-        return $result->orderBy('sp.so_lan_dat', 'asc')->limit(10)->get();
+            'dh.da_xoa' => 0,
+        ])->DISTINCT();
+        return $result->get();
+    }
+
+    public function countProduct($id) {
+        $now = Carbon::now();
+        $from_date = Carbon::now()->subDay(7);
+        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
+        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
+        ->where([
+            'ctdh.ma_san_pham' => $id,
+        ])->where([['ngay_lap', '<=' , $now],['ngay_lap', '>=' , $from_date]])
+        ->get();
+        return $result;
     }
 
     public function delete($id) {
 		$result = DB::table('SanPham')->where('ma_so','=',$id)->update(['daxoa' => 1]);
 		return $result;
-
 	}
 
     public function loaisp() {
@@ -174,7 +185,11 @@ class ProductRepository {
     }
 
     public function getlist($id) {
-       $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon' , 'hinh_san_pham')->where('ma_so', '=', $id);
+       $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' ,  'lsp.loai_chinh')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'sp.ma_so' => $id,
+        ]);
        return $result->get();
     }
 
