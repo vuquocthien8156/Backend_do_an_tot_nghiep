@@ -695,7 +695,7 @@ class LoginRepository {
 			'da_xoa' => 0,
 		]);
 		if ($slide != null && $slide != '') {
-		 	$result = $result->where(['hien_slider' => 1, 'da_xoa' => 0]);
+		 	$result = $result->where(['hien_slider' => 1]);
 		 } 
 		return $result;
 	}	
