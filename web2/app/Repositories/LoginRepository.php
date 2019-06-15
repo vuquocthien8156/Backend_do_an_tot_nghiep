@@ -60,8 +60,9 @@ class LoginRepository {
 
 	public function getLikedProduct($id) {
 		$result = DB::table('SanPhamYeuThich')->select(
-			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham', 'gia_vua' , 'gia_lon' , 'mo_ta' )
+			'ma_so' ,'ma_chu', 'SanPham.ten', 'gia_san_pham', 'ngay_ra_mat', 'hinh_san_pham', 'gia_vua' , 'gia_lon' , 'mo_ta' , 'lsp.loai_chinh' )
 		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'SanPham.loai_sp')
 		->leftjoin('users', 'id', '=', 'ma_khach_hang')
 		->where(['users.id' => $id, 'thich' => 1])->get();
 		return $result;
@@ -690,7 +691,7 @@ class LoginRepository {
 
 	public function getSlideShow() {
 		$result = DB::table('KhuyenMai')->select('ma_khuyen_mai', 'ma_code', 'hinh_anh', 'ten_khuyen_mai', 'mo_ta', 'so_phan_tram', 'so_tien', 'so_sp_qui_dinh', 'ngay_bat_dau', 'ngay_ket_thuc', 'so_tien_qui_dinh_toi_thieu')->where([
-			'hien_slider' => 0,
+			'hien_slider' => 1,
 			'da_xoa' => 0,
 		])->get(); 
 		return $result;
