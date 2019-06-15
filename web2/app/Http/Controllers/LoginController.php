@@ -761,8 +761,9 @@ class LoginController extends Controller {
     		return response()->json(['status' => 'error','error' =>  0]);
     }
 
-    public function getSlideShow(){
-    	$getSlideShow = $this->loginService->getSlideShow();
+    public function getSlideShow(Request $request){
+    	$slide = $request->get('slide');
+    	$getSlideShow = $this->loginService->getSlideShow($slide);
     	if (isset($getSlideShow[0]->ma_khuyen_mai)) {
     		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
     	}
