@@ -16,7 +16,7 @@ const app = new Vue({
             loaisp:'',
             mo_ta:'',
             imageUrl:null,
-            selectedFile: null,
+            selectedFile: [],
         };
     },
 
@@ -38,7 +38,7 @@ const app = new Vue({
 
             if (files && files.length > 0) {
                 file = files[0];
-                this.selectedFile = file;
+                this.selectedFile.push(file);
 
                 if (URL) {
                     done(URL.createObjectURL(file));
@@ -88,35 +88,6 @@ const app = new Vue({
                 bootbox.alert('vui lòng mô tả');
                 return false;
             }
-            common.loading.show('body');
-            var data = new FormData();
-            data.append('files_edit', this.selectedFile);
-            let url = $('#add').attr("action");
-            data.append('ten', this.ten);
-            data.append('ma', this.ma);
-            data.append('gia_goc', this.gia_goc);
-            data.append('gia_size_vua', this.gia_size_vua);
-            data.append('gia_size_lon', this.gia_size_lon);
-            data.append('loaisp', this.loaisp);
-            data.append('ngay_ra_mat', this.ngay_ra_mat);
-            data.append('mo_ta', this.mo_ta);
-            let options = {
-                        method: 'POST',
-                        _token: this.csrf,
-                        data: data,
-                        processData: false,
-                        contentType: false,
-                    };
-            $.ajax(url, options).done(response => {
-                    if (response.error === 0) {
-                        common.loading.hide('body');
-                        bootbox.alert('Thêm thành công!!!');
-                        window.location = 'manage';
-                    } else {
-                        common.loading.hide('body');
-                        bootbox.alert('Thêm thất bại!!!');
-                    }
-                })
         }
 	}
 });

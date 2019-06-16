@@ -617,7 +617,7 @@ class LoginRepository {
 		}
 	}
 
-	public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap) {
+	public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu) {
 		$result = DB::table('DonHang')->insert([
 				'thong_tin_giao_hang' => $thong_tin_ship,
            		'ma_khach_hang' => $ma_kh,
@@ -627,6 +627,7 @@ class LoginRepository {
            		'tong_tien' => $tong_tien,
            		'ghi_chu' => $ghi_chu,
            		'da_xoa' => 0,
+           		'ma_chu' => $ma_chu,
         	]);
 		return $result;
 	}
@@ -695,6 +696,22 @@ class LoginRepository {
 		if ($slide != null && $slide != '') {
 		 	$result = $result->where(['hien_slider' => 1, 'da_xoa' => 0]);
 		 } 
+		return $result->get();
+	}
+
+	public function getPoint($ma_kh){
+		$result = DB::table('users')->select('diem_tich')->where([
+			'da_xoa' => 0,
+			'id' => $ma_kh
+		]);
+		return $result->get();
+	}
+
+	public function addpoint($ma_kh, $totalPoint) {
+		$result = DB::table('users')->where('id', '=', $ma_kh)
+		->update([
+			'diem_tich' => $totalPoint
+		]);
 		return $result;
 	}	
 }

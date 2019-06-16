@@ -16,7 +16,8 @@
             <div class="w-100" style="min-height: 150px">
                 <div class="form-box col-12 m-auto">
                     <div class="mx-auto px-sm-5 py-sm-3 form-box-shadow" style="max-width: 33rem;border: 1px solid black">
-                        <form id="add" method="POST" action="add-new" enctype="multipart/form-data">
+                        <form id="add" method="POST" action="/products/add-new" enctype="multipart/form-data">
+                            @csrf
                             <table>
                                 <tr>
                                      <td>
@@ -25,7 +26,7 @@
                                      </td>
                                     <td>
                                         <div class="form-group">
-                                            <input name="files_edit" type="file" class="mt-3" id="files_edit" accept="image/*" @change="onSelectImageHandler" ref="fileInputEl"/>
+                                            <input name="files_edit[]" type="file" class="mt-3" id="files_edit" multiple="" accept="image/*" @change="onSelectImageHandler" ref="fileInputEl"/>
                                             <input type="input" hidden="true" id="id_user"  style="width: 200px;">
                                         </div>
                                     </td>
@@ -33,28 +34,14 @@
                                 <tr>
                                     <td>
                                         <div class="form-group">
+                                            <label for="other_note1"><b> Mã chữ sản phẩm </b></label>
+                                            <input type="text" required="" class="form-control" id="" v-model="ma"  style="width: 200px;">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group" style="margin-left: 15%">
                                             <label for="other_note1"><b>Tên sản phẩm </b></label>
-                                            <input type="text" class="form-control" id="" v-model="ten" style="width: 200px;">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin-left: 15%">
-                                            <label for="other_note1"><b> Tên sản phẩm</b> </label>
-                                            <input type="text" class="form-control" id="" v-model="ten" style="width: 200px;">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-group">
-                                            <label for="other_note1"><b> Mã sản phẩm </b></label>
-                                            <input type="text" class="form-control" id="" v-model="ma"  style="width: 200px;">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin-left: 15%">
-                                            <label for="other_note1"> <b>Giá gốc </b></label>
-                                            <input type="text" class="form-control" id="" v-model="gia_goc" style="width: 200px;">
+                                            <input type="text" required="" class="form-control" id="" v-model="ten" style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
@@ -62,21 +49,27 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"> <b>Giá size vừa </b></label>
-                                            <input type="text" class="form-control" id="" v-model ="gia_size_vua" style="width: 200px;">
+                                            <input type="number" required="" class="form-control" id="" v-model ="gia_size_vua" style="width: 200px;">
                                         </div>    
                                     </td>
                                     <td>
                                         <div class="form-group" style="margin-left: 15%">
-                                            <label for="other_note1"> <b>Giá size lớn</b> </label>
-                                            <input type="text" class="form-control" id="" v-model ="gia_size_lon" style="width: 200px;">
+                                            <label for="other_note1"> <b>Giá gốc </b></label>
+                                            <input type="number" required="" class="form-control" id="" v-model="gia_goc" style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="form-group">
+                                            <label for="other_note1"> <b>Giá size lớn</b> </label>
+                                            <input type="number" required="" class="form-control" id="" v-model ="gia_size_lon" style="width: 200px;">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group" style="margin-left: 15%">
                                             <label for="other_note1"><b> Loại sản phẩm </b></label>
-                                            <select id="model" class="form-control" v-model="loaisp" style="width: 200px;">
+                                            <select id="model" required="" class="form-control" v-model="loaisp" style="width: 200px;">
                                                 <option value="">Chọn loại sản phẩm</option>
                                                     @if (count($list) > 0)
                                                         @foreach ($list as $item)
@@ -85,25 +78,25 @@
                                                      @endif
                                             </select>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin-left: 15%">
-                                            <label for="other_note1"><b> Ngày ra mắt</b> </label>
-                                            <input type="date" class="form-control" v-model="ngay_ra_mat" id=""  style="width: 200px;">
-                                        </div>
-                                    </td>
+                                    </td> 
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"><b>Mô tả</b> </label>
-                                            <textarea type="text" v-model="mo_ta" class="form-control" id=""  style="width: 200px;"></textarea>
+                                            <textarea type="text" required="" v-model="mo_ta" class="form-control" id=""  style="width: 200px;"></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group" style="margin-left: 15%">
+                                            <label for="other_note1"><b> Ngày ra mắt</b> </label>
+                                            <input type="date" required="" class="form-control" v-model="ngay_ra_mat" id=""  style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         <div class="form-group">
-                            <button type="button" @click="luu();" class="button-app" style="margin-right: 75%">lưu</button>
+                            <input type="submit" class="button-app" style="margin-right: 75%" value="Lưu"></button>
                         </div>
             </form>    
                     </div>

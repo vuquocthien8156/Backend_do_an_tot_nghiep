@@ -36,6 +36,8 @@ Route::prefix('products')->group(function() {
 	Route::get('news', 'ProductController@newsView')->name('news');
 	Route::get('discount', 'ProductController@KM')->name('news');
 	Route::get('excel-product', 'ProductController@exportProduct');
+	Route::get('thong-ke', 'ProductController@statisticalView');
+	Route::get('search-thong-ke', 'ProductController@searchStatistical');
 });
 
 Route::prefix('Branch')->group(function() {

@@ -22,6 +22,7 @@ mix
     .js('resources/assets/js/account/account/account.js', 'public/js/account/account')
     .js('resources/assets/js/account/account/jquery.fancybox.min.js', 'public/js/account/account')
     .js('resources/assets/js/product/product/product.js', 'public/js/product/product')
+    .js('resources/assets/js/product/product/thongke.js', 'public/js/product/product')
     .js('resources/assets/js/product/product/jquery.fancybox.min.js', 'public/js/product/product')
     .js('resources/assets/js/product/product/addProduct.js', 'public/js/product/product')
     .js('resources/assets/js/register/register/register.js', 'public/js/register/register')

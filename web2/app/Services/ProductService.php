@@ -22,6 +22,10 @@ class ProductService {
         return $this->productRepository->searchProduct($name, $page, $ma_loai, $mo_ta, $masp);
     }
 
+    public function searchProductTK($masp) {
+        return $this->productRepository->searchProductTK($masp);
+    }
+
     public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
         return $this->productRepository->searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh);
     }
@@ -72,6 +76,18 @@ class ProductService {
 
     public function countProduct($id) {
         return $this->productRepository->countProduct($id);
+    }
+
+    public function forWeek($dayStart, $dayEnd) {
+        return $this->productRepository->forWeek($dayStart, $dayEnd);
+    }
+
+    public function getIdMax() {
+        return $this->productRepository->getIdMax();
+    }
+
+    public function inserImage($avatar_path, $getIdMax) {
+        return $this->productRepository->inserImage($avatar_path, $getIdMax);   
     }
 
 }

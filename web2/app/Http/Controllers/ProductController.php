@@ -33,6 +33,55 @@ class ProductController extends Controller {
     	return view('product.product',['list' => $list]);
     }
 
+    public function statisticalView() {
+        $list = $this->productService->loaisp();
+        return view('product.thongke',['list' => $list]);
+    }
+
+    public function searchStatistical(Request $request) {
+        $name = null;
+        $masp = null;
+        $ma_loai = null;
+        $mo_ta = null;
+        $page = 1;
+        $thongke = $request->get('thongke');
+        if ($thongke == 'week') {
+           $date = Carbon::now();
+           $dayStart =  Carbon::parse($date)->startOfWeek()->toDateString();
+           $dayEnd =  Carbon::parse($date)->endOfWeek()->toDateString();
+           $forWeek = $this->productService->forWeek($dayStart, $dayEnd);
+           $arr = [];
+           $pathToResource = config('app.resource_url_path');
+           for ($i=0; $i < count($forWeek); $i++) {
+                if ($i < 10) {
+                    $getlist = $this->productService->searchProductTK($forWeek[$i]->ma_san_pham);
+                        array_push($arr, $getlist[0]);
+                }
+            }
+            for ($i=0; $i < count($arr); $i++) {
+                $arr[$i]->pathToResource = $pathToResource;
+            }
+        }
+        if ($thongke == "month") {
+            $date = Carbon::now();
+            $dayStart =  Carbon::parse($date)->startOfMonth()->toDateString();
+            $dayEnd =  Carbon::parse($date)->endOfMonth()->toDateString();
+            $forWeek = $this->productService->forWeek($dayStart, $dayEnd);
+            $arr = [];
+            $pathToResource = config('app.resource_url_path');
+            for ($i=0; $i < count($forWeek); $i++) {
+                if ($i < 10) {
+                    $getlist = $this->productService->searchProductTK($forWeek[$i]->ma_san_pham);
+                        array_push($arr, $getlist[0]);
+                }
+            }
+            for ($i=0; $i < count($arr); $i++) {
+                $arr[$i]->pathToResource = $pathToResource;
+            }
+        }
+        return response()->json(['listSearch'=>$arr]);
+    }  
+
     public function newsView(Request $request) {
     	$id = $request->get('id');
     	$path = config('app.resource_url_path');
@@ -111,35 +160,14 @@ class ProductController extends Controller {
         }
         $pathToResource = config('app.resource_url_path');
         $listRankProduct = $this->productService->searchRankProduct();
-        $arr = [];
-        for ($i=0; $i < count($listRankProduct); $i++) { 
-            $countProduct = $this->productService->countProduct($listRankProduct[$i]->ma_san_pham);
-            array_push($arr, $countProduct);
+        if ($listRankProduct == '' || $listRankProduct == null) {
+           return response()->json(['status' => 'ok', 'error' => 1]);
         }
-
-        for ($i = 0; $i < count($arr) - 1; $i++)
-        {
-            $max = $i;
-            for ($j = $i + 1; $j < count($arr); $j++){
-                if ($arr[$j] > $arr[$max]){
-                    $max = $j;
-                }
-            }
-            $temp = $arr[$i];
-            $arr[$i] = $arr[$max];
-            $arr[$max] = $temp;
-        }
-
-        for ($i=0; $i < count($arr); $i++) {
-            $b[] = $arr[$i][0]->ma_san_pham;
-        }
-
-        for ($i=0; $i < count($b); $i++) {
+        for ($i=0; $i < count($listRankProduct); $i++) {
             if ($i < 10) {
-                $getlist[] = $this->productService->getlist($b[$i])[0];
+                $getlist[] = $this->productService->getlist($listRankProduct[$i]->ma_san_pham);
             }
         }
-
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
 	}
 
@@ -200,21 +228,34 @@ class ProductController extends Controller {
 		$loaisp = $request->get('loaisp');
 		$ngay_ra_mat = $request->get('ngay_ra_mat');
 		$mo_ta = $request->get('mo_ta');
-		$a = Hash::make(1);
-		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
+        $check1 = 0;
+            $dem = count($avatar_path);
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
                 $subName = 'product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
-                $filename =  $subName . '/' .$a. $request->file('files_edit')->getClientOriginalName();
-                $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
+                $filename = 'images/'. $subName . '/' .$request->file('files_edit')[$i]->getClientOriginalName();
+                $check = $request->file('files_edit')[$i]->move($destinationPath.'/'.$subName, $filename);
                 if (!file_exists($check)) {
                     return \Response::json(false);
                 }
                 $avatar_path = $filename;
+                if ($i == 0) {
+                    $result = $this->productService->addProduct($avatar_path, $ten, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);   
+                }
+                $getIdMax = $this->productService->getIdMax();
+                $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+        }else {
+            $check = 1;
         }
-        $result = $this->productService->addProduct($avatar_path, $ten, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
-        if ($result == true) {
-        	return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        if ($check1 == 0) {
+        	return redirect('products/manage-product');
         }else{
         	return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
         }
@@ -231,45 +272,9 @@ class ProductController extends Controller {
 
 	public function getIdSp() {
 		$getIdSp = $this->productService->getIdSp();
-		$list=[];
-		for ($i=0; $i < count($getIdSp); $i++) { 
-			$amount[] = $this->productService->getAmount($getIdSp[$i]->ma_san_pham); // lấy số lượng theo id
-		}
-		//sắp xếp theo kết quả đã count
-		for ($i = 0; $i < count($amount) - 1; $i++)
-    	{
-	        $max = $i;
-	        for ($j = $i + 1; $j < count($amount); $j++){
-	            if ($amount[$j] > $amount[$max]){
-	                $max = $j;
-	            }
-	        }
-	        $temp = $amount[$i];
-	        $amount[$i] = $amount[$max];
-	        $amount[$max] = $temp;
-    	}
-
-    	//lấy id kết quả đã count
-    	for ($i=0; $i < count($amount); $i++) {
-    		$b[] = $amount[$i][0]->ma_san_pham;
-    	}
-
-    	for ($i = 0; $i < count($b) - 1; $i++)
-    	{
-	        $min = $i;
-	        for ($j = $i + 1; $j < count($b); $j++){
-	            if ($b[$j] < $b[$min]){
-	                $min = $j;
-	            }
-	        }
-	        $temp = $b[$i];
-	        $b[$i] = $b[$min];
-	        $b[$min] = $temp;
-    	}
-
-    	for ($i=0; $i < count($b); $i++) {
+    	for ($i=0; $i < count($getIdSp); $i++) {
     		if ($i < 10) {
-    			$getlist[] = $this->productService->getlist($b[$i])[0];
+    			$getlist[] = $this->productService->getlist($getIdSp[$i]->ma_san_pham);
     		}
     	}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
