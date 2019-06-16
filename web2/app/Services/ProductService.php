@@ -78,8 +78,8 @@ class ProductService {
         return $this->productRepository->countProduct($id);
     }
 
-    public function forWeek($dayStart, $dayEnd) {
-        return $this->productRepository->forWeek($dayStart, $dayEnd);
+    public function forTK($dayStart, $dayEnd) {
+        return $this->productRepository->forTK($dayStart, $dayEnd);
     }
 
     public function getIdMax() {

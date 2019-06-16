@@ -49,7 +49,7 @@ class ProductController extends Controller {
            $date = Carbon::now();
            $dayStart =  Carbon::parse($date)->startOfWeek()->toDateString();
            $dayEnd =  Carbon::parse($date)->endOfWeek()->toDateString();
-           $forWeek = $this->productService->forWeek($dayStart, $dayEnd);
+           $forWeek = $this->productService->forTK($dayStart, $dayEnd);
            $arr = [];
            $pathToResource = config('app.resource_url_path');
            for ($i=0; $i < count($forWeek); $i++) {
@@ -66,12 +66,12 @@ class ProductController extends Controller {
             $date = Carbon::now();
             $dayStart =  Carbon::parse($date)->startOfMonth()->toDateString();
             $dayEnd =  Carbon::parse($date)->endOfMonth()->toDateString();
-            $forWeek = $this->productService->forWeek($dayStart, $dayEnd);
+            $forMonth = $this->productService->forTK($dayStart, $dayEnd);
             $arr = [];
             $pathToResource = config('app.resource_url_path');
-            for ($i=0; $i < count($forWeek); $i++) {
+            for ($i=0; $i < count($forMonth); $i++) {
                 if ($i < 10) {
-                    $getlist = $this->productService->searchProductTK($forWeek[$i]->ma_san_pham);
+                    $getlist = $this->productService->searchProductTK($forMonth[$i]->ma_san_pham);
                         array_push($arr, $getlist[0]);
                 }
             }

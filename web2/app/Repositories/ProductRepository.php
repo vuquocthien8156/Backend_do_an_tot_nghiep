@@ -80,7 +80,7 @@ class ProductRepository {
 
         return $result->orderBy('sp.ma_so', 'asc')->get();
         }else {
-            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta')
+            $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' ,  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' =>0,
@@ -125,7 +125,6 @@ class ProductRepository {
     public function delete($id) {
 		$result = DB::table('SanPham')->where('ma_so','=',$id)->update(['daxoa' => 1]);
 		return $result;
-
 	}
 
     public function loaisp() {
@@ -178,7 +177,11 @@ class ProductRepository {
     }
 
     public function getlist($id) {
-       $result = DB::table('SanPham')->select('ma_so', 'ma_chu','ten', 'gia_san_pham', 'gia_vua', 'gia_lon' , 'hinh_san_pham')->where('ma_so','=', $id);
+       $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' ,  'lsp.loai_chinh')
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'sp.ma_so' => $id,
+        ]);
        return $result->get();
     }
 
@@ -207,7 +210,7 @@ class ProductRepository {
         return $result->get();
     }
 
-    public function forWeek($dayStart, $dayEnd) {
+    public function forTK($dayStart, $dayEnd) {
         $result = DB::table('ChiTietDonHang as ctdh')->select('ctdh.ma_san_pham',DB::raw('count(ctdh.ma_san_pham) as total'))
                 ->join('DonHang as dh','dh.ma_don_hang','=','ctdh.ma_don_hang')
                 ->groupBy('ctdh.ma_san_pham')  
