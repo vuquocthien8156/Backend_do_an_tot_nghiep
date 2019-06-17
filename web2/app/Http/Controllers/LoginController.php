@@ -251,12 +251,14 @@ class LoginController extends Controller {
 		$khuyen_mai = $request->get('khuyen_mai');
 		$phi_ship = $request->get('phi_ship');
 		$tong_tien = $request->get('tong_tien');
+		$point = (int)$tong_tien / 10000;
 		$ghi_chu = $request->get('ghi_chu');
 		$ngay_lap = Carbon::now();
-
+		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
+		$ma_chu = 'DHQTPT'.$getMaxIdOrder;
 		$Detail = $request->get('Detail');
 		$check = true;
-		$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap);
+		$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
 		if ($insertOrder == true) {
 			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
 
@@ -276,7 +278,15 @@ class LoginController extends Controller {
 				}
 			}
 			if ($check == true) {
-					return response()->json(['status' => 'ok', 'error' => 0]);
+					// $getPoint = $this->loginService->getPoint($ma_kh);
+					// $totalPoint = (int)$getPoint[0]->diem_tich + (int)$point;
+					$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
+					//$addPoint = $this->loginService->addPoint($ma_kh, $totalPoint);
+					if ($deleteCart > 0) {
+						return response()->json(['status' => 'Success', 'error' => 0]);
+					}else {
+						return response()->json(['status' => 'fail', 'error' => 1]);
+					}
 				}	
 		}else{
 			return response()->json(['status' => 'fail', 'error' => 1]);

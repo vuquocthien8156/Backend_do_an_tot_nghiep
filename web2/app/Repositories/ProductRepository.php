@@ -109,24 +109,17 @@ class ProductRepository {
     }
 
     public function searchRankProduct() {
-        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
-        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
-        ->where([
-            'dh.da_xoa' => 0,
-        ])->DISTINCT();
-        return $result->get();
-    }
-
-    public function countProduct($id) {
         $now = Carbon::now();
-        $from_date = Carbon::now()->subDay(7);
-        $result = DB::table('DonHang as dh')->select('ctdh.ma_san_pham')
-        ->join('ChiTietDonHang as ctdh', 'ctdh.ma_don_hang', '=', 'dh.ma_don_hang')
-        ->where([
-            'ctdh.ma_san_pham' => $id,
-        ])->where([['ngay_lap', '<=' , $now],['ngay_lap', '>=' , $from_date]])
-        ->get();
-        return $result;
+        $from_date = $now->subDay(7)->toDateString();
+        $to_date = $now->addDay(7)->toDateString();
+        $result = DB::table('ChiTietDonHang as ctdh')->select('ctdh.ma_san_pham' ,DB::raw('count(ctdh.ma_san_pham) as total'))
+                ->join('DonHang as dh','dh.ma_don_hang','=','ctdh.ma_don_hang')
+                ->groupBy('ctdh.ma_san_pham')  
+                ->orderBy('total','desc')
+                ->skip(0)->take(10);
+        $result = $result->where('ngay_lap', '<=', $to_date);
+        $result = $result->where('ngay_lap', '>=', $from_date);
+        return $result->get();
     }
 
     public function delete($id) {
@@ -174,14 +167,13 @@ class ProductRepository {
     }
 
     public function getIdSp() {
-        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where('thich', '=', 1)->DISTINCT();
-        
-        return $result->orderBy('ma_san_pham', 'asc')->get();
-    }
-
-    public function getAmount($id) {
-       $result = DB::table('SanPhamYeuThich')->select('ma_san_pham')->where(['ma_san_pham' => $id, 'thich' => 1]);
-       return $result->get();
+        $result = DB::table('SanPhamYeuThich')->select('ma_san_pham' , DB::raw('count(ma_san_pham) as total'))
+                ->where('thich', '=', 1)
+                ->groupBy('ma_san_pham')  
+                 ->orderBy('total','desc')
+                 ->skip(0)->take(10)
+                 ->get();
+        return $result;
     }
 
     public function getlist($id) {
@@ -216,5 +208,47 @@ class ProductRepository {
             'ma_khuyen_mai' => $id,
         ]);
         return $result->get();
+    }
+
+    public function forTK($dayStart, $dayEnd) {
+        $result = DB::table('ChiTietDonHang as ctdh')->select('ctdh.ma_san_pham',DB::raw('count(ctdh.ma_san_pham) as total'))
+                ->join('DonHang as dh','dh.ma_don_hang','=','ctdh.ma_don_hang')
+                ->groupBy('ctdh.ma_san_pham')  
+                ->orderBy('total','desc')
+                ->skip(0)->take(10);
+        $result = $result->where('ngay_lap', '>=', $dayStart);
+        $result = $result->where('ngay_lap', '<=', $dayEnd);
+        return $result->get();
+    }
+
+    public function searchProductTK($masp) {
+        $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.so_lan_dat', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta' )
+        ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
+        ->where([
+            'lsp.da_xoa' => 0,
+        ]);
+
+        if ($masp != '' && $masp != null) {
+            $result->where(function($where) use ($masp) {
+                $where->whereRaw('lower(sp.ma_chu) like ? ', ['%' . trim(mb_strtolower($masp, 'UTF-8')) . '%']);
+         
+            });
+        }
+        return $result->orderBy('sp.ma_so', 'asc')->get();
+    }
+
+    public function getIdMax() {
+        $result = DB::table('SanPham')->max('ma_so');
+        return $result;
+    }
+
+    public function inserImage($avatar_path, $getIdMax) {
+         $result = DB::table('HinhAnh')->insert([
+            'object_id' => $getIdMax,
+            'kieu' => 1,
+            'url' => $avatar_path,
+            'da_xoa' => 0,
+        ]);
+        return $result;
     }
 }
