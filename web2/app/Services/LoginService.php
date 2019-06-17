@@ -348,6 +348,9 @@ class LoginService {
         return $getSlideShow = $this->loginRepository->getSlideShow($slide);
     }
 
+    public function getAllLogPointUser($id){
+        return  $this->loginRepository->getAllLogPointUser($id);
+    }
     public function getPoint($ma_kh) {
         return $getPoint = $this->loginRepository->getPoint($ma_kh);
     }
@@ -359,5 +362,4 @@ class LoginService {
     public function addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint) {
         return $addLog = $this->loginRepository->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
     }
-
 }

@@ -805,9 +805,12 @@ class LoginController extends Controller {
     public function getSlideShow(Request $request){
     	$slide = $request->get('slide');
     	$getSlideShow = $this->loginService->getSlideShow($slide);
-    	if (isset($getSlideShow[0]->ma_khuyen_mai)) {
-    		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
-    	}
-    	return response()->json(['status' => 'fail', 'error' =>  1]);
-    }
+		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
+	}
+
+	public function getAllLogPointUser(Request $request){
+		$idUser = $request->get('id_KH');
+    	$listLog = $this->loginService->getAllLogPointUser($idUser);
+    	return response()->json(['status' => 'Success', 'error' =>  0, 'listPoint' => $listLog]);
+	}
 }
