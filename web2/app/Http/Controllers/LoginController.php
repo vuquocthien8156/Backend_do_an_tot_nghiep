@@ -319,6 +319,7 @@ class LoginController extends Controller {
 					return response()->json(['status' => 'fail', 'error' => 1]);
 				}
 			}else {
+				$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
 				return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
 			}
 		}
