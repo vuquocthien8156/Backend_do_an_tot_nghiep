@@ -172,7 +172,7 @@ class LoginRepository {
 	}
 
 	public function getStatusOrder($ma_don_hang) {
-		$result = DB::table('ChiTietTrangThaiDonHang as ctttdh')->select('ten_trang_thai', 'thoi_gian')
+		$result = DB::table('ChiTietTrangThaiDonHang as ctttdh')->select('ttdh.ma_trang_thai', 'ten_trang_thai', 'thoi_gian')
 			->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai')
 			->where('ctttdh.ma_don_hang', '=', $ma_don_hang);
 		return $result->get();
@@ -713,6 +713,19 @@ class LoginRepository {
 		$result = DB::table('users')->where('id', '=', $ma_kh)
 		->update([
 			'diem_tich' => $totalPoint
+		]);
+		return $result;
+	}
+
+	public function addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint) {
+		$result = DB::table('LichSuTichDiem')
+		->insert([
+			'ma_tai_khoan' => $ma_kh,
+			'ma_don_hang' => $getMaxIdOrder,
+			'so_diem' => $totalPoint,
+			'hinh_thuc' => $phuong_thuc,
+			'da_xoa' => 0,
+			'thoi_gian' => $ngay_lap
 		]);
 		return $result;
 	}	

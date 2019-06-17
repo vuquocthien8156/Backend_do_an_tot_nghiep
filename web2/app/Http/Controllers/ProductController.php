@@ -188,7 +188,6 @@ class ProductController extends Controller {
 		$avatar_path = $request->get('files_edit');
 		$ten = $request->get('ten');
 		$id = $request->get('id');
-		$so_lan_order = $request->get('so_lan_order');
 		$ma = $request->get('ma');
 		$gia_goc = $request->get('gia_goc');
 		$gia_size_vua = $request->get('gia_size_vua');
@@ -208,13 +207,12 @@ class ProductController extends Controller {
                 }
                 $avatar_path = $filename;
         }
-        $result = $this->productService->editProduct($avatar_path, $ten, $id, $so_lan_order, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
+        $result = $this->productService->editProduct($avatar_path, $ten, $id, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
         if ($result == 1) {
         	return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
         }else{
         	return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
         }
-        // dd($avatar_path, $ten, $id, $so_lan_order, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
 	}
 
 	public function addProduct(Request $request) {
