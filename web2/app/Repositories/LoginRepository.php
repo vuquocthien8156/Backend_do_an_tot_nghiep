@@ -149,18 +149,19 @@ class LoginRepository {
            'ma_san_pham' => $id_product,
            'ma_khach_hang' => $id_user,
            'thich' => $like,
-           'trang_thai' => 0,
+           'trang_thai' => 1,
         ]);
         return $result;	
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu');
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu')
+		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
 			// $result->where('ma_khach_hang', '=', $id_KH);
-			$result->where(['ma_khach_hang' => $id_KH, 'da_xoa' => 0]);
+			$result->where(['ma_khach_hang' => $id_KH, 'dh.da_xoa' => 0]);
 		}
 		return $result->get();
 	}
@@ -690,13 +691,23 @@ class LoginRepository {
 	}
 
 	public function getSlideShow($slide) {
-		$result = DB::table('KhuyenMai')->select('ma_khuyen_mai', 'ma_code', 'hinh_anh', 'ten_khuyen_mai', 'mo_ta', 'so_phan_tram', 'so_tien', 'so_sp_qui_dinh', 'ngay_bat_dau', 'ngay_ket_thuc', 'so_tien_qui_dinh_toi_thieu')
+		$result = DB::table('KhuyenMai')->select()
 		->where([
 			'da_xoa' => 0,
 		]);
 		if ($slide != null && $slide != '') {
 		 	$result = $result->where(['hien_slider' => 1]);
-		 } 
+		}
+		return $result->get();
+	}
+
+	public function getAllLogPointUser($id){
+		$result = DB::table('LichSuDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
+		->leftjoin('DonHang as dh', 'dh.ma_don_hang', '=', 'ls.ma_don_hang')
+		->where([
+			'ls.ma_tai_khoan' => $id,
+			'ls.da_xoa' => 0,
+		])->get();
 		return $result;
-	}	
+	}
 }

@@ -347,4 +347,8 @@ class LoginService {
     public function getSlideShow($slide) {
         return $getSlideShow = $this->loginRepository->getSlideShow($slide);
     }
+
+    public function getAllLogPointUser($id){
+        return  $this->loginRepository->getAllLogPointUser($id);
+    }
 }
