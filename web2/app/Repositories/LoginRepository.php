@@ -709,8 +709,7 @@ class LoginRepository {
 			'ls.ma_tai_khoan' => $id,
 			'ls.da_xoa' => 0,
 		])->get();
-		 } 
-		return $result->get();
+		return $result;
 	}
 
 	public function getPoint($ma_kh){
