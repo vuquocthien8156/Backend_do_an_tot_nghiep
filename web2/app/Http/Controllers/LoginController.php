@@ -255,7 +255,7 @@ class LoginController extends Controller {
 		$ghi_chu = $request->get('ghi_chu');
 		$ngay_lap = Carbon::now();
 		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
-		$ma_chu = 'DHQTPT'.$getMaxIdOrder;
+		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
 		$check = true;
 		$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);

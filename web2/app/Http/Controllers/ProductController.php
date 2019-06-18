@@ -163,9 +163,10 @@ class ProductController extends Controller {
         if ($listRankProduct == '' || $listRankProduct == null) {
            return response()->json(['status' => 'ok', 'error' => 1]);
         }
+        $getlist = [];
         for ($i=0; $i < count($listRankProduct); $i++) {
             if ($i < 10) {
-                $getlist[] = $this->productService->getlist($listRankProduct[$i]->ma_san_pham);
+                $getlist[] = $this->productService->getlist($listRankProduct[$i]->ma_san_pham)[0];
             }
         }
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
@@ -274,7 +275,7 @@ class ProductController extends Controller {
 		$getIdSp = $this->productService->getIdSp();
     	for ($i=0; $i < count($getIdSp); $i++) {
     		if ($i < 10) {
-    			$getlist[] = $this->productService->getlist($getIdSp[$i]->ma_san_pham);
+    			$getlist[] = $this->productService->getlist($getIdSp[$i]->ma_san_pham)[0];
     		}
     	}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
