@@ -38,5 +38,6 @@ class VerifyCsrfToken extends Middleware
         'api/addThanks',
         'api/updatePhone',
         'api/changePassword',
+        'api/addOrder'
     ];
 }

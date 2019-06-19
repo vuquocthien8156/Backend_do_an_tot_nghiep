@@ -65,6 +65,7 @@
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="{{route("manage-product", [], false)}}">Xem danh sách</a>
                                             <a class="dropdown-item" href="{{route("product-add", [], false)}}">Thêm sản phẩm</a>
+                                            <a class="dropdown-item" href="{{route("thong-ke", [], false)}}">Thống kê sản phẩm</a>
                                         </div>
                                     </li>
                                 @endif
@@ -82,6 +83,11 @@
                                 @if($value->ten_vai_tro == 'phân quyền')
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
+                                    </li>
+                                @endif
+                                @if($value->ten_vai_tro == 'Đơn hàng')
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px" href="{{route("order", [], false)}}">ĐƠN HÀNG</a>
                                     </li>
                                 @endif
                               @endforeach

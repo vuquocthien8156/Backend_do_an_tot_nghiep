@@ -692,6 +692,9 @@ class LoginRepository {
 	}
 
 	public function getSlideShow($slide) {
+		$now = Carbon::now();
+		$from_date = $now->subDay(15)->toDateString();
+		$to_date = $now->addDay(15)->toDateString();
 		$result = DB::table('KhuyenMai')->select()
 		->where([
 			'da_xoa' => 0,
@@ -699,7 +702,9 @@ class LoginRepository {
 		if ($slide != null && $slide != '') {
 		 	$result = $result->where(['hien_slider' => 1]);
 		}
-		return $result->get();
+		$result = $result->where('ngay_bat_dau', '<=', $to_date);
+        $result = $result->where('ngay_bat_dau', '>=', $from_date);
+		return $result->limit(15)->get();
 	}
 
 	public function getAllLogPointUser($id){
@@ -708,8 +713,7 @@ class LoginRepository {
 		->where([
 			'ls.ma_tai_khoan' => $id,
 			'ls.da_xoa' => 0,
-		])->get();
-		 } 
+		])->get(); 
 		return $result->get();
 	}
 

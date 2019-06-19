@@ -19,6 +19,7 @@ mix
     .js('resources/assets/js/Branch/Branch.js', 'public/js/Branch')
     .js('resources/assets/js/login/login/login.js', 'public/js/login/login')
     .js('resources/assets/js/permission/permission/permission.js', 'public/js/permission/permission')
+    .js('resources/assets/js/order/order/order.js', 'public/js/order/order')
     .js('resources/assets/js/account/account/account.js', 'public/js/account/account')
     .js('resources/assets/js/account/account/jquery.fancybox.min.js', 'public/js/account/account')
     .js('resources/assets/js/product/product/product.js', 'public/js/product/product')

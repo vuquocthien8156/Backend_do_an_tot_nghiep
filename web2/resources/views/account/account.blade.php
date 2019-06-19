@@ -56,8 +56,10 @@
                             <td  class="custom-view"> <a data-fancybox="gallery" :href="item.pathToResource+'images/'+item.avatar">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'images/'+item.avatar">
                                     </a></td>
-                            <td  class="custom-view" v-if="item.da_xoa == 1">Đã xóa</td>
-                            <td  class="custom-view" v-if="item.da_xoa == 0">Đã kích hoạt</td>
+                            <td  class="custom-view">
+                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
                             <td  class="custom-view">
                                 <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten, item.sdt, item.ngay_sinh, item.gioi_tinh, item.diem_tich, item.dia_chi, item.email, item.avatar, item.id);"></a>
                                 <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteHealthRecord(item.id)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span></td>

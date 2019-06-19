@@ -308,20 +308,8 @@ class LoginController extends Controller {
 				}
 			}
 			$getStatusOrder = $this->loginService->getStatusOrder($getMaxIdOrder);
-			if ($getStatusOrder[0]->ma_trang_thai == 5) {
-				$getPoint = $this->loginService->getPoint($ma_kh);
-				$totalPoint = (int)$getPoint[0]->diem_tich + (int)$point;
-				$updatePointUser = $this->loginService->addPoint($ma_kh, $totalPoint);
-				$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-				if ($deleteCart > 0) {
-					return response()->json(['status' => 'Success', 'error' => 0]);
-				}else {
-					return response()->json(['status' => 'fail', 'error' => 1]);
-				}
-			}else {
-				$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-				return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
-			}
+			$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
+			return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
 		}
 	}
 
