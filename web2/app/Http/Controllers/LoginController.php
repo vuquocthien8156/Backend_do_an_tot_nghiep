@@ -258,7 +258,7 @@ class LoginController extends Controller {
 		$phuong_thuc = $thong_tin_DH['phuong_thuc'];
 		$ngay_lap = Carbon::now();
 		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
-		$ma_chu = 'DHQTPT'.($getMaxIdOrder+1);
+		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
 		$check = true;
 		if ($phuong_thuc == 2) {
