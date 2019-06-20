@@ -324,6 +324,10 @@ class LoginService {
         return $this->loginRepository->getMaxIdOrder();
     }
 
+    public function getMaxIdOrderDetail() {
+        return $this->loginRepository->getMaxIdOrderDetail();
+    }
+
     public function insertStatusOrder($getMaxIdOrder) {
         return $this->loginRepository->insertStatusOrder($getMaxIdOrder);
     }
@@ -332,8 +336,8 @@ class LoginService {
         return $this->loginRepository->insertOrderDetail($getMaxIdOrder, $thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $kich_co);
     }
 
-    public function insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia) {
-        return $this->loginRepository->insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia);
+    public function insertToppingOrder($getMaxIdOrderDetail, $ma_topping, $so_luong, $don_gia) {
+        return $this->loginRepository->insertToppingOrder($getMaxIdOrderDetail, $ma_topping, $so_luong, $don_gia);
     }
 
     public function getIdMaxEV() {

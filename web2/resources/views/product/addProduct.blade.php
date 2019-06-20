@@ -20,14 +20,15 @@
                             @csrf
                             <table>
                                 <tr>
-                                     <td>
-                                            <label for=""><b>Hình ảnh</b></label>
-                                            <img id="avatarcollector_edit" style="width: 100px; height: 100px;" class="d-block" :src="imageUrl" />
-                                     </td>
                                     <td>
-                                        <div class="form-group">
-                                            <input name="files_edit[]" type="file" class="mt-3" id="files_edit" multiple="" accept="image/*" @change="onSelectImageHandler" ref="fileInputEl"/>
-                                            <input type="input" hidden="true" id="id_user"  style="width: 200px;">
+                                        <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label>
+                                        <input id="_imagesInput" name="files[]" type="file" multiple>
+                                        <div id="_displayImages">
+                                            <div>
+                                                <ul id="frames" class="frames">
+                                                    
+                                                </ul>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -39,7 +40,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 15%">
+                                        <div class="form-group" style="margin-left: 5%">
                                             <label for="other_note1"><b>Tên sản phẩm </b></label>
                                             <input type="text" required="" class="form-control" id="" v-model="ten" style="width: 200px;">
                                         </div>
@@ -53,7 +54,7 @@
                                         </div>    
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 15%">
+                                        <div class="form-group" style="margin-left: 5%">
                                             <label for="other_note1"> <b>Giá gốc </b></label>
                                             <input type="number" required="" class="form-control" id="" v-model="gia_goc" style="width: 200px;">
                                         </div>
@@ -67,7 +68,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 15%">
+                                        <div class="form-group" style="margin-left: 5%">
                                             <label for="other_note1"><b> Loại sản phẩm </b></label>
                                             <select id="model" required="" class="form-control" v-model="loaisp" style="width: 200px;">
                                                 <option value="">Chọn loại sản phẩm</option>
@@ -88,7 +89,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 15%">
+                                        <div class="form-group" style="margin-left: 5%">
                                             <label for="other_note1"><b> Ngày ra mắt</b> </label>
                                             <input type="date" required="" class="form-control" v-model="ngay_ra_mat" id=""  style="width: 200px;">
                                         </div>
@@ -107,6 +108,46 @@
 			
 @endsection
 @section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#_uploadImages').click(function() {
+                $('#_imagesInput').click();
+            });
+
+            $('#_imagesInput').on('change', function() {
+                 handleFileSelect();
+            });
+
+            function handleFileSelect() {
+                if (window.File && window.FileList && window.FileReader) {
+                    var files = event.target.files;
+                    console.log(files); 
+                    var output = document.getElementById("frames");
+                    var arrFilesCount = [];
+                    for (var i = 0; i < files.length; i++) {
+                        arrFilesCount.push(i);
+                        var file = files[i];
+                        console.log(arrFilesCount);
+                        if (!file.type.match('image')) continue;
+                        var picReader = new FileReader();
+                        picReader.addEventListener("load", function (event) {
+                            var picFile = event.target;
+                            output.innerHTML = output.innerHTML +"<div style=\"float:left;width:50px;margin-right:5px;\" class=\"carousel-item carousel-item-avatar active\">"+"<span class=\"btn_remove_image fas fa-times\"></span>"+"<img width='50px;' height='50px;' style='margin-left:2%;margin-top:2%' src='" + picFile.result + "'" + "title=''/>"
+                                                +  "</div>";
+                                                $(".btn_remove_image").click(function() {
+                                $(this).parent(".carousel-item").remove();
+                                $("#frames").val('');
+                                console.log();
+                            });      
+                        });
+                        picReader.readAsDataURL(file);
+                    }
+                 } else {
+                    console.log("Your browser does not support File API");
+                 }
+        }
+        });     
+    </script>
            <script type="text/javascript">
 				@php
 					include public_path('/js/product/product/addProduct.js');

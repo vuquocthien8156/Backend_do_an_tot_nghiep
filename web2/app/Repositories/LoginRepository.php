@@ -639,9 +639,16 @@ class LoginRepository {
 		return $result;
 	}
 
+	public function getMaxIdOrderDetail() {
+		$result = DB::table('ChiTietDonHang')->max('ma_chi_tiet');
+		return $result;
+	}
+
 	public function insertStatusOrder($getMaxIdOrder) {
+		$now = Carbon::now();
 		$result = DB::table('ChiTietTrangThaiDonHang')->insert([
 				'ma_don_hang' => $getMaxIdOrder,
+				'thoi_gian' => $now,
 				'trang_thai' => 1,
 				'da_xoa' => 0,
            		
@@ -663,9 +670,9 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia) {
+	public function insertToppingOrder($getMaxIdOrderDetail, $ma_topping, $so_luong, $don_gia) {
 		$result = DB::table('ChiTietThucUong')->insert([
-				'ma_chi_tiet' => $ma_sp,
+				'ma_chi_tiet' => $getMaxIdOrderDetail,
            		'ma_san_pham' => $ma_topping,
            		'don_gia' => $don_gia,
            		'so_luong' => $so_luong,
