@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Excel;
+use Mail;
 
 class LoginController extends Controller {
 	use CommonTrait;
@@ -290,6 +291,7 @@ class LoginController extends Controller {
 		}else {
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
+				$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
 			}
 		}
 		if ($deleteCart > 0) {
@@ -793,5 +795,17 @@ class LoginController extends Controller {
 		$idUser = $request->get('id_KH');
     	$listLog = $this->loginService->getAllLogPointUser($idUser);
     	return response()->json(['status' => 'Success', 'error' =>  0, 'listPoint' => $listLog]);
+	}
+
+	public function lienhe() {
+		return view('email.form');
+	}
+
+	public function postlienhe() {
+		$data = ['hoten' => 1];
+		Mail::send('email.interface',$data, function($msg){
+			$msg->from('peyeunhox092@yahoo.com.vn');
+			$msg->to('thinh02438@gmail.com');
+		});
 	}
 }

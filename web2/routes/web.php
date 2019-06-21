@@ -84,6 +84,9 @@ Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 
+Route::get('lien-he',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
+Route::post('lien-he', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
+
 // Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 // Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
 // Route::post('api/update-id_fb', 'LoginController@updateIdFB');
