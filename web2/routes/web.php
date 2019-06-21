@@ -133,3 +133,4 @@ Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//n
 Route::get('api/getSlideShow', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
+Route::get('api/getQuantityDiscount', 'LoginController@getQuantityDiscount');

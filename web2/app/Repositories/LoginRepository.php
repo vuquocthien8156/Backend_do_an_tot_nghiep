@@ -714,6 +714,14 @@ class LoginRepository {
 		return $result->limit(15)->get();
 	}
 
+	public function totalDiscountOfOrder($id) {
+        $result = DB::table('DonHang')->select('khuyen_mai' , DB::raw('count(khuyen_mai) as total'))
+                ->where('khuyen_mai', '=', $id)
+                ->groupBy('khuyen_mai')  
+                 ->get();
+        return $result;
+    }
+
 	public function getAllLogPointUser($id){
 		$result = DB::table('LichSuDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
 		->leftjoin('DonHang as dh', 'dh.ma_don_hang', '=', 'ls.ma_don_hang')
@@ -751,5 +759,13 @@ class LoginRepository {
 			'thoi_gian' => $ngay_lap
 		]);
 		return $result;
-	}	
+	}
+
+	public function getQuantityDiscount() {
+        $result = DB::table('DonHang')->select('khuyen_mai' , DB::raw('count(khuyen_mai) as total'))
+                ->where('da_xoa', '=', 0)
+                ->groupBy('khuyen_mai')
+                 ->get();
+        return $result;
+    }	
 }

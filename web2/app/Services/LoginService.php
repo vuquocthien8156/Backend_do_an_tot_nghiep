@@ -366,4 +366,8 @@ class LoginService {
     public function addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint) {
         return $addLog = $this->loginRepository->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
     }
+
+    public function totalDiscountOfOrder($id) {
+        return $totalDiscountOfOrder = $this->loginRepository->totalDiscountOfOrder($id);   
+    }
 }

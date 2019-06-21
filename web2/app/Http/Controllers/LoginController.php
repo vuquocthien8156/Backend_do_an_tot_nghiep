@@ -795,6 +795,10 @@ class LoginController extends Controller {
     public function getSlideShow(Request $request){
     	$slide = $request->get('slide');
     	$getSlideShow = $this->loginService->getSlideShow($slide);
+    	for($i=0; $i < count($getSlideShow); $i ++) {
+    		$totalDiscountOfOrder = $this->loginService->totalDiscountOfOrder($getSlideShow[$i]->ma_khuyen_mai);
+    		$getSlideShow[$i]->sl_con_lai = $getSlideShow[$i]->so_sp_qui_dinh - $totalDiscountOfOrder;
+    	}
 		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
 	}
 
