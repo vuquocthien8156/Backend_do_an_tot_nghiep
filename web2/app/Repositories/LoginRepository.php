@@ -155,7 +155,7 @@ class LoginRepository {
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ten_khuyen_mai' ,'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu')
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ten_khuyen_mai' ,'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu', 'tong_tien_khuyen_mai')
 		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
 		->leftjoin('KhuyenMai as km', 'km.ma_khuyen_mai', '=', 'dh.khuyen_mai');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
@@ -620,7 +620,7 @@ class LoginRepository {
 		}
 	}
 
-	public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu) {
+	public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu, $tong_tien_khuyen_mai, $phuong_thuc) {
 		$result = DB::table('DonHang')->insert([
 				'thong_tin_giao_hang' => $thong_tin_ship,
            		'ma_khach_hang' => $ma_kh,
@@ -631,6 +631,8 @@ class LoginRepository {
            		'ghi_chu' => $ghi_chu,
            		'da_xoa' => 0,
            		'ma_chu' => $ma_chu,
+           		'phuong_thuc_thanh_toan' => $phuong_thuc,
+           		'tong_tien_khuyen_mai' => $tong_tien_khuyen_mai,
         	]);
 		return $result;
 	}

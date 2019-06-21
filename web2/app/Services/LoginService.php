@@ -316,8 +316,8 @@ class LoginService {
         return $this->loginRepository->getSLSP($ma_gio_hang, $kich_co);   
     }
 
-    public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu) {
-        return $this->loginRepository->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
+    public function insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu, $tong_tien_khuyen_mai, $phuong_thuc) {
+        return $this->loginRepository->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu, $tong_tien_khuyen_mai, $phuong_thuc);
     }
 
     public function getMaxIdOrder() {

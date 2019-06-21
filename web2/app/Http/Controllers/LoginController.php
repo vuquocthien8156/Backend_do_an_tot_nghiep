@@ -252,6 +252,7 @@ class LoginController extends Controller {
 		$khuyen_mai = $thong_tin_DH['khuyen_mai'];
 		$phi_ship = $thong_tin_DH['phi_ship'];
 		$tong_tien = $thong_tin_DH['tong_tien'];
+		$tong_tien_khuyen_mai = $thong_tin_DH['tong_tien_khuyen_mai'];
 		$point = (int)$tong_tien / 10000;
 		$ghi_chu = $thong_tin_DH['ghi_chu'];
 		$so_diem = $thong_tin_DH['so_diem'];
@@ -261,59 +262,40 @@ class LoginController extends Controller {
 		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
 		$check = true;
-		
-		if ($phuong_thuc == 2) {
-			$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
-			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
-			$getPoint = $this->loginService->getPoint($ma_kh);
-			$totalPoint = (int)$getPoint[0]->diem_tich - (int)$so_diem;
-			
-			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
 
-			for ($i=0; $i < count($Detail); $i++) {
-				$topping = $Detail[$i]['topping'];
-				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_san_pham'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['gia_khuyen_mai'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu'], $Detail[$i]['kich_co']);
-				$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
-				for ($j=0; $j < count($topping); $j++) { 
-					$insertToppingOrder = $this->loginService->insertToppingOrder(
-						$getMaxIdOrderDetail,
-						$Detail[$i]['ma_san_pham'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
-					if ($insertToppingOrder == false) {
-						return response()->json(['status' => 'fail', 'error' => 1]);
-					}
-				}
-			}
-			$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
-			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
-			$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-			if ($deleteCart > 0) {
-		 		return response()->json(['status' => 'Success', 'error' => 0]);
-			}else {
+		$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu, $tong_tien_khuyen_mai, $phuong_thuc);
+		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
+		$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
+		$getPoint = $this->loginService->getPoint($ma_kh);
+		$totalPoint = (int)$getPoint[0]->diem_tich - (int)$so_diem;
+		for ($i=0; $i < count($Detail); $i++) {
+			$topping = $Detail[$i]['topping'];
+			$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_san_pham'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['gia_khuyen_mai'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu'], $Detail[$i]['kich_co']);
+			$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
+			if ($insertOrderDetail == false) {
 				return response()->json(['status' => 'fail', 'error' => 1]);
 			}
-
-		}
-		if ($phuong_thuc == 1) {
-			$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
-			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
-			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
-			for ($i=0; $i < count($Detail); $i++) {
-				$topping = $Detail[$i]['topping'];
-				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_san_pham'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['gia_khuyen_mai'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu'], $Detail[$i]['kich_co']);
-				$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
-				if ($insertOrderDetail == false) {
+			for ($j=0; $j < count($topping); $j++) { 
+				$insertToppingOrder = $this->loginService->insertToppingOrder($getMaxIdOrderDetail, $topping[$j]['ma_san_pham'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
+				if ($insertToppingOrder == false) {
 					return response()->json(['status' => 'fail', 'error' => 1]);
 				}
-				for ($j=0; $j < count($topping); $j++) { 
-					$insertToppingOrder = $this->loginService->insertToppingOrder($getMaxIdOrderDetail, $topping[$j]['ma_san_pham'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
-					if ($insertToppingOrder == false) {
-						return response()->json(['status' => 'fail', 'error' => 1]);
-					}
-				}
 			}
-			$getStatusOrder = $this->loginService->getStatusOrder($getMaxIdOrder);
-			$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-			return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
+		}
+
+		$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
+		if($phuong_thuc == 3 && $so_diem == 0 || $so_diem == '' || $so_diem == null) {
+			$newPoint = (int)$getPoint[0]->diem_tich + $point;
+			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);	
+		}else {
+			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
+				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
+			}
+		}
+		if ($deleteCart > 0) {
+			return response()->json(['status' => 'Success', 'error' => 0]);
+		}else {
+			return response()->json(['status' => 'fail', 'error' => 1]);
 		}
 	}
 
