@@ -288,7 +288,7 @@ class LoginController extends Controller {
 		if($phuong_thuc == 3 && $so_diem == 0 || $so_diem == '' || $so_diem == null) {
 			$newPoint = (int)$getPoint[0]->diem_tich + $point;
 			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);
-			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);	
+			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $newPoint);	
 		}else {
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
