@@ -122,7 +122,7 @@ Route::post('api/updateAddressOrder', 'LoginController@updateAddresOrderUser');
 
 Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
-Route::get('api/addOrder', 'LoginController@addOrder');
+Route::post('api/addOrder', 'LoginController@addOrder');
 
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
 

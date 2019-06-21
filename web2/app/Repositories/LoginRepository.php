@@ -155,8 +155,9 @@ class LoginRepository {
 	}
 
 	public function getAllOrder($id_KH) {
-		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu')
-		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang');
+		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ten_khuyen_mai' ,'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu')
+		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
+		->leftjoin('KhuyenMai as km', 'km.ma_khuyen_mai', '=', 'dh.khuyen_mai');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($id_KH != null && $id_KH != '') {
