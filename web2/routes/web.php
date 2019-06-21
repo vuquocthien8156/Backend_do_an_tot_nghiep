@@ -36,20 +36,16 @@ Route::prefix('products')->group(function() {
 	Route::get('news', 'ProductController@newsView')->name('news');
 	Route::get('discount', 'ProductController@KM')->name('news');
 	Route::get('excel-product', 'ProductController@exportProduct');
-	Route::get('thong-ke', 'ProductController@statisticalView');
+	Route::get('thong-ke', 'ProductController@statisticalView')->name('thong-ke');
 	Route::get('search-thong-ke', 'ProductController@searchStatistical');
 });
 
 Route::prefix('Branch')->group(function() {
-	// Route::get('add-view', 'ProductController@viewAddProduct')->name('product-add');
-	// Route::post('add-new', 'ProductController@addProduct');
 	Route::get('manage', 'BranchController@branchView')->name('manage-branch');
 	Route::get('search', 'BranchController@searchBranch');
 	Route::post('save', 'BranchController@saveBranch');
 	Route::post('delete', 'BranchController@deleteBranch');
 	Route::post('update', 'BranchController@updateBranch');
-	// Route::post('delete', 'ProductController@deleteProduct');
-	// Route::post('edit', 'ProductController@editProduct');
 });
 
 Route::prefix('permission')->group(function() {
@@ -58,6 +54,13 @@ Route::prefix('permission')->group(function() {
 	Route::post('create', 'PermissionController@createPermission');
 	Route::post('update', 'PermissionController@updatePermission');
 	Route::post('delete', 'PermissionController@deletePermission');
+});
+
+Route::prefix('order')->group(function() { 
+	Route::get('manage', 'OrderController@orderView')->name('order');
+	Route::get('search', 'OrderController@searchOrder');
+	Route::post('accept', 'OrderController@accepthOrder');
+	Route::post('delete', 'OrderController@deleteOrder');
 });
 
 
@@ -130,3 +133,4 @@ Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//n
 Route::get('api/getSlideShow', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
+Route::get('api/getQuantityDiscount', 'LoginController@getQuantityDiscount');

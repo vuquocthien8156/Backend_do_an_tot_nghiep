@@ -274,8 +274,10 @@
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_san_pham">
                                     </a>
                         </td>
-                        <td class="custom-view" v-if="item.daxoa == 1">Đã xóa</td>
-                        <td class="custom-view" v-if="item.daxoa == 0">Đã kích hoạt</td>
+                        <td  class="custom-view">
+                                <span href="#" v-if="item.daxoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.daxoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
                         <td class="custom-view"><p>
                             <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_so, item.ten, item.ma_chu, item.ten_loai_sp, item.gia_san_pham, item.gia_vua, item. gia_lon, item.so_lan_dat, item.ngay_ra_mat, item.mo_ta, item.ma_loai_sp, item.hinh_san_pham);"></a>
                             <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_so)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>

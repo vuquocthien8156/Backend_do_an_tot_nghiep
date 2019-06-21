@@ -640,9 +640,16 @@ class LoginRepository {
 		return $result;
 	}
 
+	public function getMaxIdOrderDetail() {
+		$result = DB::table('ChiTietDonHang')->max('ma_chi_tiet');
+		return $result;
+	}
+
 	public function insertStatusOrder($getMaxIdOrder) {
+		$now = Carbon::now();
 		$result = DB::table('ChiTietTrangThaiDonHang')->insert([
 				'ma_don_hang' => $getMaxIdOrder,
+				'thoi_gian' => $now,
 				'trang_thai' => 1,
 				'da_xoa' => 0,
            		
@@ -664,9 +671,9 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function insertToppingOrder($ma_sp, $ma_topping, $so_luong, $don_gia) {
+	public function insertToppingOrder($getMaxIdOrderDetail, $ma_topping, $so_luong, $don_gia) {
 		$result = DB::table('ChiTietThucUong')->insert([
-				'ma_chi_tiet' => $ma_sp,
+				'ma_chi_tiet' => $getMaxIdOrderDetail,
            		'ma_san_pham' => $ma_topping,
            		'don_gia' => $don_gia,
            		'so_luong' => $so_luong,
@@ -693,6 +700,9 @@ class LoginRepository {
 	}
 
 	public function getSlideShow($slide) {
+		$now = Carbon::now();
+		$from_date = $now->subDay(15)->toDateString();
+		$to_date = $now->addDay(15)->toDateString();
 		$result = DB::table('KhuyenMai')->select()
 		->where([
 			'da_xoa' => 0,
@@ -700,8 +710,18 @@ class LoginRepository {
 		if ($slide != null && $slide != '') {
 		 	$result = $result->where(['hien_slider' => 1]);
 		}
-		return $result->get();
+		$result = $result->where('ngay_bat_dau', '<=', $to_date);
+        $result = $result->where('ngay_bat_dau', '>=', $from_date);
+		return $result->limit(15)->get();
 	}
+
+	public function totalDiscountOfOrder($id) {
+        $result = DB::table('DonHang')->select('khuyen_mai' , DB::raw('count(khuyen_mai) as total'))
+                ->where('khuyen_mai', '=', $id)
+                ->groupBy('khuyen_mai')  
+                 ->get();
+        return $result;
+    }
 
 	public function getAllLogPointUser($id){
 		$result = DB::table('LichSuDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
@@ -740,5 +760,13 @@ class LoginRepository {
 			'thoi_gian' => $ngay_lap
 		]);
 		return $result;
-	}	
+	}
+
+	public function getQuantityDiscount() {
+        $result = DB::table('DonHang')->select('khuyen_mai' , DB::raw('count(khuyen_mai) as total'))
+                ->where('da_xoa', '=', 0)
+                ->groupBy('khuyen_mai')
+                 ->get();
+        return $result;
+    }	
 }

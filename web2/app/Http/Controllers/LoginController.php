@@ -293,35 +293,24 @@ class LoginController extends Controller {
 		if ($phuong_thuc == 1) {
 			$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
 			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
+			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
 			for ($i=0; $i < count($Detail); $i++) {
 				$topping = $Detail[$i]['topping'];
 				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_sp'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['Gia_KM'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu_sp'], $Detail[$i]['kich_co']);
-				$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
+				$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
 				if ($insertOrderDetail == false) {
 					return response()->json(['status' => 'fail', 'error' => 1]);
 				}
 				for ($j=0; $j < count($topping); $j++) { 
-					$insertToppingOrder = $this->loginService->insertToppingOrder($Detail[$i]['ma_sp'], $topping[$j]['ma_topping'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
+					$insertToppingOrder = $this->loginService->insertToppingOrder($getMaxIdOrderDetail, $topping[$j]['ma_topping'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
 					if ($insertToppingOrder == false) {
 						return response()->json(['status' => 'fail', 'error' => 1]);
 					}
 				}
 			}
 			$getStatusOrder = $this->loginService->getStatusOrder($getMaxIdOrder);
-			if ($getStatusOrder[0]->ma_trang_thai == 5) {
-				$getPoint = $this->loginService->getPoint($ma_kh);
-				$totalPoint = (int)$getPoint[0]->diem_tich + (int)$point;
-				$updatePointUser = $this->loginService->addPoint($ma_kh, $totalPoint);
-				$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-				if ($deleteCart > 0) {
-					return response()->json(['status' => 'Success', 'error' => 0]);
-				}else {
-					return response()->json(['status' => 'fail', 'error' => 1]);
-				}
-			}else {
-				$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-				return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
-			}
+			$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
+			return response()->json(['status' => 'Success', 'Message' => 'Please wait update status']);
 		}
 	}
 
@@ -806,6 +795,10 @@ class LoginController extends Controller {
     public function getSlideShow(Request $request){
     	$slide = $request->get('slide');
     	$getSlideShow = $this->loginService->getSlideShow($slide);
+    	for($i=0; $i < count($getSlideShow); $i ++) {
+    		$totalDiscountOfOrder = $this->loginService->totalDiscountOfOrder($getSlideShow[$i]->ma_khuyen_mai);
+    		$getSlideShow[$i]->sl_con_lai = $getSlideShow[$i]->so_sp_qui_dinh - $totalDiscountOfOrder;
+    	}
 		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
 	}
 
