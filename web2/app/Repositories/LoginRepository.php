@@ -716,10 +716,8 @@ class LoginRepository {
 	}
 
 	public function totalDiscountOfOrder($id) {
-        $result = DB::table('DonHang')->select('khuyen_mai' , DB::raw('count(khuyen_mai) as total'))
-                ->where('khuyen_mai', '=', $id)
-                ->groupBy('khuyen_mai')  
-                 ->get();
+        $result = DB::table('DonHang')->select()
+                ->where('khuyen_mai', '=', $id)->get();
         return $result;
     }
 

@@ -247,34 +247,37 @@ class LoginController extends Controller {
 
 	public function addOrder(Request $request) {
 		$thong_tin_DH = $request->get('thong_tin_DH');
-		$ma_kh = $thong_tin_DH['ma_kh'];
-		$thong_tin_ship = $thong_tin_DH['thong_tin_ship'];
+		$ma_kh = $thong_tin_DH['ma_khach_hang'];
+		$thong_tin_ship = $thong_tin_DH['thong_tin_giao_hang'];
 		$khuyen_mai = $thong_tin_DH['khuyen_mai'];
 		$phi_ship = $thong_tin_DH['phi_ship'];
 		$tong_tien = $thong_tin_DH['tong_tien'];
 		$point = (int)$tong_tien / 10000;
 		$ghi_chu = $thong_tin_DH['ghi_chu'];
 		$so_diem = $thong_tin_DH['so_diem'];
-		$phuong_thuc = $thong_tin_DH['phuong_thuc'];
+		$phuong_thuc = $thong_tin_DH['phuong_thuc_thanh_toan'];
 		$ngay_lap = Carbon::now();
 		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
 		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
 		$check = true;
+		
 		if ($phuong_thuc == 2) {
 			$insertOrder = $this->loginService->insertOrder($thong_tin_ship, $ma_kh, $khuyen_mai, $phi_ship, $tong_tien, $ghi_chu, $ngay_lap, $ma_chu);
 			$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
 			$getPoint = $this->loginService->getPoint($ma_kh);
 			$totalPoint = (int)$getPoint[0]->diem_tich - (int)$so_diem;
+			
+			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
+
 			for ($i=0; $i < count($Detail); $i++) {
 				$topping = $Detail[$i]['topping'];
-				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_sp'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['Gia_KM'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu_sp'], $Detail[$i]['kich_co']);
-				$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
-				if ($insertOrderDetail == false) {
-					return response()->json(['status' => 'fail', 'error' => 1]);
-				}
+				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_san_pham'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['gia_khuyen_mai'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu'], $Detail[$i]['kich_co']);
+				$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
 				for ($j=0; $j < count($topping); $j++) { 
-					$insertToppingOrder = $this->loginService->insertToppingOrder($Detail[$i]['ma_sp'], $topping[$j]['ma_topping'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
+					$insertToppingOrder = $this->loginService->insertToppingOrder(
+						$getMaxIdOrderDetail,
+						$Detail[$i]['ma_san_pham'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
 					if ($insertToppingOrder == false) {
 						return response()->json(['status' => 'fail', 'error' => 1]);
 					}
@@ -296,13 +299,13 @@ class LoginController extends Controller {
 			$insertStatusOrder = $this->loginService->insertStatusOrder($getMaxIdOrder);
 			for ($i=0; $i < count($Detail); $i++) {
 				$topping = $Detail[$i]['topping'];
-				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_sp'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['Gia_KM'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu_sp'], $Detail[$i]['kich_co']);
+				$insertOrderDetail = $this->loginService->insertOrderDetail($getMaxIdOrder, $Detail[$i]['ma_san_pham'], $Detail[$i]['so_luong'], $Detail[$i]['don_gia'], $Detail[$i]['gia_khuyen_mai'], $Detail[$i]['thanh_tien'], $Detail[$i]['ghi_chu'], $Detail[$i]['kich_co']);
 				$getMaxIdOrderDetail =  $this->loginService->getMaxIdOrderDetail();
 				if ($insertOrderDetail == false) {
 					return response()->json(['status' => 'fail', 'error' => 1]);
 				}
 				for ($j=0; $j < count($topping); $j++) { 
-					$insertToppingOrder = $this->loginService->insertToppingOrder($getMaxIdOrderDetail, $topping[$j]['ma_topping'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
+					$insertToppingOrder = $this->loginService->insertToppingOrder($getMaxIdOrderDetail, $topping[$j]['ma_san_pham'], $topping[$j]['so_luong'], $topping[$j]['don_gia']);
 					if ($insertToppingOrder == false) {
 						return response()->json(['status' => 'fail', 'error' => 1]);
 					}
@@ -797,7 +800,9 @@ class LoginController extends Controller {
     	$getSlideShow = $this->loginService->getSlideShow($slide);
     	for($i=0; $i < count($getSlideShow); $i ++) {
     		$totalDiscountOfOrder = $this->loginService->totalDiscountOfOrder($getSlideShow[$i]->ma_khuyen_mai);
-    		$getSlideShow[$i]->sl_con_lai = $getSlideShow[$i]->so_sp_qui_dinh - $totalDiscountOfOrder;
+
+    		if($getSlideShow[$i]->gioi_han_so_code != null)
+    			$getSlideShow[$i]->ma_con_lai = $getSlideShow[$i]->gioi_han_so_code - count($totalDiscountOfOrder);
     	}
 		return response()->json(['status' => 'Success', 'error' =>  0, 'listSlide' => $getSlideShow]);
 	}
