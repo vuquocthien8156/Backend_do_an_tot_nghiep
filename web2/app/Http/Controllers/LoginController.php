@@ -286,7 +286,8 @@ class LoginController extends Controller {
 		$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
 		if($phuong_thuc == 3 && $so_diem == 0 || $so_diem == '' || $so_diem == null) {
 			$newPoint = (int)$getPoint[0]->diem_tich + $point;
-			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);	
+			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);
+			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);	
 		}else {
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
