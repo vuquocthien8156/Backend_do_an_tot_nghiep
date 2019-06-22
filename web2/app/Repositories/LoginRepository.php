@@ -156,7 +156,7 @@ class LoginRepository {
 
 	public function getAllOrder($id_KH) {
 		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ten_khuyen_mai' ,'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu', 'tong_tien_khuyen_mai')
-		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
+		->leftjoin('LichSuTichDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
 		->leftjoin('KhuyenMai as km', 'km.ma_khuyen_mai', '=', 'dh.khuyen_mai');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
@@ -724,7 +724,7 @@ class LoginRepository {
     }
 
 	public function getAllLogPointUser($id){
-		$result = DB::table('LichSuDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
+		$result = DB::table('LichSuTichDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
 		->leftjoin('DonHang as dh', 'dh.ma_don_hang', '=', 'ls.ma_don_hang')
 		->where([
 			'ls.ma_tai_khoan' => $id,

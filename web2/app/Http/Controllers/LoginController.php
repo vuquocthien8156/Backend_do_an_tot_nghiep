@@ -293,8 +293,8 @@ class LoginController extends Controller {
 		}else {
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$hinh_thuc = 2;
-				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint);
 				$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
+				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint);
 			}
 		}
 		if ($deleteCart > 0) {
