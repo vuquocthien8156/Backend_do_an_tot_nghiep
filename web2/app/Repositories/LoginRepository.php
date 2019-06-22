@@ -749,13 +749,13 @@ class LoginRepository {
 		return $result;
 	}
 
-	public function addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint) {
-		$result = DB::table('LichSuTichDiem')
+	public function addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint) {
+		$result = DB::table('LichSuDiem')
 		->insert([
 			'ma_tai_khoan' => $ma_kh,
 			'ma_don_hang' => $getMaxIdOrder,
 			'so_diem' => $totalPoint,
-			'hinh_thuc' => $phuong_thuc,
+			'hinh_thuc' => $hinh_thuc,
 			'da_xoa' => 0,
 			'thoi_gian' => $ngay_lap
 		]);

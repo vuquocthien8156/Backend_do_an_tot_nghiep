@@ -363,8 +363,8 @@ class LoginService {
         return $addPoint = $this->loginRepository->addPoint($ma_kh, $totalPoint);   
     }
 
-    public function addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint) {
-        return $addLog = $this->loginRepository->addLog($ma_kh, $getMaxIdOrder, $phuong_thuc, $ngay_lap, $totalPoint);
+    public function addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint) {
+        return $addLog = $this->loginRepository->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint);
     }
 
     public function totalDiscountOfOrder($id) {
