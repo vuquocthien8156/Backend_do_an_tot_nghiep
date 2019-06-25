@@ -15,6 +15,9 @@ Route::get('loginView', 'LoginController@loginView')->name('login');
 Route::post('dangnhap', 'LoginController@login', '_token');
 Route::post('dangnhapsdt', 'LoginController@loginsdt', '_token');
 Route::get('logout', 'LoginController@logout');
+Route::get('verify', 'LoginController@verifyView')->name('verify');
+Route::get('changePasswordAdmin', 'LoginController@changePasswordAdmin')->name('changePasswordAdmin');
+Route::post('verify', ['as' => 'verify', 'uses' => 'LoginController@verify']);
 Route::get('register', 'RegisterController@registerView')->name('register');
 Route::post('dangky', 'RegisterController@register');
 
@@ -38,6 +41,30 @@ Route::prefix('products')->group(function() {
 	Route::get('excel-product', 'ProductController@exportProduct');
 	Route::get('thong-ke', 'ProductController@statisticalView')->name('thong-ke');
 	Route::get('search-thong-ke', 'ProductController@searchStatistical');
+	Route::get('show-more-img', 'ProductController@showMoreImg');
+	Route::post('update-img', 'ProductController@updateImg');
+});
+
+Route::prefix('discount')->group(function() {
+	Route::get('add-view', 'ProductController@viewAddDiscount')->name('discount-add');
+	Route::post('add-new', 'ProductController@addDiscount');
+	Route::get('manage-discount', 'ProductController@discountView')->name('manage-discount');
+	Route::get('search', 'ProductController@searchDiscount');
+	Route::post('delete', 'ProductController@deleteDiscount');
+	Route::post('edit', 'ProductController@editDiscount');
+	Route::get('show-more-img', 'ProductController@showMoreImg');
+	Route::post('update-img', 'ProductController@updateImgDiscount');
+});
+
+Route::prefix('news')->group(function() {
+	Route::get('news-view', 'ProductController@viewAddNews')->name('news-add');
+	Route::post('add-new', 'ProductController@addNews');
+	Route::get('manage-news', 'ProductController@NewsView1')->name('manage-news');
+	Route::get('search', 'ProductController@searchNews');
+	Route::post('delete', 'ProductController@deleteNews');
+	Route::post('edit', 'ProductController@editNews');
+	Route::post('update-img', 'ProductController@updateImgNews');
+	Route::get('show-more-img', 'ProductController@showMoreImg');
 });
 
 Route::prefix('Branch')->group(function() {
@@ -59,7 +86,9 @@ Route::prefix('permission')->group(function() {
 Route::prefix('order')->group(function() { 
 	Route::get('manage', 'OrderController@orderView')->name('order');
 	Route::get('search', 'OrderController@searchOrder');
+	Route::get('detail', 'OrderController@detailOrder');
 	Route::post('accept', 'OrderController@accepthOrder');
+	Route::post('edit', 'OrderController@editOrder');
 	Route::post('delete', 'OrderController@deleteOrder');
 });
 
@@ -84,8 +113,6 @@ Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 
-Route::get('lien-he',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
-Route::post('lien-he', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
 
 // Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
 // Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
@@ -137,3 +164,8 @@ Route::get('api/getSlideShow', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
 Route::get('api/getQuantityDiscount', 'LoginController@getQuantityDiscount');
+;
+Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
+Route::post('api/verify', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
+Route::get('ChangePassWord', 'LoginController@ChangePassWord');
+Route::post('submitChange', 'LoginController@submitChange');

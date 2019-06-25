@@ -29,7 +29,7 @@ class LoginRepository {
 	public function loginsdt($user) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
+       	->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
 		return $result;
 	}
 
@@ -156,7 +156,7 @@ class LoginRepository {
 
 	public function getAllOrder($id_KH) {
 		$result = DB::table('DonHang as dh')->select('dh.ma_don_hang', 'ma_khach_hang', 'thong_tin_giao_hang' , 'khuyen_mai', 'ten_khuyen_mai' ,'ngay_lap', 'phi_ship', 'tong_tien', 'ghi_chu' , 'phuong_thuc_thanh_toan' , 'so_diem' , 'ma_chu', 'tong_tien_khuyen_mai')
-		->leftjoin('LichSuTichDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
+		->leftjoin('LichSuDiem as lsd', 'lsd.ma_don_hang', '=', 'dh.ma_don_hang')
 		->leftjoin('KhuyenMai as km', 'km.ma_khuyen_mai', '=', 'dh.khuyen_mai');
 			// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'dh.ma_don_hang')
 			// ->leftjoin('TrangThaiDonHang as ttdh', 'ttdh.ma_trang_thai', '=', 'ctttdh.trang_thai');
@@ -221,7 +221,6 @@ class LoginRepository {
 	public function loginfb($id_fb) {
 			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-	        ->leftjoin('quyen as pe', 'pe.ma_so', '=', 'per.quyen_cho_phep')
 	        ->where([
 	        		'fb_id' => $id_fb, 
 	        		'us.da_xoa' => 0])->get();
@@ -254,13 +253,13 @@ class LoginRepository {
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
-        	return $result->limit(4)->orderBy('ngay_tao', 'desc')->get();
+        	return $result->limit(4)->orderBy('ngay_dang', 'desc')->get();
         }else {
             $result = DB::table('TinTuc')->select('ma_tin_tuc', 'ten_tin_tuc', 'noi_dung', 'ngay_dang', 'hinh_tin_tuc', 'ngay_tao')
 	        ->where([
 	            'da_xoa' => 0,
 	        ]);
-        	return $result->limit(4)->orderBy('ngay_tao', 'desc')->paginate(4);
+        	return $result->limit(4)->orderBy('ngay_dang', 'desc')->paginate(4);
         }
 	}
 
@@ -724,7 +723,7 @@ class LoginRepository {
     }
 
 	public function getAllLogPointUser($id){
-		$result = DB::table('LichSuTichDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
+		$result = DB::table('LichSuDiem as ls')->select('ls.ma_don_hang' , 'dh.ma_chu' , 'ls.so_diem' , 'ls.hinh_thuc' , 'ls.thoi_gian')
 		->leftjoin('DonHang as dh', 'dh.ma_don_hang', '=', 'ls.ma_don_hang')
 		->where([
 			'ls.ma_tai_khoan' => $id,
@@ -768,5 +767,13 @@ class LoginRepository {
                 ->groupBy('khuyen_mai')
                  ->get();
         return $result;
+    }
+
+    public function submitChange($gmail, $newPass) {
+    	$result = DB::table('users')->where('email', '=', $gmail)
+		->update([
+			'password' => $newPass,
+		]);
+		return $result;
     }	
 }

@@ -33,6 +33,16 @@ class ProductController extends Controller {
     	return view('product.product',['list' => $list]);
     }
 
+    public function NewsView1() {
+        $list = $this->productService->loaisp();
+        return view('news.news',['list' => $list]);
+    }
+
+    public function discountView() {
+        $list = $this->productService->sanPham();
+        return view('discount.discount',['list' => $list]);
+    }
+
     public function statisticalView() {
         $list = $this->productService->loaisp();
         return view('product.thongke',['list' => $list]);
@@ -55,12 +65,15 @@ class ProductController extends Controller {
            for ($i=0; $i < count($forWeek); $i++) {
                 if ($i < 10) {
                     $getlist = $this->productService->searchProductTK($forWeek[$i]->ma_san_pham);
-                        array_push($arr, $getlist[0]);
+                    $getlist[0]->total = $forWeek[$i]->total;
+                    $getlist[0]->ngay_ra_mat = date_format(Carbon::parse($getlist[0]->ngay_ra_mat),'d-m-Y');
+                    array_push($arr, $getlist[0]);
                 }
             }
             for ($i=0; $i < count($arr); $i++) {
                 $arr[$i]->pathToResource = $pathToResource;
             }
+            // dd($arr);
         }
         if ($thongke == "month") {
             $date = Carbon::now();
@@ -72,7 +85,8 @@ class ProductController extends Controller {
             for ($i=0; $i < count($forMonth); $i++) {
                 if ($i < 10) {
                     $getlist = $this->productService->searchProductTK($forMonth[$i]->ma_san_pham);
-                        array_push($arr, $getlist[0]);
+                    $getlist[0]->total = $forWeek[$i]->total;
+                    array_push($arr, $getlist[0]);
                 }
             }
             for ($i=0; $i < count($arr); $i++) {
@@ -107,6 +121,16 @@ class ProductController extends Controller {
     	return view('product.addProduct',['list' => $list]);
     }
 
+    public function viewAddDiscount() {
+        $list = $this->productService->sanPham();
+        return view('discount.addDiscount',['list' => $list]);
+    }
+
+    public function viewAddNews() {
+        $list = $this->productService->loaisp();
+        return view('news.addNews',['list' => $list]);
+    }
+
     public function detailView(Request $request) {
     	$id = $request->get('id');
     	$path = config('app.resource_url_path');
@@ -136,6 +160,150 @@ class ProductController extends Controller {
 		return response()->json(['listSearch'=>$listProduct, 'infoExportExcel' => $infoExportExcel]);  
 	}
 
+    public function showMoreImg(Request $request) {
+        $ma_sp = $request->get('id');
+        $type = $request->get('type');
+        $getImg = $this->productService->getImg($ma_sp, $type);
+        for ($i=0; $i < count($getImg); $i++) { 
+            $getImg[$i]->pathToResource = config('app.resource_url_path');
+        }
+        return \Response::json(['error' => 0, 'listImg' => $getImg]);
+    }
+
+    public function updateImgDiscount(Request $request) {
+        $url = $request->file('files');
+        if ($url == null || $url == '') {
+            return "Some Thing Went Wrong";
+        }
+        $ma_sp = $request->get('id_update');
+        $type =4;
+        $dem = count($url);
+        $now = Carbon::now();
+        $check1 = 0;
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
+                $subName = 'discount/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $url = $filename;
+                $getId = $this->productService->getImg($ma_sp, $type);
+                if (isset($getId[0]->url) && $i ==0) {
+                    $delete = $this->productService->deleteImg($ma_sp, $type);
+                }
+                $inserImage = $this->productService->inserImageDiscount($url, $ma_sp);
+                    if ($inserImage  == false) {
+                        $check1 = 1;
+                        break;
+                    }
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+            if ($check1 == 0) {
+                echo "<script>alert('Thành công'); window.location='".url('discount/manage-discount')."'</script>";
+            }
+        }else {
+            if ($check1 == 0) {
+                echo "<script>alert('Thất bại'); window.location='".url('discount/manage-discount')."'</script>";
+            }
+        }
+    }
+
+    public function updateImgNews(Request $request) {
+        $url = $request->file('files');
+        if ($url == null || $url == '') {
+            return "Some Thing Went Wrong";
+        }
+        $ma_sp = $request->get('id_update');
+        $type =2;
+        $dem = count($url);
+        $now = Carbon::now();
+        $check1 = 0;
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
+                $subName = 'news/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $url = $filename;
+                $getId = $this->productService->getImg($ma_sp, $type);
+                if (isset($getId[0]->url) && $i ==0) {
+                    $delete = $this->productService->deleteImg($ma_sp, $type);
+                }
+                $inserImage = $this->productService->inserImageNews($url, $ma_sp);
+                    if ($inserImage  == false) {
+                        $check1 = 1;
+                        break;
+                    }
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+            if ($check1 == 0) {
+                echo "<script>alert('Thành công'); window.location='".url('news/manage-news')."'</script>";
+            }
+        }else {
+            if ($check1 == 0) {
+                echo "<script>alert('Thất bại'); window.location='".url('news/manage-news')."'</script>";
+            }
+        }
+    }
+
+    public function updateImg(Request $request) {
+        $url = $request->file('files');
+        if ($url == null || $url == '') {
+            return "Some Thing Went Wrong";
+        }
+        $ma_sp = $request->get('id_update');
+        $type = 1;
+        $dem = count($url);
+        $now = Carbon::now();
+        $check1 = 0;
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
+                $subName = 'product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $url = $filename;
+                $getId = $this->productService->getImg($ma_sp,$type);
+                if (isset($getId[0]->url) && $i ==0) {
+                    $delete = $this->productService->deleteImg($ma_sp, $type);
+                }
+                $inserImage = $this->productService->inserImage($url, $ma_sp);
+                    if ($inserImage  == false) {
+                        $check1 = 1;
+                        break;
+                    }
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+            if ($check1 == 0) {
+                echo "<script>alert('Thành công'); window.location='".url('products/manage-product')."'</script>";
+            }
+        }else {
+            if ($check1 == 0) {
+                echo "<script>alert('Thất bại'); window.location='".url('products/manage-product')."'</script>";
+            }
+        }
+    }
 	public function searchProductAPI(Request $request) {
 		$name = $request->get('name');
 		$ma_loai = $request->get('ma_loai');
@@ -216,8 +384,71 @@ class ProductController extends Controller {
         }
 	}
 
+    public function editDiscount(Request $request) {
+        $avatar_path = $request->get('files_edit');
+        $ten_khuyen_mai = $request->get('ten_khuyen_mai');
+        $id = $request->get('id');
+        $ma_code = $request->get('ma_code');
+        $mo_ta = $request->get('mo_ta');
+        $ma_sp = $request->get('ma_san_pham');
+        $so_phan_tram = $request->get('so_phan_tram');
+        $so_tien = $request->get('so_tien');
+        $so_sp_qui_dinh = $request->get('so_sp_qui_dinh');
+        $so_tien_qui_dinh_toi_thieu = $request->get('so_tien_qui_dinh_toi_thieu');
+        $gioi_han_so_code = $request->get('gioi_han_so_code');
+        $ngay_bat_dau = $request->get('ngay_bat_dau');
+        $ngay_ket_thuc = $request->get('ngay_ket_thuc');
+        $id_now = session()->get('user_id');
+        $type = $request->get('type');
+        $so_sp_tang_kem = $request->get('so_sp_tang_kem');
+        $now = Carbon::now();
+        if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
+                $subName = 'discount/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/' . $subName . '/' . $request->file('files_edit')->getClientOriginalName();
+                $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+        }
+        $result = $this->productService->editDiscount($ten_khuyen_mai, $id,$ma_code,$mo_ta,$so_phan_tram ,$so_tien ,$so_sp_qui_dinh ,$so_tien_qui_dinh_toi_thieu,$gioi_han_so_code ,$ngay_bat_dau ,$ngay_ket_thuc ,$id_now,$type, $so_sp_tang_kem, $avatar_path);
+        if ($result == 1) {
+            return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        }else{
+            return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+        }
+    }
+
+    public function editNews(Request $request) {
+        $avatar_path = $request->get('files_edit');
+        $ten = $request->get('ten');
+        $id = $request->get('id');
+        $ND = $request->get('ND');
+        $date = $request->get('date');
+        $now = Carbon::now();
+        if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
+                $subName = 'news/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' . $request->file('files_edit')->getClientOriginalName();
+                $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+        }
+        $result = $this->productService->editNews($avatar_path, $ten, $id, $ND, $date);
+        if ($result == 1) {
+            return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        }else{
+            return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+        }
+    }
+
 	public function addProduct(Request $request) {
-		$avatar_path = $request->file('files_edit');
+		$avatar_path = $request->file('files');
 		$now = Carbon::now();
 		$ten = $request->get('ten');
 		$ma = $request->get('ma');
@@ -234,8 +465,8 @@ class ProductController extends Controller {
                 $subName = 'product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
-                $filename = 'images/'. $subName . '/' .$request->file('files_edit')[$i]->getClientOriginalName();
-                $check = $request->file('files_edit')[$i]->move($destinationPath.'/'.$subName, $filename);
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
                 if (!file_exists($check)) {
                     return \Response::json(false);
                 }
@@ -252,11 +483,103 @@ class ProductController extends Controller {
             }
         }else {
             $check = 1;
+            echo "<script>alert('Thất bại'); window.location='".url('products/manage-product')."'</script>";
         }
         if ($check1 == 0) {
-        	return redirect('products/manage-product');
+        	echo "<script>alert('Thành công'); window.location='".url('products/manage-product')."'</script>";
         }else{
         	return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+        }
+    }
+
+    public function addDiscount(Request $request) {
+        $avatar_path = $request->file('files');
+        $now = Carbon::now();
+        $type = $request->get('type');
+        $ma = $request->get('ma');
+        $ten = $request->get('ten');
+        $MT = $request->get('MT');
+        $SPT = $request->get('SPT');
+        $ST = $request->get('ST');
+        $SSPQD = $request->get('SSPQD');
+        $STQDTT = $request->get('STQDTT');
+        $NBD = $request->get('NBD');
+        $NKT = $request->get('NKT');
+        $GHSC = $request->get('GHSC');
+        $SSPTK = $request->get('SSPTK');
+        $SP = $request->get('SP');
+        $check1 = 0;
+            $dem = count($avatar_path);
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
+                $subName = 'discount/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+                if ($i == 0) {
+                    $result = $this->productService->addDiscount($avatar_path,$now,$type,$ma, $ten,$MT, $SPT, $ST, $SSPQD, $STQDTT, $NBD ,$NKT, $GHSC,$SSPTK,$SP );   
+                }
+                $getIdMax = $this->productService->getIdMaxDiscount();
+                $inserImage = $this->productService->inserImageDiscount($avatar_path, $getIdMax);
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+        }else {
+            $check = 1;
+            echo "<script>alert('Thất bại'); window.location='".url('discount/manage-discount')."'</script>";
+        }
+        if ($check1 == 0) {
+           echo "<script>alert('Thành công'); window.location='".url('discount/manage-discount')."'</script>";
+        }else{
+            return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+        }
+    }
+
+    public function addNews(Request $request) {
+        $avatar_path = $request->file('files');
+        $now = Carbon::now();
+        $ten = $request->get('ten');
+        $ND = $request->get('ND');
+        $NĐ = $request->get('NĐ');
+        $check1 = 0;
+        $ngay_tao = Carbon::now();
+        $dem = count($avatar_path);
+        if ($dem > 0) {
+            for ($i=0; $i < $dem; $i++) {  
+                $subName = 'news/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $destinationPath = config('app.resource_physical_path');
+                $pathToResource = config('app.resource_url_path');
+                $filename = 'images/'. $subName . '/' .$request->file('files')[$i]->getClientOriginalName();
+                $check = $request->file('files')[$i]->move($destinationPath.'/'.$subName, $filename);
+                if (!file_exists($check)) {
+                    return \Response::json(false);
+                }
+                $avatar_path = $filename;
+                if ($i == 0) {
+                    $result = $this->productService->addNews($ten, $ND, $ngay_tao, $avatar_path, $NĐ);   
+                }
+                $getIdMax = $this->productService->getIdMaxNews();
+                $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
+                if ($inserImage == false) {
+                    $check1 = 1;
+                    break;
+                }
+            }
+        }else {
+            $check = 1;
+            echo "<script>alert('Thất bại'); window.location='".url('news/manage-news')."'</script>";
+        }
+        if ($check1 == 0) {
+           echo "<script>alert('Thành công'); window.location='".url('news/manage-news')."'</script>";
+        }else{
+            return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
         }
 
 	}
@@ -278,4 +601,45 @@ class ProductController extends Controller {
     	}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list'=>$getlist]);  
 	}
+
+    public function searchDiscount(Request $request) {
+        $type = $request->get('type');
+        $listDiscount = $this->productService->searchDiscount($type);
+        $pathToResource = config('app.resource_url_path');
+        for ($i=0; $i < count($listDiscount); $i++) { 
+            $listDiscount[$i]->pathToResource = $pathToResource;
+            $listDiscount[$i]->ngay_BD = isset($listDiscount[$i]->ngay_bat_dau) ? date_format(Carbon::parse($listDiscount[$i]->ngay_bat_dau), 'd-m-Y') : null;
+            $listDiscount[$i]->ngay_KT = isset($listDiscount[$i]->ngay_ket_thuc) ? date_format(Carbon::parse($listDiscount[$i]->ngay_ket_thuc), 'd-m-Y') :null;
+        }
+       return response()->json(['listSearch'=>$listDiscount]);
+    }
+
+    public function searchNews(Request $request) {
+        $name = $request->get('name');
+        $searchNews = $this->productService->searchNews1($name);
+        $pathToResource = config('app.resource_url_path');
+        for ($i=0; $i < count($searchNews); $i++) { 
+            $searchNews[$i]->pathToResource = $pathToResource;
+            $searchNews[$i]->ngay_dang = date_format(Carbon::parse($searchNews[$i]->ngay_dang), 'd-m-Y');
+        }
+       return response()->json(['listSearch'=>$searchNews]);
+    }
+
+    public function deleteDiscount(Request $request) {
+        $id = $request->get('id');
+        $result = $this->productService->deleteDiscount($id);
+        if ($result != 0) {
+             return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        }
+        return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+    }
+
+    public function deleteNews(Request $request) {
+        $id = $request->get('id');
+        $result = $this->productService->deleteNews($id);
+        if ($result != 0) {
+             return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
+        }
+        return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
+    }
 }

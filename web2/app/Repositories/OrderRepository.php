@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository {
 
-	public function listOrder($code) {
-		$result = DB::table('DonHang')->select('DonHang.ma_don_hang as madh', 'ma_chu', 'thong_tin_giao_hang', 'ma_khach_hang', 'khuyen_mai','phi_ship', 'tong_tien', 'ghi_chu', 'ngay_lap', 'phuong_thuc_thanh_toan', 'DonHang.da_xoa', 'ten_khuyen_mai', 'ctttdh.trang_thai', 'ten_trang_thai')
+	public function listOrder($id, $code) {
+		$result = DB::table('DonHang')->select('DonHang.ma_don_hang as madh', 'ma_chu', 'thong_tin_giao_hang', 'ma_khach_hang', 'khuyen_mai','phi_ship', 'tong_tien', 'ghi_chu', 'ngay_lap', 'phuong_thuc_thanh_toan', 'DonHang.da_xoa', 'ten_khuyen_mai', 'ctttdh.trang_thai', 'ten_trang_thai')->where('DonHang.da_xoa', '=', 0)
 		->leftjoin('KhuyenMai', 'ma_khuyen_mai', '=', 'khuyen_mai')
 		->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'DonHang.ma_don_hang')
 		->leftjoin('TrangThaiDonHang', 'ma_trang_thai', '=', 'ctttdh.trang_thai');
@@ -23,8 +23,21 @@ class OrderRepository {
                 $where->whereRaw('lower(ma_chu) like ? ', ['%' . trim(mb_strtolower($code, 'UTF-8')) . '%']);
          
             });
-		} 
+		}
+		if ($id != null && $id != '') {
+		 	$result->where('DonHang.ma_don_hang','=',$id);
+		 } 
 		return $result->orderBy('DonHang.ma_don_hang', 'desc')->paginate(15);
+	}
+
+	public function getStatus() {
+		$result = DB::table('TrangThaiDonHang')->select();
+		return $result->orderBy('ma_trang_thai', 'asc')->get();
+	}
+
+	public function getAllDisCount() {
+		$result = DB::table('KhuyenMai')->select('ma_khuyen_mai', 'ten_khuyen_mai')->where('da_xoa','=',0)->get();
+		return $result;
 	}
 
 	public function updateStatus($id, $status) {
@@ -50,6 +63,26 @@ class OrderRepository {
 
 	public function delete($id) {
 		$result = DB::table('DonHang')->where('ma_don_hang','=',$id)->update(['da_xoa' => 1]);
+		return $result;
+	}
+
+	public function editOrder($thong_tin_giao_hang, $ten_khuyen_mai, $phi_ship, $ngay_lap, $tong_tien, $ghi_chu, $phuong_thuc_thanh_toan, $id) {
+		$result = DB::table('DonHang')->where('ma_don_hang','=',$id)
+		->update([
+			'thong_tin_giao_hang' => $thong_tin_giao_hang,
+			'khuyen_mai' => $ten_khuyen_mai,
+			'phi_ship' => $phi_ship,
+			'ngay_lap' => $ngay_lap,
+			'tong_tien' => $tong_tien,
+			'ghi_chu' => $ghi_chu,
+			'phuong_thuc_thanh_toan' => $phuong_thuc_thanh_toan,
+		]);
+		return $result;
+	}
+
+	public function detailOrder($id) {
+		$result = DB::table('ChiTietDonHang')->select('so_luong', 'don_gia', 'kich_co', 'gia_khuyen_mai', 'thanh_tien', 'ghi_chu', 'ten')->where('ma_don_hang','=',$id)
+		->leftjoin('SanPham', 'ma_so', '=', 'ma_san_pham')->get();
 		return $result;
 	}
 }

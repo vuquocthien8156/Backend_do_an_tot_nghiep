@@ -12,7 +12,7 @@
                         			</div>
                        
                     				<div class="form-group" style="margin-left: 38%">
-                            			<input id="password" style="height: 40px;width: 300px" v-model="password" type="password" class="form-control" placeholder="Nhập password" name="password" required>
+                            			<input  @keyup.13="login();" id="password" style="height: 40px;width: 300px" v-model="password" type="password" class="form-control" placeholder="Nhập password" name="password" required>
                        				 </div>
                     		
                     				<button id="dn1" @click="login();" class="btn btn-primary-app btn-block" style="background: #ce252c; color: white;width: 300px; margin-left: 38%">Đăng nhập</button>

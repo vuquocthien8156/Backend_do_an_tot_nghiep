@@ -1,1 +1,1 @@
-day la giao dien gui mail diasdasdasd
+Bạn đã xác nhận Email thành công !!!!!! <a href="{{$path}}">...Xác nhận</a>

@@ -370,4 +370,8 @@ class LoginService {
     public function totalDiscountOfOrder($id) {
         return $totalDiscountOfOrder = $this->loginRepository->totalDiscountOfOrder($id);   
     }
+
+    public function submitChange($gmail, $newPass) {
+         return $submitChange = $this->loginRepository->submitChange($gmail, $newPass);
+    }
 }

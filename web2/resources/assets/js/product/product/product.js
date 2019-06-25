@@ -15,6 +15,7 @@ const app = new Vue({
             ten:'',
             ma: '',
             masp:'',
+            listImg:'',
             gia_goc:'',
             gia_size_vua:'',
             gia_size_lon:'',
@@ -59,6 +60,25 @@ const app = new Vue({
             $('#ModalShowDescription').modal('show');
             $('#description_show').text(description);
         },
+        showMore(id) {
+            common.loading.show('body');
+            $("#frames").text('');
+            $("#id_update").val(id);
+            var data = {
+                id:id,
+                type:1
+            }
+            $.get('show-more-img', data)
+                .done(response => {
+                    this.listImg = response.listImg;
+                    common.loading.hide('body');
+                })
+                .fail(error => {
+                    alert('Error!');
+                    common.loading.hide('body');
+                })
+            $('#showMore').modal('show');
+        },
         deleted(id) {
             var data = {
                 id:id
@@ -91,9 +111,6 @@ const app = new Vue({
                     }
                 }
             });
-        
-            
-            
         },
         seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
             ngay_ra_mat, mo_ta, ma_loai_sp, img) {
@@ -123,6 +140,7 @@ const app = new Vue({
             data.append('files_edit', this.selectedFile);
             data.append('ten', $('#ten').val());
             data.append('ma',  $('#ma').val());
+            // data.append('ma',  $('#ma').val());
             data.append('gia_goc',  $('#gia_goc').val());
             data.append('gia_size_vua',  $('#gia_size_vua').val());
             data.append('gia_size_lon',  $('#gia_size_lon').val());
@@ -146,6 +164,7 @@ const app = new Vue({
                         common.loading.hide('body');
                     } else {
                         bootbox.alert('Thất bại!!!');
+                        common.loading.hide('body');
                     }
                 })
         },
@@ -220,10 +239,10 @@ const app = new Vue({
                     };
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
-                        alert('Thêm thành công!!!');
-                        window.location = 'manage';
+                        bootbox.alert('Thêm thành công!!!', function(){
+                            window.location.reload();
+                        });
                         common.loading.hide('body');
-                        window.location.reload();
                     } else {
                         alert('Thêm thất bại!!!');
                         common.loading.hide('body');

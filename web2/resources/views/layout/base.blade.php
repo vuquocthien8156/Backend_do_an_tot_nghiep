@@ -43,9 +43,9 @@
                     </div>
                     <div class="d-none d-md-block flex-md-grow-1 justify-content-center">
                         <ul id="header-navbar" class="nav justify-content-center font-weight-bold">
-                            @if(Session::has('ten_vai_tro'))
-                              @foreach (Session::get('ten_vai_tro') as $value)
-                                @if($value->ten_vai_tro == 'quản lý khách hàng')
+                            @if(Session::has('id'))
+                              @foreach (Session::get('id') as $value)
+                                @if($value->id == 2)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                             style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +56,7 @@
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->ten_vai_tro == 'quản lý sản phẩm')
+                                @if($value->id == 4)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,25 +69,45 @@
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->ten_vai_tro == 'Chi nhánh')
+                                @if($value->id == 1)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       CHI NHÁNH
+                                       QUẢN LÝ KHÁC
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">Xem danh sách</a>
+                                            <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">CHI NHÁNH</a>
+                                             <a class="dropdown-item" href="{{route("order", [], false)}}">ĐƠN HÀNG</a>
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->ten_vai_tro == 'phân quyền')
+                                @if($value->id == 3)
                                     <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
+                                        <a class="nav-link p-2 px-lg-3" style="font-size: 16px" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
                                     </li>
                                 @endif
-                                @if($value->ten_vai_tro == 'Đơn hàng')
+                                @if($value->id == 5)
                                     <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" style="font-size: 16px" href="{{route("order", [], false)}}">ĐƠN HÀNG</a>
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                                        style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       KHUYẾN MÃI
+                                        </a>
+                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{route("manage-discount", [], false)}}">Xem danh sách</a>
+                                            <a class="dropdown-item" href="{{route("discount-add", [], false)}}">Thêm khuyến mãi</a>
+                                        </div>
+                                    </li>
+                                @endif
+                                @if($value->id == 6)
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
+                                        style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       TIN TỨC
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{route("manage-news", [], false)}}">Xem danh sách</a>
+                                            <a class="dropdown-item" href="{{route("news-add", [], false)}}">Thêm tin tức</a>
+                                        </div>
                                     </li>
                                 @endif
                               @endforeach
@@ -102,7 +122,8 @@
                                 {{ Session::get('name') }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{route("logout", [], false)}}">Logout</a>
+                                <a class="dropdown-item" href="{{route("logout", [], false)}}">Đăng xuất</a>
+                                 <a class="dropdown-item" href="{{route("verify", [], false)}}">Đổi mật khẩu</a>
                             </div>
                         </li>
                     </div>
@@ -122,7 +143,7 @@
         <script src="https://unpkg.com/vuejs-datepicker"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" integrity="sha384-u/bQvRA/1bobcXlcEYpsEdFVK/vJs3+T+nXLsBYJthmdBuavHvAW6UsmqO2Gd/F9" crossorigin="anonymous"></script>
-        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/styles/alert-bangtidy.min.css" />         --}}
+        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/styles/alert-bangtidy.min.css" />--}}
         <script src="/js/lib/bootbox.min.js"></script>
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>         --}}
         <script src="{{ mix('/js/lib/prefixfree.min.js') }}"></script>
