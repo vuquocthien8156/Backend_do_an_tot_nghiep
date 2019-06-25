@@ -27,15 +27,9 @@ class LoginRepository {
 	}
 
 	public function loginsdt($user) {
-<<<<<<< HEAD
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
-        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-       	->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
-=======
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password' )
         ->where('sdt','=', $user)
         ->where('us.da_xoa','=', 0)->get();
->>>>>>> 4270bf50b1fd60890580ec82851b227bcc1bebe5
 		return $result;
 	}
 
@@ -225,12 +219,7 @@ class LoginRepository {
 	}
 
 	public function loginfb($id_fb) {
-<<<<<<< HEAD
-			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password')
-	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
-=======
 			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')
->>>>>>> 4270bf50b1fd60890580ec82851b227bcc1bebe5
 	        ->where([
 	        		'fb_id' => $id_fb, 
 	        		'us.da_xoa' => 0])->get();

@@ -840,7 +840,8 @@ class LoginController extends Controller {
 		Mail::send('email.interface',$data, function($msg){
 			$msg->to($this->gmail)->subject('Verify gmail');
 		});
-		echo "<script>alert('Vui lòng kiểm tra mail để xác nhận'); window.location='".url('api/verify')."'</script>";
+		// echo "<script>alert('Vui lòng kiểm tra mail để xác nhận'); window.location='".url('api/verify')."'</script>";
+		return response()->json(['status' => '0', 'Success' =>  'ok']);
 	}
 
 	public function verifyView() {
