@@ -87,11 +87,6 @@ Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 Route::get('lien-he',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
 Route::post('lien-he', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
 
-// Route::get('api/login/facebook', 'FacebookAuthController@handleProviderCallback');//đăng nhap lần đầu và insert thông tin
-// Route::post('api/insert-no-mail', 'FacebookAuthController@insertNoMail');
-// Route::post('api/update-id_fb', 'LoginController@updateIdFB');
-// Route::post('api/update-email', 'LoginController@updateEmail');//update email theo fb_id và có hash pass
-
 Route::post('api/login-fb', 'FacebookAuthController@loginfb');
 
 Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
@@ -108,8 +103,6 @@ Route::get('api/news', 'LoginController@news');
 Route::post('api/add-cart', 'LoginController@addCart');
 Route::post('api/update-cart', 'LoginController@updateCart');
 Route::post('api/delete-cart', 'LoginController@deleteCart');
-Route::post('api/delete-all-cart-of-customer', 'LoginController@deleteCartCustomer');
-Route::post('api/cart/updateToppingCart', 'LoginController@updateToppingCart');
 Route::get('api/getCartOfCustomer', 'LoginController@getCartOfCustomer');
 
 Route::get('api/getEvaluate', 'LoginController@getEvaluate');//new
@@ -129,6 +122,7 @@ Route::post('api/updateAddressOrder', 'LoginController@updateAddresOrderUser');
 Route::get('api/getOrderOfCustomer', 'LoginController@getAllOrder');
 Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
 Route::post('api/addOrder', 'LoginController@addOrder');
+Route::post('api/paymentOnline', 'LoginController@paymentOnline');
 
 Route::get('api/getChildImage', 'LoginController@getChildImage');//new
 

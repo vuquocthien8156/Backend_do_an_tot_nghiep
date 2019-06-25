@@ -254,7 +254,7 @@ class LoginController extends Controller {
 		$phi_ship = $thong_tin_DH['phi_ship'];
 		$tong_tien = $thong_tin_DH['tong_tien'];
 		$tong_tien_khuyen_mai = $thong_tin_DH['tong_tien_khuyen_mai'];
-		$point = (int)$tong_tien / 10000;
+		$point = (int)($tong_tien - $tong_tien_khuyen_mai) / 10000;
 		$ghi_chu = $thong_tin_DH['ghi_chu'];
 		$so_diem = $thong_tin_DH['so_diem'];
 		$phuong_thuc = $thong_tin_DH['phuong_thuc_thanh_toan'];
@@ -285,16 +285,16 @@ class LoginController extends Controller {
 		}
 
 		$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-		if($phuong_thuc == 3 && $so_diem == 0 || $so_diem == '' || $so_diem == null) {
+		if($phuong_thuc == 3 && $so_diem == 0 && $so_diem == '' && $so_diem == null) {
 			$newPoint = (int)$getPoint[0]->diem_tich + (int)$point;
 			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);
 			$hinh_thuc = 1;
-			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $newPoint);	
+			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, (int)$point);	
 		}else {
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$hinh_thuc = 2;
 				$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
-				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint);
+				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $so_diem);
 			}
 		}
 		if ($deleteCart > 0) {
@@ -526,7 +526,9 @@ class LoginController extends Controller {
     	$getImgEv = [];
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page, $so_diem , $thoi_gian);
     	$getlistEv = [];
-    	for ($i=0; $i < count($getlist); $i++) { 
+    	for ($i=0; $i < count($getlist); $i++) {
+    		$isOrder = count($this->loginService->sumOrderByIdProductAndCustomer($getlist[$i]->ma_tk , $ma_san_pham));
+    		$getlist[$i]->dat_hang = $isOrder;
     		array_push($getlistEv, $getlist[$i]);
     	}
     	for ($i=0; $i < count($getlist); $i++) { 
@@ -798,6 +800,28 @@ class LoginController extends Controller {
 		$idUser = $request->get('id_KH');
     	$listLog = $this->loginService->getAllLogPointUser($idUser);
     	return response()->json(['status' => 'Success', 'error' =>  0, 'listPoint' => $listLog]);
+	}
+
+	public function paymentOnline(Request $request){
+		\Stripe\Stripe::setApiKey('sk_test_QDUYbZ76ghBhHCeAfGOvUDMK00MrcseJnH');
+		// Token is created using Checkout or Elements!
+		// Get the payment token ID submitted by the form:
+		$token = $request->get('stripeToken');
+		$total = $request->get('total');
+		$charge = \Stripe\Charge::create([
+		    'amount' => $total,
+		    'currency' => 'vnd',
+		    'description' => 'Example charge',
+		    'source' => $token,
+		]);
+
+		$response = response($charge , 200);
+		if($response->original->status == "succeeded"){
+			return response()->json(['status' => 'Success', 'error' =>  0]);
+		}
+		else{
+			return response()->json(['status' => 'fail', 'error' =>  0]);
+		}
 	}
 
 	public function lienhe() {
