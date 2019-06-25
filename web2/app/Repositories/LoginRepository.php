@@ -27,9 +27,15 @@ class LoginRepository {
 	}
 
 	public function loginsdt($user) {
+<<<<<<< HEAD
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password' )
         ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
        	->where('sdt','=', $user)->where('us.da_xoa','=', 0)->get();
+=======
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password' )
+        ->where('sdt','=', $user)
+        ->where('us.da_xoa','=', 0)->get();
+>>>>>>> 4270bf50b1fd60890580ec82851b227bcc1bebe5
 		return $result;
 	}
 
@@ -219,8 +225,12 @@ class LoginRepository {
 	}
 
 	public function loginfb($id_fb) {
+<<<<<<< HEAD
 			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'id_vai_tro', 'quyen_he_thong' , 'password')
 	        ->leftjoin('PhanQuyen as per', 'per.tai_khoan', '=', 'us.id')
+=======
+			$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')
+>>>>>>> 4270bf50b1fd60890580ec82851b227bcc1bebe5
 	        ->where([
 	        		'fb_id' => $id_fb, 
 	        		'us.da_xoa' => 0])->get();
@@ -540,6 +550,15 @@ class LoginRepository {
 		return $result;
 	}
 
+	public function sumOrderByIdProductAndCustomer($id_KH , $ma_san_pham){
+		$result = DB::table('DonHang')->select()
+		->leftjoin('ChiTietDonHang', 'ChiTietDonHang.ma_don_hang', '=', 'DonHang.ma_don_hang')
+		->where(['ma_san_pham' => $ma_san_pham , 
+				 'DonHang.da_xoa' => 0 ,
+				 'ma_khach_hang' => $id_KH])->get();
+		return $result;
+	}
+
 	public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
 		if ($page != null && $page != '') {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' ,'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
@@ -552,9 +571,9 @@ class LoginRepository {
 				$result = $result->where(['so_diem' => $so_diem]);
 
 			if($thoi_gian != null)
-				$result = $result->orderBy('thoi_gian', 'asc')->paginate(8);
+				$result = $result->orderBy('thoi_gian', 'asc')->paginate(1);
 			else
-				$result = $result->orderBy('thoi_gian', 'desc')->paginate(8);
+				$result = $result->orderBy('thoi_gian', 'desc')->paginate(1);
 
 		}else {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' , 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')

@@ -317,7 +317,7 @@
     <div class="title">
       <h3>ĐIỀU KHOẢN SỬ DỤNG
       </h3>
-      <h2>THE COFFEE HOUSE DELIVERY</h2>
+      <h2>T&&T Milk Tea and Food Delivery</h2>
 
     </div>
     <div class="border-line"></div>
@@ -329,8 +329,6 @@
     <p>Quy định về phạm vi giao hàng</p>
     <div class="copyright">Điểm nhận hàng không quá 5 km so với cửa hàng gần nhất, để đảm bảo chất lượng nước
     </div>
-    <div class="copyright">(*) Nếu khoảng cách xa hơn thì phải có sự đồng ý của khách khi xác nhận đơn hàng.
-    </div>
 
     <p>Quy định về phí giao hàng
     </p>
@@ -340,49 +338,49 @@
 
 
     <p>Quy định về địa điểm giao hàng</p>
-    <div class="copyright">Nếu địa điểm giao hàng là Trường học, Bệnh viện quý khách vui lòng hoàn thành việc thanh toán trực tuyến trước. </div>
-    <div class="copyright">Đơn hàng sẽ được hủy nếu quý khách không cung cấp chính xác địa chỉ giao hàng.
-    </div>
-    <p>Quy định về thời gian giao hàng</p>
-    <div class="copyright">Thời gian hoạt động giao hàng: The Coffee House cam kết giao hàng trong vòng 30 phút từ khi xác nhận đơn hàng.</div>
-    <div class="copyright">Đối với các khu vực hơn 5km có xác nhận đồng ý của khách hàng về thời gian giao hàng hơn 30 phút, và đồng thuận về việc
-      không đảm bảo chất lượng sản phẩm tốt nhất.</div>
     <div class="copyright">Quy định khung giờ giao hàng: 7:00 - 20:30 mỗi ngày
     </div>
     <div class="copyright">Khi hàng được chuyển giao đến quý khách vui lòng hoàn tất việc thanh toán với nhân viên giao hàng, sau đó quý khách vui
       lòng kiểm tra nếu sản phẩm có bất kì lỗi hay khiếm khuyết nào. Xin quý khách vui lòng gọi tổng đài theo số 1800 6936
       để được hỗ trợ.
     </div>
-    <div class="copyright">Lưu ý: Đơn hàng sẽ tự động hủy nếu nhân viên giao nhận không liên lạc được với Khách hàng tại thời điểm giao hàng ( tối
-      đa 3 cuộc gọi và mỗi lần cách nhau 5 phút)
-    </div>
 
     <p>Hình thức thanh toán
     </p>
     <div class="copyright">COD (cash on delivery): thanh toán khi giao hàng
     </div>
-    <div class="copyright">Thanh toán trực tuyến bằng thẻ nội địa (ATM)
+    <div class="copyright">Thanh toán bằng điểm T&&T
 
     </div>
-    <div class="copyright">Thanh toán trực tuyến bằng thẻ quốc tế (Visa, master…)
-
+    <div class="copyright">Thanh toán trực tuyến bằng thẻ (Visa, master…)
     </div>
-    <p>Chính sách đổi/ trả hàng và hoàn tiền
+
+    <p>Chính sách tích điểm và sử dụng điểm
     </p>
-    <div class="copyright">Sau khi gửi xác nhận đơn hàng, vui lòng làm theo những hướng dẫn sau đây nếu bạn muốn HỦY ĐƠN HÀNG.
-
-    </div>
     <div class="copyright">
-      <i>Nếu bạn chọn Giao Hàng:</i>
+      Mỗi 10.000đ trên hóa đơn sẽ tích được 1 điểm T&&T.
     </div>
-    <div class="copyright"> - Giao hàng ngay: Gọi 1800 6936 để hủy đơn hàng ngay lập tức. </div>
-    <div class="copyright"> - Giao hàng theo thời gian đã chọn: Gọi 18006936 để hủy đơn hàng 30 phút trước khi đơn hàng của bạn được giao.
+
+    <div class="copyright">
+      Mỗi 1 điểm sẽ tương ứng 1000đ khi sử dụng để thanh toán.
     </div>
-    <div class="copyright"> - Đến mang về ngay: Gọi 1800 6936 để hủy đơn hàng ngay lập tức.
+
+    <div class="copyright">
+      Tích điểm ngay nếu là thanh toán trực tuyến.
     </div>
-    <div class="copyright"> - Đến mang về theo thời gian đã chọn: Gọi 1800 6936 để hủy đơn hàng 20 phút trước khi đơn hàng của bạn được giao.
+
+    <div class="copyright">
+      Tích điểm khi đơn hàng được xác nhận hoàn thành đối với thanh toán khi nhận hàng.   
+   </div>
+
+    <div class="copyright">
+      Các trường hợp không được tích điểm:
     </div>
-    <div class="copyright">(*) Cách duy nhất để khách hàng hủy đơn hàng là gọi về 1800 6936.
+     <div class="copyright">
+      + Đơn hàng giao không thành công khi thanh toán khi nhận hàng.
+    </div>
+     <div class="copyright">
+      + Khi sử dụng điểm để thanh toán.
     </div>
 
   </div>
