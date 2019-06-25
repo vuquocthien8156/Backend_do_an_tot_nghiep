@@ -21,17 +21,18 @@
             </select>
             <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                 <thead>
-                <tr class="text-center blue-opacity">
-                    <th  class="custom-view"><p>STT</p></th>
-                    <th  class="custom-view"><p>Tên sản phẩm</p></th>
-                    <th  class="custom-view"><p>Mã sản phẩm</p></th>
-                    <th  class="custom-view"><p>Loại sản phẩm</p></th>
-                    <th  class="custom-view"><p>Giá sản phẩm</p></th>
-                    <th  class="custom-view"><p>Mô tả</p></th>
-                    <th  class="custom-view"><p>Ngày ra mắt</p></th>
-                    <th  class="custom-view"><p>Hình ảnh</p></th>
-                    <th  class="custom-view"><p>Trạng thái</p></th>
-                </tr>
+                    <tr class="text-center blue-opacity">
+                        <th class="custom-view"><b>STT</b></th>
+                        <th class="custom-view"><b>Tên sản phẩm</b></th>
+                        <th class="custom-view"><b>Mã sản phẩm</b></th>
+                        <th class="custom-view"><b>Loại sản phẩm</b></th>
+                        <th class="custom-view"><b>Giá sản phẩm</b></th>
+                        <th class="custom-view"><b>Mô tả</b></th>
+                        <th class="custom-view"><b>Ngày ra mắt</b></th>
+                        <th class="custom-view"><b>Tổng số lần đặt</b></th>
+                        <th class="custom-view"><b>Hình ảnh</b></th>
+                        <th class="custom-view"><b>Trạng thái</b></th>
+                    </tr>
                 </thead>
                 <tbody v-cloak>
                     <tr class="text-center" v-for="(item,index) in results">
@@ -40,18 +41,18 @@
                         <td  class="custom-view"><b>@{{item.ma_chu}}</b></td>
                         <td  class="custom-view"><b>@{{item.ten_loai_sp}}</b></td>
                         <td  class="custom-view" width="150px"><div style="text-align: left; width: 100px; height: 100px; margin-left: 15%"><b>S(@{{item.gia_san_pham}}) VNĐ</b><b> M(@{{item.gia_vua}}) VNĐ</b><b>L(@{{item.gia_lon}}) VNĐ</b></td>
-                         <td class="custom-view text-left" style="width: 150px;" v-if="item.mo_ta != null">
-                            <span v-if="item.mo_ta.length < 30"><b>@{{ item.mo_ta}}</b></span>
-                            <span v-if="item.mo_ta.length > 30"><b>@{{ item.mo_ta | contentSubstr}}</b><a v-if="item.mo_ta.length > 30" style="cursor: pointer; color: #55bde7;" @click="showDescription(item.mo_ta)" class="see_more_less"><b>...Xem thêm mô tả</b></a></span>  
+                         <td class="custom-view text-left" style="width: 150px;">
+                            <b>@{{ item.mo_ta}}</b> 
                         </td>
                         <td class="custom-view"><b>@{{item.ngay_ra_mat}}</b></td>
+                        <td class="custom-view"><b>@{{item.total}}</b></td>
                         <td class="custom-view">
                                     <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.hinh_san_pham">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_san_pham">
                                     </a>
                         </td>
-                        <td class="custom-view" v-if="item.daxoa == 1">Đã xóa</td>
-                        <td class="custom-view" v-if="item.daxoa == 0">Đã kích hoạt</td>
+                        <td class="custom-view" v-if="item.daxoa == 1"><b>Đã xóa</b></td>
+                        <td class="custom-view" v-if="item.daxoa == 0"><b>Đã kích hoạt</b></td>
                     </tr>
                 </tbody>
             </table>

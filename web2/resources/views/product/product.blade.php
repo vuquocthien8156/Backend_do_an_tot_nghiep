@@ -141,6 +141,45 @@
                         </div>
                     </div>
                 </div>
+                <form method="POST" action="update-img" enctype="multipart/form-data">
+                    @csrf
+                <div class="modal fade" id="showMore" tabindex="-1" role="dialog" aria-labelledby="showMore" aria-hidden="true">
+                    <div class="modal-dialog" role="document" style="width: 470px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Hình phụ
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>                     
+                            <div class="modal-body">
+                                <div id="showMoreImg" style="width: 100%">
+                                    <div v-for="(item,index) in listImg" style="margin-left: 2%; float: left;">
+                                        <input type="hidden" name="type" value="1">
+                                       <img v-if="item.url != null && item.url != ''" class="img-responsive" width="100px" height="100px" :src="item.pathToResource+'/'+item.url">
+                                    </div>
+                                </div>
+                                    <div>
+                                        <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold" style="margin-left:2% ">Hình Ảnh</label><br>
+                                            <input id="_imagesInput" name="files[]" type="file" multiple style="width: 75px;margin-left:2% " title="Chọn ảnh">
+                                            <input id="id_update" name="id_update" type="hidden">
+                                            <div id="_displayImages">
+                                                <div>
+                                                    <ul id="frames" class="frames">
+                                                        
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="button-app" value="Lưu">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Huỷ bỏ </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
         <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="max-width: 500px">
                         <div class="modal-content">
@@ -273,6 +312,7 @@
                                     <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.hinh_san_pham">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_san_pham">
                                     </a>
+                                    <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_so)">+</button>
                         </td>
                         <td  class="custom-view">
                                 <span href="#" v-if="item.daxoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
@@ -293,6 +333,50 @@
 			
 @endsection
 @section('scripts')
+<script type="text/javascript">
+        $(document).ready(function() {
+            $('#_uploadImages').click(function() {
+                $('#_imagesInput').click();
+            });
+
+            $('#_imagesInput').on('change', function() {
+                $("#frames").text('');
+                $("#showMoreImg").text('');
+                handleFileSelect();
+            });
+
+            function handleFileSelect() {
+                if (window.File && window.FileList && window.FileReader) {
+                    var files = event.target.files;
+                    if (files.length > 3) {
+                        bootbox.alert("Chỉ được chọn 3 hình");
+                        files = [];
+                        return false;
+                    }
+                    var output = document.getElementById("frames");
+                    var arrFilesCount = [];
+                    for (var i = 0; i < files.length; i++) {
+                        arrFilesCount.push(i);
+                        var file = files[i];
+                        var picReader = new FileReader();
+                        picReader.addEventListener("load", function (event) {
+                            var picFile = event.target;
+                                output.innerHTML = output.innerHTML +"<div style=\"float:left;width:100px;margin-left:2%;\" class=\"carousel-item carousel-item-avatar active\">"+"<img width='100px;' height='100px;' style='margin-left:%;margin-top:2%' src='" + picFile.result + "'" + "title=''/>"
+                                                +  "</div>";
+                                                $(".btn_remove_image").click(function() {
+                                $(this).parent(".carousel-item").remove();
+                                $("#frames").val('');
+                            });         
+                        });
+
+                        picReader.readAsDataURL(file);
+                    }
+                 } else {
+                    console.log("Your browser does not support File API");
+                 }
+        }
+        });     
+    </script>
            <script type="text/javascript">
 				@php
 					include public_path('/js/product/product/product.js');

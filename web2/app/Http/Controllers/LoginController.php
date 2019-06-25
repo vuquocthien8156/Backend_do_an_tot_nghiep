@@ -8,6 +8,7 @@ use App\Enums\EStatus;
 use App\Enums\EUser;
 use App\Enums\ErrorCode;
 use App\Enums\EUserRole;
+use App\Enums\EDateFormat;
 use App\Helpers\ConfigHelper;
 use App\Services\LoginService;
 use App\Traits\CommonTrait;
@@ -34,7 +35,7 @@ class LoginController extends Controller {
 	public function loginView(Request $request) {
 	  	return view('login.login2');
 	}
-	
+
 	public function check(Request $request) {
 		$user = $request->get("username");
 		// $id_fb = $request->get("id_fb");
@@ -53,11 +54,12 @@ class LoginController extends Controller {
 		$pass = md5($request->get("password"));
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
-			session()->put('id',$check[0]->user_id);
+			session()->put('user_id',$check[0]->user_id);
 			session()->put('name',$check[0]->ten);
+			session()->put('email',$check[0]->email);
 			session()->put('login',true);
 			$getRoll = $this->permissionService->getRoll($check[0]->user_id);
-			session()->put('ten_vai_tro',$getRoll);
+			session()->put('id',$getRoll);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}
 		else
@@ -254,11 +256,12 @@ class LoginController extends Controller {
 		$phi_ship = $thong_tin_DH['phi_ship'];
 		$tong_tien = $thong_tin_DH['tong_tien'];
 		$tong_tien_khuyen_mai = $thong_tin_DH['tong_tien_khuyen_mai'];
-		$point = (int)$tong_tien / 10000;
+		$point = (int)($tong_tien - $tong_tien_khuyen_mai) / 10000;
 		$ghi_chu = $thong_tin_DH['ghi_chu'];
 		$so_diem = $thong_tin_DH['so_diem'];
 		$phuong_thuc = $thong_tin_DH['phuong_thuc_thanh_toan'];
 		$ngay_lap = Carbon::now();
+		return Carbon::parse($ngay_lap)->format(EDateFormat::MODEL_DATE_FORMAT);
 		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
 		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
@@ -285,16 +288,17 @@ class LoginController extends Controller {
 		}
 
 		$deleteCart = $this->loginService->deleteCartCustomer($ma_kh);
-		if($phuong_thuc == 3 && $so_diem == 0 || $so_diem == '' || $so_diem == null) {
+		if($phuong_thuc == 3 && $so_diem == 0 && $so_diem == '' && $so_diem == null) {
 			$newPoint = (int)$getPoint[0]->diem_tich + (int)$point;
 			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);
 			$hinh_thuc = 1;
-			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $newPoint);	
+			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $point);	
 		}else {
+
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$hinh_thuc = 2;
 				$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
-				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $totalPoint);
+				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $so_diem);
 			}
 		}
 		if ($deleteCart > 0) {
@@ -526,7 +530,9 @@ class LoginController extends Controller {
     	$getImgEv = [];
     	$getlist = $this->loginService->getlistEvaluate($ma_san_pham, $page, $so_diem , $thoi_gian);
     	$getlistEv = [];
-    	for ($i=0; $i < count($getlist); $i++) { 
+    	for ($i=0; $i < count($getlist); $i++) {
+    		$isOrder = count($this->loginService->sumOrderByIdProductAndCustomer($getlist[$i]->ma_tk , $ma_san_pham));
+    		$getlist[$i]->dat_hang = $isOrder;
     		array_push($getlistEv, $getlist[$i]);
     	}
     	for ($i=0; $i < count($getlist); $i++) { 
@@ -800,15 +806,78 @@ class LoginController extends Controller {
     	return response()->json(['status' => 'Success', 'error' =>  0, 'listPoint' => $listLog]);
 	}
 
+	public function paymentOnline(Request $request){
+		\Stripe\Stripe::setApiKey('sk_test_QDUYbZ76ghBhHCeAfGOvUDMK00MrcseJnH');
+		// Token is created using Checkout or Elements!
+		// Get the payment token ID submitted by the form:
+		$token = $request->get('stripeToken');
+		$total = $request->get('total');
+		$charge = \Stripe\Charge::create([
+		    'amount' => $total,
+		    'currency' => 'vnd',
+		    'description' => 'Example charge',
+		    'source' => $token,
+		]);
+
+		$response = response($charge , 200);
+		if($response->original->status == "succeeded"){
+			return response()->json(['status' => 'Success', 'error' =>  0]);
+		}
+		else{
+			return response()->json(['status' => 'fail', 'error' =>  0]);
+		}
+	}
+
 	public function lienhe() {
 		return view('email.form');
 	}
 
-	public function postlienhe() {
-		$data = ['hoten' => 1];
+	public function postlienhe(Request $request) {
+		$this->gmail =  $request->get('Email');
+		$pathToResource = config('app.resource_url_path');
+		$path = $pathToResource.'ChangePassWord';
+		$data = ['path' => $path];
 		Mail::send('email.interface',$data, function($msg){
-			$msg->from('peyeunhox092@yahoo.com.vn');
-			$msg->to('thinh02438@gmail.com');
+			$msg->to($this->gmail)->subject('Verify gmail');
 		});
+		// echo "<script>alert('Vui lòng kiểm tra mail để xác nhận'); window.location='".url('api/verify')."'</script>";
+		return response()->json(['status' => '0', 'Success' =>  'ok']);
+	}
+
+	public function verifyView() {
+		return view('email.Verify');
+	}
+
+	public function verify(Request $request) {
+		$this->gmail =  $request->get('Email');
+		$pathToResource = config('app.resource_url_path');
+		$path = $pathToResource.'changePasswordAdmin';
+		$data = ['path' => $path];
+		Mail::send('email.interface',$data, function($msg){
+			$msg->to($this->gmail)->subject('Verify gmail');
+		});
+		echo "<script>alert('Vui lòng kiểm tra mail để xác nhận'); window.location='".url('verify')."'</script>";
+	}
+
+	public function ChangePassWord() {
+		return view('email.ChangePassword');
+	}
+	public function changePasswordAdmin() {
+		return view('email.changePasswordAdmin');
+	}
+	public function submitChange(Request $request) {
+		$gmail = $request->get('Email');
+		$newPass = md5($request->get('newPass'));
+		$change = $this->loginService->submitChange($gmail, $newPass);
+		if ($change > 0) {
+			echo "<script>alert('Đổi mật khẩu thành công'); window.location='".url('logout')."'</script>";
+		}else {
+			if (session()->has('email')) {
+				echo "<script>alert('Đổi mật khẩu thất bại'); window.location='".url('verify')."'</script>";
+			}else {
+				echo "<script>alert('Đổi mật khẩu thất bại'); window.location='".url('api/verify')."'</script>";
+			}
+
+		}
 	}
 }

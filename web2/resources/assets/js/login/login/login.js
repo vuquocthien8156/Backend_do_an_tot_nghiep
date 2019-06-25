@@ -20,7 +20,8 @@ const app = new Vue({
         login() {
             common.loading.show('body');
         	if (this.username == '' || this.password == '' || this.username == null || this.password == null) {
-        		alert('vui lòng nhập đầy đủ thông tin!');
+        		bootbox.alert('vui lòng nhập đầy đủ thông tin!');
+                return false;
         	}
         	else
         	{

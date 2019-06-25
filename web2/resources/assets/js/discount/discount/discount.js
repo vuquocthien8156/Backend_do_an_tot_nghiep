@@ -2,25 +2,15 @@
 import * as Pagination from 'laravel-vue-pagination';
 const app = new Vue({
 
-    el: '#manage-product',
+    el: '#manage-discount',
     components: {Pagination},
     data() {
         return {
             results:{},
-            exportproduct:{},
-            name:'',
-            img:'',
+            type:1,
             selectedFile: null,
             imageUrl:null,
-            ten:'',
-            ma: '',
-            masp:'',
-            gia_goc:'',
-            gia_size_vua:'',
-            gia_size_lon:'',
-            loaisp: '',
-            ngay_ra_mat:'',
-            mo_ta:''
+            listImg:'',
         };
     },
 
@@ -38,9 +28,7 @@ const app = new Vue({
         search(page) {
             common.loading.show('body');
             var data = {
-                name: this.name,
-                masp: this.masp,
-                mo_ta:this.mo_ta,
+                type:this.type,
             };
             if (page) {
                 data.page = page;
@@ -48,24 +36,20 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
-                    this.exportproduct = response.infoExportExcel;
                     common.loading.hide('body');
                 })
                 .fail(error => {
                     alert('Error!');
                 })
         },
-        showDescription(description) {
-            $('#ModalShowDescription').modal('show');
-            $('#description_show').text(description);
-        },
+
         deleted(id) {
             var data = {
                 id:id
             }
             bootbox.confirm({
                 title: 'Thông báo',
-                message: 'Bạn có xoá sản phẩm này không?',
+                message: 'Bạn có xoá khuyến mãi này không?',
                 buttons: {
                     confirm: {
                         label: 'Xác nhận',
@@ -95,42 +79,66 @@ const app = new Vue({
             
             
         },
-        seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
-            ngay_ra_mat, mo_ta, ma_loai_sp, img) {
-            // $("#edit").css('display','block');
-            // $("#body").css('display','none');
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + img);
-            this.selectedFile = img;
-            $("#id_product").val(ma_so);
-            $("#ten").val(ten);
-            $("#ma").val(ma_chu);
-            $("#loaisp").val(ma_loai_sp);
-            $("#gia_goc").val(gia_san_pham);
-            $("#gia_size_vua").val(gia_vua);
-            $("#gia_size_lon").val(gia_lon);
-            $("#ngay_ra_mat").val(ngay_ra_mat);
-            $("#mo_ta").val(mo_ta);
-            $("#so_lan_order").val(so_lan_dat);
+        seeMoreDetail(ma_code,ten_khuyen_mai,mo_ta,so_phan_tram,so_tien,so_sp_qui_dinh,so_tien_qui_dinh_toi_thieu,gioi_han_so_code,ngay_bat_dau,ngay_ket_thuc,hinh_anh,ma_khuyen_mai,so_sp_tang_kem,ma_san_pham) {
+            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + hinh_anh);
+            this.selectedFile = hinh_anh;
+            $('#ten').val(ten_khuyen_mai);
+            $('#ma').val(ma_code);
+            $('#id').val(ma_khuyen_mai);
+            $('#MT').val(mo_ta);
+            $('#SPT').val(so_phan_tram);
+            $('#ST').val(so_tien);
+            $('#SSPQD').val(so_sp_qui_dinh);
+            $('#STQDTT').val(so_tien_qui_dinh_toi_thieu);
+            $('#GHSC').val(gioi_han_so_code);
+            $('#NBD').val(ngay_bat_dau);
+            $('#NKT').val(ngay_ket_thuc);
+            $('#SSPTK').val(so_sp_tang_kem);
+            $('#SP').val(ma_san_pham);
+            console.log(ma_san_pham);
             $('#update').modal('show');
         },
         add() {
             $('#add').modal('show');
+        },
+        showMore(id) {
+            common.loading.show('body');
+            $("#frames").text('');
+            $("#id_update").val(id);
+            var data = {
+                id:id,
+                type:4
+            }
+            $.get('show-more-img', data)
+                .done(response => {
+                    this.listImg = response.listImg;
+                    common.loading.hide('body');
+                })
+                .fail(error => {
+                    alert('Error!');
+                    common.loading.hide('body');
+                })
+            $('#showMore').modal('show');
         },
         edit() {
             common.loading.show('body');
             var data = new FormData();
             let url = $('#form_edit_info').attr("action");
             data.append('files_edit', this.selectedFile);
-            data.append('ten', $('#ten').val());
-            data.append('ma',  $('#ma').val());
-            data.append('gia_goc',  $('#gia_goc').val());
-            data.append('gia_size_vua',  $('#gia_size_vua').val());
-            data.append('gia_size_lon',  $('#gia_size_lon').val());
-            data.append('loaisp',  $('#loaisp').val());
-            data.append('ngay_ra_mat',  $('#ngay_ra_mat').val());
-            data.append('mo_ta',  $('#mo_ta').val());
-            data.append('id',  $('#id_product').val());
-            data.append('so_lan_order',  $('#so_lan_order').val());
+            data.append('ten_khuyen_mai',$('#ten').val());
+            data.append('ma_code',$('#ma').val());
+            data.append('mo_ta',$('#MT').val());
+            data.append('so_phan_tram',$('#SPT').val());
+            data.append('so_tien',$('#ST').val());
+            data.append('so_sp_qui_dinh',$('#SSPQD').val());
+            data.append('so_tien_qui_dinh_toi_thieu',$('#STQDTT').val());
+            data.append('gioi_han_so_code',$('#GHSC').val());
+            data.append('ngay_bat_dau',$('#NBD').val());
+            data.append('ngay_ket_thuc',$('#NKT').val());
+            data.append('id',$('#id').val());
+            data.append('type',this.type);
+            data.append('ma_san_pham',$('#SP').val());
+            data.append('so_sp_tang_kem',$('#SSPTK').val());
             let options = {
                         method: 'POST',
                         data: data,
@@ -146,6 +154,7 @@ const app = new Vue({
                         common.loading.hide('body');
                     } else {
                         bootbox.alert('Thất bại!!!');
+                        common.loading.hide('body');
                     }
                 })
         },

@@ -15,7 +15,7 @@ class PermissionRepository {
 
 	public function getListPermission() {
 		$result = DB::table('vaitro')->select('id', 'ten_vai_tro')->where([
-			'trang_thai' => 1,
+			'trang_thai' => 0,
 		])->orderby('id','asc')->get(); 
 		return $result;
 	}
@@ -47,7 +47,7 @@ class PermissionRepository {
 	}
 
 	public function getRoll($id) {
-		$result = DB::table('PhanQuyen')->select('ten_vai_tro')->leftjoin('vaitro as vt', 'vt.id', '=','PhanQuyen.quyen_cho_phep')->where('tai_khoan' , '=', $id)->get();
+		$result = DB::table('PhanQuyen')->select('id' ,'ten_vai_tro')->leftjoin('vaitro as vt', 'vt.id', '=','PhanQuyen.quyen_cho_phep')->where('tai_khoan' , '=', $id)->get();
         return $result;
 	}
 

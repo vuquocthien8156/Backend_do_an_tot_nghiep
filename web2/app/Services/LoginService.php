@@ -280,6 +280,10 @@ class LoginService {
     	return $this->loginRepository->updateQuantityCart($ma_gio_hang, $sl);
     }
 
+    public function sumOrderByIdProductAndCustomer($id_KH , $ma_san_pham){
+        return $this->loginRepository->sumOrderByIdProductAndCustomer($id_KH , $ma_san_pham);
+    }
+
     public function getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian) {
     	return $this->loginRepository->getlistEvaluate($ma_san_pham, $page , $so_diem , $thoi_gian);
     }
@@ -369,5 +373,9 @@ class LoginService {
 
     public function totalDiscountOfOrder($id) {
         return $totalDiscountOfOrder = $this->loginRepository->totalDiscountOfOrder($id);   
+    }
+
+    public function submitChange($gmail, $newPass) {
+         return $submitChange = $this->loginRepository->submitChange($gmail, $newPass);
     }
 }

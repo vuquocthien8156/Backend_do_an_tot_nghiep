@@ -21,8 +21,9 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label>
-                                        <input id="_imagesInput" name="files[]" type="file" multiple>
+                                        <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label><br>
+                                        <i style="color: red">*Hình đầu tiên là hình chính</i>
+                                        <input id="_imagesInput" name="files[]" type="file" multiple style="width: 75px;" title="Chọn ảnh">
                                         <div id="_displayImages">
                                             <div>
                                                 <ul id="frames" class="frames">
@@ -36,13 +37,13 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"><b> Mã chữ sản phẩm </b></label>
-                                            <input type="text" required="" class="form-control" id="" v-model="ma"  style="width: 200px;">
+                                            <input type="text" required="" class="form-control" id="" name="ma"  style="width: 200px;">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 5%">
+                                        <div class="form-group" style="margin-left: 0%">
                                             <label for="other_note1"><b>Tên sản phẩm </b></label>
-                                            <input type="text" required="" class="form-control" id="" v-model="ten" style="width: 200px;">
+                                            <input type="text" required="" class="form-control" id="" name="ten" style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
@@ -50,13 +51,13 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"> <b>Giá size vừa </b></label>
-                                            <input type="number" required="" class="form-control" id="" v-model ="gia_size_vua" style="width: 200px;">
+                                            <input type="number" required="" class="form-control" id="" name ="gia_size_vua" style="width: 200px;">
                                         </div>    
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 5%">
+                                        <div class="form-group" style="margin-left: 0%">
                                             <label for="other_note1"> <b>Giá gốc </b></label>
-                                            <input type="number" required="" class="form-control" id="" v-model="gia_goc" style="width: 200px;">
+                                            <input type="number" required="" class="form-control" id="" name="gia_goc" style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
@@ -64,13 +65,13 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"> <b>Giá size lớn</b> </label>
-                                            <input type="number" required="" class="form-control" id="" v-model ="gia_size_lon" style="width: 200px;">
+                                            <input type="number" required="" class="form-control" id="" name ="gia_size_lon" style="width: 200px;">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 5%">
+                                        <div class="form-group" style="margin-left: 0%">
                                             <label for="other_note1"><b> Loại sản phẩm </b></label>
-                                            <select id="model" required="" class="form-control" v-model="loaisp" style="width: 200px;">
+                                            <select id="model" required="" class="form-control" name="loaisp" style="width: 200px;">
                                                 <option value="">Chọn loại sản phẩm</option>
                                                     @if (count($list) > 0)
                                                         @foreach ($list as $item)
@@ -85,13 +86,13 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"><b>Mô tả</b> </label>
-                                            <textarea type="text" required="" v-model="mo_ta" class="form-control" id=""  style="width: 200px;"></textarea>
+                                            <textarea type="text" required="" name="mo_ta" class="form-control" id=""  style="width: 200px;"></textarea>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group" style="margin-left: 5%">
+                                        <div class="form-group" style="margin-left: 0%">
                                             <label for="other_note1"><b> Ngày ra mắt</b> </label>
-                                            <input type="date" required="" class="form-control" v-model="ngay_ra_mat" id=""  style="width: 200px;">
+                                            <input type="date" required="" class="form-control" name="ngay_ra_mat" id=""  style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
@@ -115,31 +116,34 @@
             });
 
             $('#_imagesInput').on('change', function() {
-                 handleFileSelect();
+                $("#frames").text('');
+                handleFileSelect();
             });
 
             function handleFileSelect() {
                 if (window.File && window.FileList && window.FileReader) {
                     var files = event.target.files;
-                    console.log(files); 
+                    if (files.length > 3) {
+                        bootbox.alert("Chỉ được chọn 3 hình");
+                        files = [];
+                        return false;
+                    }
                     var output = document.getElementById("frames");
                     var arrFilesCount = [];
                     for (var i = 0; i < files.length; i++) {
                         arrFilesCount.push(i);
                         var file = files[i];
-                        console.log(arrFilesCount);
-                        if (!file.type.match('image')) continue;
                         var picReader = new FileReader();
                         picReader.addEventListener("load", function (event) {
                             var picFile = event.target;
-                            output.innerHTML = output.innerHTML +"<div style=\"float:left;width:50px;margin-right:5px;\" class=\"carousel-item carousel-item-avatar active\">"+"<span class=\"btn_remove_image fas fa-times\"></span>"+"<img width='50px;' height='50px;' style='margin-left:2%;margin-top:2%' src='" + picFile.result + "'" + "title=''/>"
+                                output.innerHTML = output.innerHTML +"<div style=\"float:left;width:50px;margin-right:5px;\" class=\"carousel-item carousel-item-avatar active\">"+"<img width='50px;' height='50px;' style='margin-left:2%;margin-top:2%' src='" + picFile.result + "'" + "title=''/>"
                                                 +  "</div>";
                                                 $(".btn_remove_image").click(function() {
                                 $(this).parent(".carousel-item").remove();
                                 $("#frames").val('');
-                                console.log();
-                            });      
+                            });         
                         });
+
                         picReader.readAsDataURL(file);
                     }
                  } else {
