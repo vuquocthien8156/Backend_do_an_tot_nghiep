@@ -112,10 +112,7 @@ Route::post('api/updatePhone', 'LoginController@updateNumberPhone');
 Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
-
-
 Route::post('api/login-fb', 'FacebookAuthController@loginfb');
-
 Route::get('api/listRankProduct', 'ProductController@searchRankProduct');
 Route::get('api/TheMostFavoriteProduct', 'ProductController@getIdSp');
 Route::get('api/listProduct', 'ProductController@searchProductAPI');

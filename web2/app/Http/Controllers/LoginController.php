@@ -834,6 +834,7 @@ class LoginController extends Controller {
 
 	public function postlienhe(Request $request) {
 		$this->gmail =  $request->get('Email');
+		session()->put('emailMobile', $this->gmail);
 		$pathToResource = config('app.resource_url_path');
 		$path = $pathToResource.'ChangePassWord';
 		$data = ['path' => $path];

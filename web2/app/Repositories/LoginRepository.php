@@ -560,9 +560,15 @@ class LoginRepository {
 				$result = $result->where(['so_diem' => $so_diem]);
 
 			if($thoi_gian != null)
+
 				$result = $result->orderBy('thoi_gian', 'asc')->paginate(1);
 			else
 				$result = $result->orderBy('thoi_gian', 'desc')->paginate(1);
+// =======
+// 				$result = $result->orderBy('thoi_gian', 'asc')->paginate(5);
+// 			else
+// 				$result = $result->orderBy('thoi_gian', 'desc')->paginate(5);
+// >>>>>>> b35c6cd01c6b1813a948792a15afc90ed3703996
 
 		}else {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' , 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')

@@ -25,7 +25,7 @@ const app = new Vue({
         };
     },
 
-	created() {
+    created() {
         this.search();
     },
 
@@ -249,5 +249,5 @@ const app = new Vue({
                     }
                 })
         }
-	}
+    }
 });

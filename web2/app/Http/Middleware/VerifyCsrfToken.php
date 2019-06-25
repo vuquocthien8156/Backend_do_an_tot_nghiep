@@ -40,6 +40,7 @@ class VerifyCsrfToken extends Middleware
         'api/changePassword',
         'api/addOrder',
         'submitChange',
+        'api/verify',
         'api/paymentOnline',
     ];
 }
