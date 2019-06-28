@@ -8,7 +8,7 @@
         <div class="row mt-5 pt-3">
             <div style="padding-left: 2rem;margin-top:3%;">
                 <h4 class="tag-page-custom" style="color: blue">
-                    Quản lý tài khoản
+                    Quản lý sản phẩm
                 </h4>
             </div>
         </div>
@@ -278,8 +278,8 @@
             <input id="" type="text" class="input-app mr-4"  placeholder="Mã sản phẩm"  style="width: 200px;margin-bottom: 10px" v-model="masp">
             <input id="" type="text" class="input-app mr-4"  placeholder="Mô tả"  style="width: 200px;margin-bottom: 10px" v-model="mo_ta">
             <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
-            <a :href="'excel-product?name='+exportproduct.name+'&masp='+exportproduct.masp+'&ma_loai='+exportproduct.ma_loai+'&mo_ta='+exportproduct.mo_ta" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a>
-            <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
+           <!--  <a :href="'excel-product?name='+exportproduct.name+'&masp='+exportproduct.masp+'&ma_loai='+exportproduct.ma_loai+'&mo_ta='+exportproduct.mo_ta" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a> -->
+            <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;font-weight: bold;">
                 <thead>
                 <tr class="text-center blue-opacity">
                     <th  class="custom-view">STT</th>

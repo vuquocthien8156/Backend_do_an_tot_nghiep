@@ -89,6 +89,11 @@
                         files = [];
                         return false;
                     }
+                    if (files.length < 0) {
+                        bootbox.alert("Vui lòng chọn hình");
+                        files = [];
+                        return false;   
+                    }
                     var output = document.getElementById("frames");
                     var arrFilesCount = [];
                     for (var i = 0; i < files.length; i++) {

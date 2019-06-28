@@ -466,7 +466,7 @@ class LoginRepository {
 	}
 
 	public function getOrderDetail($ma_don_hang) {
-		$result = DB::table('ChiTietDonHang')->select('ma_chi_tiet')->where('ma_don_hang', '=', $ma_don_hang)->get();
+		$result = DB::table('ChiTietDonHang')->select('ma_chi_tiet')->where('ma_don_hang', '=', $ma_don_hang)->orderBy('ngay_lap', 'desc')->get();
         return $result;
 	}
 
@@ -716,8 +716,8 @@ class LoginRepository {
 
 	public function getSlideShow($slide) {
 		$now = Carbon::now();
-		$from_date = $now->subDay(15)->toDateString();
-		$to_date = $now->addDay(15)->toDateString();
+		$from_date = $now->subDay(5)->toDateString();
+		$to_date = $now->addDay(5)->toDateString();
 		$result = DB::table('KhuyenMai')->select()
 		->where([
 			'da_xoa' => 0,
@@ -725,9 +725,9 @@ class LoginRepository {
 		if ($slide != null && $slide != '') {
 		 	$result = $result->where(['hien_slider' => 1]);
 		}
-		$result = $result->where('ngay_bat_dau', '<=', $to_date);
-        $result = $result->where('ngay_bat_dau', '>=', $from_date);
-		return $result->limit(15)->get();
+		$result = $result->where('ngay_ket_thuc', '>=', $from_date);
+        $result = $result->where('ngay_bat_dau', '>=', $to_date);
+		return $result->orderBy('ngay_bat_dau', 'desc')->get();
 	}
 
 	public function totalDiscountOfOrder($id) {

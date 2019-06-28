@@ -8,7 +8,7 @@
         <div class="row mt-5 pt-3">
             <div style="padding-left: 2rem;margin-top:3%;">
                 <h4 class="tag-page-custom" style="color: blue">
-                    Quản lý tài khoản
+                    Quản lý khuyến mãi
                 </h4>
             </div>
         </div>
@@ -149,6 +149,7 @@
                 </div>
                 </form>
         <div id="body" class="set-row background-contact w-100">
+            <b>Loại khuyến mãi</b>
             <select class="input-app mr-4" style="width: 200px;margin-bottom: 10px" @change="search()" v-model="type">
                 <option value="1">Khuyến mãi theo % (ĐH)</option>
                 <option value="2">Khuyến mãi theo % và số tiền qui định(ĐH)</option>
@@ -174,7 +175,6 @@
                     <th  class="custom-view">Ngày bắt đầu</th>
                     <th  class="custom-view">Ngày kết thúc</th>
                     <th  class="custom-view">Hình ảnh</th>
-                    <th  class="custom-view">Trạng thái</th>
                     <th  class="custom-view">Hành Động</th>
                 </tr>
                 </thead>
@@ -197,12 +197,8 @@
                                      <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.hinh_anh">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_anh">
                                     </a>
-                                    <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_khuyen_mai)">+</button>
+                                    <!-- <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_khuyen_mai)">+</button> -->
                         </td>
-                        <td  class="custom-view">
-                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
-                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
-                            </td>
                         <td class="custom-view"><p>
                             <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_code,item.ten_khuyen_mai,item.mo_ta,item.so_phan_tram,item.so_tien,item.so_sp_qui_dinh,item.so_tien_qui_dinh_toi_thieu,item.gioi_han_so_code,item.ngay_bat_dau,item.ngay_ket_thuc,item.hinh_anh, item.ma_khuyen_mai,item.so_sp_tang_kem, item.ma_san_pham);"></a>
                             <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_khuyen_mai)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>

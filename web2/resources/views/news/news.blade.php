@@ -133,7 +133,7 @@
                                     <a data-fancybox="gallery" :href="item.pathToResource+'/'+item.hinh_tin_tuc">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'/'+item.hinh_tin_tuc">
                                     </a>
-                                    <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_tin_tuc)">+</button>
+                                    <!-- <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_tin_tuc)">+</button> -->
                         </td>
                         <td class="custom-view"><p>
                             <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten_tin_tuc, item.ma_tin_tuc, item.noi_dung, item.ngay_dang, item.hinh_tin_tuc);"></a>

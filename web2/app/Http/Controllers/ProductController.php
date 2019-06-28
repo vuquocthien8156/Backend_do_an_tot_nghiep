@@ -173,7 +173,7 @@ class ProductController extends Controller {
     public function updateImgDiscount(Request $request) {
         $url = $request->file('files');
         if ($url == null || $url == '') {
-            return "Some Thing Went Wrong";
+            return redirect()->route('manage-discount');
         }
         $ma_sp = $request->get('id_update');
         $type =4;
@@ -218,7 +218,7 @@ class ProductController extends Controller {
     public function updateImgNews(Request $request) {
         $url = $request->file('files');
         if ($url == null || $url == '') {
-            return "Some Thing Went Wrong";
+             return redirect()->route('manage-news');
         }
         $ma_sp = $request->get('id_update');
         $type =2;
@@ -263,7 +263,7 @@ class ProductController extends Controller {
     public function updateImg(Request $request) {
         $url = $request->file('files');
         if ($url == null || $url == '') {
-            return "Some Thing Went Wrong";
+            return redirect()->route('manage-product');
         }
         $ma_sp = $request->get('id_update');
         $type = 1;

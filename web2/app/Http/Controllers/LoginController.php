@@ -261,7 +261,6 @@ class LoginController extends Controller {
 		$so_diem = $thong_tin_DH['so_diem'];
 		$phuong_thuc = $thong_tin_DH['phuong_thuc_thanh_toan'];
 		$ngay_lap = Carbon::now();
-		return Carbon::parse($ngay_lap)->format(EDateFormat::MODEL_DATE_FORMAT);
 		$getMaxIdOrder =  $this->loginService->getMaxIdOrder();
 		$ma_chu = 'DHQTPT'. ($getMaxIdOrder + 1);
 		$Detail = $request->get('Detail');
@@ -292,7 +291,7 @@ class LoginController extends Controller {
 			$newPoint = (int)$getPoint[0]->diem_tich + (int)$point;
 			$updatePoint = $this->loginService->addPoint($ma_kh, $newPoint);
 			$hinh_thuc = 1;
-			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $point);	
+			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, (int)$point);	
 		}else {
 
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
@@ -874,8 +873,10 @@ class LoginController extends Controller {
 			echo "<script>alert('Đổi mật khẩu thành công'); window.location='".url('logout')."'</script>";
 		}else {
 			if (session()->has('email')) {
+				session()->flush();
 				echo "<script>alert('Đổi mật khẩu thất bại'); window.location='".url('verify')."'</script>";
 			}else {
+				session()->flush();
 				echo "<script>alert('Đổi mật khẩu thất bại'); window.location='".url('api/verify')."'</script>";
 			}
 

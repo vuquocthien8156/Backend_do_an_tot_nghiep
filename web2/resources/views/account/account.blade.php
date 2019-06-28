@@ -22,7 +22,7 @@
                         <option value="2"> Nữ </option>
                     </select>
                 <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button>
-                <a :href="'excel-account?name='+exportaccount.name+'&phone='+exportaccount.phone+'&gender='+exportaccount.gender" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a>
+               <!--  <a :href="'excel-account?name='+exportaccount.name+'&phone='+exportaccount.phone+'&gender='+exportaccount.gender" class="btn btn-primary button-app mb-4 float-right" style="color: white">Xuất File Excel</a> -->
                <table class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
                     <thead>
                     <tr class="text-center blue-opacity">

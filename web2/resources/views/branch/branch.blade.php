@@ -39,13 +39,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="lat_update" class="col-sm-4 col-form-label">Latitude</label>
+                                    <label for="lat_update" class="col-sm-4 col-form-label">Tọa độ X</label>
                                     <div class="col-sm-8">
                                         <input type="text" id="lat_update" class="form-control" placeholder="Latitude" readonly required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="long_update" class="col-sm-4 col-form-label">Longitude</label>
+                                    <label for="long_update" class="col-sm-4 col-form-label">Tọa độ Y</label>
                                     <div class="col-sm-8">
                                         <input type="text" id="long_update" class="form-control" placeholder="Longitude" readonly required>
                                     </div>

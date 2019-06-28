@@ -73,7 +73,7 @@ const app = new Vue({
             }
             bootbox.confirm({
                 title: 'Thông báo',
-                message: 'Bạn có xoá sản phẩm này không?',
+                message: 'Bạn có xoá tài khoản này không?',
                 buttons: {
                     confirm: {
                         label: 'Xác nhận',
