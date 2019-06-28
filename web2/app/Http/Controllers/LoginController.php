@@ -256,7 +256,7 @@ class LoginController extends Controller {
 		$phi_ship = $thong_tin_DH['phi_ship'];
 		$tong_tien = $thong_tin_DH['tong_tien'];
 		$tong_tien_khuyen_mai = $thong_tin_DH['tong_tien_khuyen_mai'];
-		$point = (int)($tong_tien - $tong_tien_khuyen_mai) / 10000;
+		$point = (int)(int)($tong_tien - $tong_tien_khuyen_mai) / 10000;
 		$ghi_chu = $thong_tin_DH['ghi_chu'];
 		$so_diem = $thong_tin_DH['so_diem'];
 		$phuong_thuc = $thong_tin_DH['phuong_thuc_thanh_toan'];
@@ -293,11 +293,10 @@ class LoginController extends Controller {
 			$hinh_thuc = 1;
 			$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, (int)$point);	
 		}else {
-
 			if ($so_diem != 0 && $so_diem != '' && $so_diem != null) {
 				$hinh_thuc = 2;
 				$updatePoint = $this->loginService->addPoint($ma_kh, $totalPoint);
-				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap, $so_diem);
+				$addLog = $this->loginService->addLog($ma_kh, $getMaxIdOrder, $hinh_thuc, $ngay_lap , $so_diem);
 			}
 		}
 		if ($deleteCart > 0) {
@@ -820,10 +819,10 @@ class LoginController extends Controller {
 
 		$response = response($charge , 200);
 		if($response->original->status == "succeeded"){
-			return response()->json(['status' => 'Success', 'error' =>  0]);
+			return response()->json(['status' => 'Success' , 'error' =>  0]);
 		}
 		else{
-			return response()->json(['status' => 'fail', 'error' =>  0]);
+			return response()->json(['status' => 'fail', 'error' =>  1]);
 		}
 	}
 
@@ -841,7 +840,7 @@ class LoginController extends Controller {
 			$msg->to($this->gmail)->subject('Verify gmail');
 		});
 		// echo "<script>alert('Vui lòng kiểm tra mail để xác nhận'); window.location='".url('api/verify')."'</script>";
-		return response()->json(['status' => '0', 'Success' =>  'ok']);
+		return response()->json(['status' => 'Success']);
 	}
 
 	public function verifyView() {
