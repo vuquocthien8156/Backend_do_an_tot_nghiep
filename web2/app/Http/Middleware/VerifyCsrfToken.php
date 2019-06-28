@@ -39,10 +39,8 @@ class VerifyCsrfToken extends Middleware
         'api/updatePhone',
         'api/changePassword',
         'api/addOrder',
-<<<<<<< HEAD
         'submitChange',
-=======
->>>>>>> b35c6cd01c6b1813a948792a15afc90ed3703996
         'api/paymentOnline',
+        'api/verify',
     ];
 }

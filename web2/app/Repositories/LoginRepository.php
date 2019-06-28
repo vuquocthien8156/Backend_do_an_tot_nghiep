@@ -70,7 +70,7 @@ class LoginRepository {
 
 	public function getAddressOrderUser($idAccount , $main) {
 		$condition = ['ma_tai_khoan' => $idAccount ,'da_xoa' => 0];
-		if($main != null)
+		if($main == 1)
 			$condition['chinh'] = 1;	
 
 		$result = DB::table('SoDiaChi')->select('id', 'ten_nguoi_nhan' , 'dia_chi' , 'so_dien_thoai' ,'chinh')->where($condition)->get();
@@ -561,15 +561,9 @@ class LoginRepository {
 
 			if($thoi_gian != null)
 
-				$result = $result->orderBy('thoi_gian', 'asc')->paginate(1);
+				$result = $result->orderBy('thoi_gian', 'asc')->paginate(5);
 			else
-				$result = $result->orderBy('thoi_gian', 'desc')->paginate(1);
-// =======
-// 				$result = $result->orderBy('thoi_gian', 'asc')->paginate(5);
-// 			else
-// 				$result = $result->orderBy('thoi_gian', 'desc')->paginate(5);
-// >>>>>>> b35c6cd01c6b1813a948792a15afc90ed3703996
-
+				$result = $result->orderBy('thoi_gian', 'desc')->paginate(5);
 		}else {
 			$result = DB::table('DanhGia')->select('ma_danh_gia', 'ma_tk' , 'ten', 'ma_sp', 'so_diem', 'tieu_de', 'noi_dung', 'thoi_gian', 'duyet')
 			->leftjoin('users', 'ma_tk', '=', 'id')

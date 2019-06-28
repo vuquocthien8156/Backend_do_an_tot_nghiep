@@ -113,11 +113,6 @@ Route::post('api/updateInfo', 'LoginController@requestUpdateInfo');
 Route::post('api/uploadImage', 'LoginController@uploadImage');
 Route::post('api/uploadManyImage', 'LoginController@uploadManyImage');
 
-<<<<<<< HEAD
-=======
-Route::get('lien-he',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
-Route::post('lien-he', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
->>>>>>> b35c6cd01c6b1813a948792a15afc90ed3703996
 
 Route::post('api/login-fb', 'FacebookAuthController@loginfb');
 
