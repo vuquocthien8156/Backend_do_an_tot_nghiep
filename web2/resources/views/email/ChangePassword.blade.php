@@ -7,7 +7,8 @@
 				<b>Gmail</b>
 			</td>
 			<td>
-				<input type="type" id="Email" name="Email" placeholder="Email" value="{{session()->get('email')}}" readonly="true" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px"><br>
+				<input type="type" id="Email" name="Email" placeholder="Email" value="{{session()->get('emailMobile')}}" readonly="true" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px; margin-left: 5%"><br>
+
 			</td>
 		</tr>
 		<tr>
@@ -15,7 +16,8 @@
 				<b>Mật khẩu mới</b>
 			</td>
 			<td>
-				<input type="password" id="newPass" name="newPass" placeholder="Mật khẩu mới" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px"><br>
+
+				<input type="password" id="newPass" name="newPass" placeholder="Mật khẩu mới" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px; margin-left: 5%"><br>
 			</td>
 		</tr>
 		<tr>
@@ -23,7 +25,7 @@
 				<b>Nhập lại khẩu mới</b>
 			</td>
 			<td>
-				<input type="password" id="reNewPass" name="reNewPass" placeholder="Nhập lại khẩu mới" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px"><br>
+				<input type="password" id="reNewPass" name="reNewPass" placeholder="Nhập lại khẩu mới" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px; margin-left: 5%"><br>
 			</td>
 		</tr>
 		<tr>
