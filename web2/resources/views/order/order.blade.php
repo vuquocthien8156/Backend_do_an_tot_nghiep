@@ -170,16 +170,19 @@
                             <td class="custom-view ">@{{item.phi_ship2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tong_tien2}} VNĐ</td>
                             <td class="custom-view ">@{{item.ghi_chu}}</td>
-                            <td class="custom-view ">@{{item.phuong_thuc_thanh_toan}}</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 3">Thanh toán bằng thẻ</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 1">Thanh toán khi nhận hàng</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 2">Thanh toán bằng điểm</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 4">Thanh toán bằng thẻ và điểm</td>
                             <td class="custom-view ">@{{item.ngay_lap}}</td>
-                            <td class="custom-view " @click="seeMoreStatus(item.trang_thai, item.ma_chu)" style="cursor: pointer;">@{{item.ten_trang_thai}}</td>
+                            <td class="custom-view " @click="seeMoreStatus(item.trang_thai, item.ma_chu)" style="cursor: pointer;color: green">@{{item.ten_trang_thai}}</td>
                             <td class="custom-view ">
                                  <span href="#" v-if="item.trang_thai == 5" class="btn_edit fa fa-check" style="color: green"></span>
                                 <input v-else style="width: 20px;height: 20px" :value="item.madh" name="check[]" v-model="checkApprove" type="checkbox">
                             </td>
                             <td  class="custom-view">
-                                <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.thong_tin_giao_hang, item.khuyen_mai,item.phi_ship,item.tong_tien,item.ghi_chu,item.phuong_thuc_thanh_toan,item.ngay_lap,item.madh);"></a>
-                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteOrder(item.madh)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span></td>
+                                <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.thong_tin_giao_hang, item.khuyen_mai,item.phi_ship,item.tong_tien,item.ghi_chu,item.phuong_thuc_thanh_toan,item.ngay_lap,item.madh);" title="Sửa"></a>
+                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteOrder(item.madh)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span></td>
                         <tr>
                     </tbody>
                 </table>

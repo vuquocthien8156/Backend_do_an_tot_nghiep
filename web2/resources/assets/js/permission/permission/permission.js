@@ -13,7 +13,6 @@ const app = new Vue({
             phone_user: '',
             email_user: '',
             password_user: '',
-
             user_id_update: '',
             name_user_update: '',
             phone_user_update: '',
@@ -67,6 +66,16 @@ const app = new Vue({
             } else if (this.password_user == null || this.password_user == '') {
                 $('#password_user').focus();
                 return false;
+            }
+            for (var i = 0; i < this.results.data.length; i++) {
+                if (this.email_user == this.results.data[0].email) {
+                    bootbox.alert('Email đã tồn tại');
+                    return false;
+                }
+                if (this.phone_user == this.results.data[0].sdt) {
+                    bootbox.alert('Số điện thoại đã tồn tại');
+                    return false;
+                }
             }
             var arrayCheck = [];
             $('input[name="chk_permission_group[]"]:checked').each(function() {
