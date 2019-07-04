@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')->join('PhanQuyen','tai_khoan','=', 'id')
+        ->where(['email' => $user, 
+        		'password' => $pass, 
+        		'us.da_xoa' => 0])->get();
+		return $result;
+	}
+
+	public function loginAPI($user, $pass) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')
         ->where(['email' => $user, 
         		'password' => $pass, 
@@ -164,7 +172,7 @@ class LoginRepository {
 			// $result->where('ma_khach_hang', '=', $id_KH);
 			$result->where(['ma_khach_hang' => $id_KH, 'dh.da_xoa' => 0]);
 		}
-		return $result->get();
+		return $result->orderBy('ngay_lap', 'desc')->get();
 	}
 
 	public function getDetail($ma_don_hang) {
@@ -720,7 +728,7 @@ class LoginRepository {
 		 	$result = $result->where(['hien_slider' => 1]);
 		}
 		$result = $result->where('ngay_ket_thuc', '>=', $from_date);
-        $result = $result->where('ngay_bat_dau', '>=', $to_date);
+        $result = $result->where('ngay_bat_dau', '<=', $to_date);
 		return $result->orderBy('ngay_bat_dau', 'desc')->get();
 	}
 
@@ -736,7 +744,7 @@ class LoginRepository {
 		->where([
 			'ls.ma_tai_khoan' => $id,
 			'ls.da_xoa' => 0,
-		])->get();
+		])->orderBy('ls.thoi_gian', 'desc')->get();
 		return $result;
 	}
 

@@ -71,7 +71,7 @@ class LoginController extends Controller {
 	public function loginAPI(Request $request) {  
 		$user = $request->get("username");
 		$pass = $request->get("password");
-		$check = $this->loginService->login($user, $pass);
+		$check = $this->loginService->loginAPI($user, $pass);
 		if (isset($check[0]->user_id)) {
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
