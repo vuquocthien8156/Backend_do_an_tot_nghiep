@@ -177,7 +177,7 @@
                             <td class="custom-view ">@{{item.ngay_lap}}</td>
                             <td class="custom-view " @click="seeMoreStatus(item.trang_thai, item.ma_chu)" style="cursor: pointer;color: green">@{{item.ten_trang_thai}}</td>
                             <td class="custom-view ">
-                                 <span href="#" v-if="item.trang_thai == 5" class="btn_edit fa fa-check" style="color: green"></span>
+                                 <span href="#" v-if="item.trang_thai == 5">không thể duyệt</span>
                                 <input v-else style="width: 20px;height: 20px" :value="item.madh" name="check[]" v-model="checkApprove" type="checkbox">
                             </td>
                             <td  class="custom-view">

@@ -15,7 +15,7 @@
         <div class="row">
             <div class="set-row background-contact w-100" style="min-height: 150px">
                 <input id="" type="text" class="input-app mr-4"  placeholder="Tên"  style="width: 200px;margin-bottom: 10px" v-model="name">
-                <input id="" type="text" class="input-app mr-4"  placeholder="sdt"  style="width: 200px;margin-bottom: 10px" v-model="phone">
+                <input id="" type="text" class="input-app mr-4"  placeholder="Số điện thoại"  style="width: 200px;margin-bottom: 10px" v-model="phone">
                 <select class="input-app mr-4" v-model="gender" style="width: 200px; height: 33px; cursor: pointer;">
                         <option value=""> Chọn giới tính </option>
                         <option value="1"> Nam </option>

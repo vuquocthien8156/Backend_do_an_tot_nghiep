@@ -13,7 +13,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                     <img src="{{$path}}{{$key->hinh_tin_tuc}}" width="100%" height="100%">
+                     <img src="{{$key->path}}{{$key->hinh_tin_tuc}}" width="100%" height="100%">
                 </div>
                 <div class="col-sm-6">
                      <div style="margin-top:3%;margin-left:8%">
@@ -23,6 +23,9 @@
                        <p style="font-size: 20px">{{$key->noi_dung}}</p>
                     </div>
                 </div>
+                <div style="margin-top:3%;margin-left:8%">
+                       <p style="font-size: 20px">{{$key->path}}</p>
+                    </div>
             </div> 
             @endforeach   
         </div>

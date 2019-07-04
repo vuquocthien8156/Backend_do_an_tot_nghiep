@@ -38,7 +38,7 @@ const app = new Vue({
                     success: function (result) {
                         if (result.error === 0) {
                             common.loading.hide('body');
-                            window.location = 'manage/account';
+                            window.location = 'wellcome';
                         } else {
                             if (result.error === 1) {
                                 common.loading.hide('body');

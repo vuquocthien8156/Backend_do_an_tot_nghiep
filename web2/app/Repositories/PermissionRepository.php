@@ -24,7 +24,7 @@ class PermissionRepository {
 		$result = DB::table('users as us')->select('us.id', 'ten', 'email')
 		->join('PhanQuyen','PhanQuyen.tai_khoan','=', 'us.id')
 		->where([
-			'us.da_xoa' => 1,
+			'us.da_xoa' => 0,
 		])->orderby('us.id','asc')->get(); 
 		return $result;
 	}

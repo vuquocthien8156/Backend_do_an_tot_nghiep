@@ -28,22 +28,52 @@ class ProductController extends Controller {
 		$this->productService = $productService;
 	}
 
-	public function productView() {
+	public function productView(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 4) {
+                $check = true;
+            }
+        }
+        if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
 		$list = $this->productService->loaisp();
     	return view('product.product',['list' => $list]);
     }
 
-    public function NewsView1() {
+    public function NewsView1(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 6) {
+                $check = true;
+            }
+        }
+         if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
         $list = $this->productService->loaisp();
         return view('news.news',['list' => $list]);
     }
 
-    public function discountView() {
+    public function discountView(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 5) {
+                $check = true;
+            }
+        }
+         if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
         $list = $this->productService->sanPham();
         return view('discount.discount',['list' => $list]);
     }
 
-    public function statisticalView() {
+    public function statisticalView(Request $request) {
         $list = $this->productService->loaisp();
         return view('product.thongke',['list' => $list]);
     }
@@ -85,7 +115,7 @@ class ProductController extends Controller {
             for ($i=0; $i < count($forMonth); $i++) {
                 if ($i < 10) {
                     $getlist = $this->productService->searchProductTK($forMonth[$i]->ma_san_pham);
-                    $getlist[0]->total = $forWeek[$i]->total;
+                    $getlist[0]->total = $forMonth[$i]->total;
                     array_push($arr, $getlist[0]);
                 }
             }
@@ -97,16 +127,30 @@ class ProductController extends Controller {
     }  
 
     public function newsView(Request $request) {
+        $a = url()->current();
+        $b = explode("/", $a);
+        $b = $b[0].'//'.$b[2].'/';
     	$id = $request->get('id');
     	$path = config('app.resource_url_path');
     	$searchNews = $this->productService->searchNews($id);
     	foreach ($searchNews as $key) {
     		$key->ten_tin_tuc = mb_strtoupper($key->ten_tin_tuc, 'UTF-8');
+            $key->path = $b;
     	}
     	return view('product.news', ['list' => $searchNews, 'path' => $path]);
     }
 
     public function KM(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 5) {
+                $check = true;
+            }
+        }
+        if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
         $id = $request->get('id');
         $path = config('app.resource_url_path');
         $searchKM = $this->productService->searchKM($id);
@@ -116,17 +160,47 @@ class ProductController extends Controller {
         return view('product.KM', ['list' => $searchKM, 'path' => $path]);
     }
 
-	public function viewAddProduct() {
+	public function viewAddProduct(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 4) {
+                $check = true;
+            }
+        }
+        if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
 		$list = $this->productService->loaisp();
     	return view('product.addProduct',['list' => $list]);
     }
 
-    public function viewAddDiscount() {
+    public function viewAddDiscount(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 5) {
+                $check = true;
+            }
+        }
+        if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
         $list = $this->productService->sanPham();
         return view('discount.addDiscount',['list' => $list]);
     }
 
-    public function viewAddNews() {
+    public function viewAddNews(Request $request) {
+        $per = $request->session()->get('id');
+        $check = false;
+        for($i = 0; $i < count($per); $i++) {
+            if ($per[$i]->id == 6) {
+                $check = true;
+            }
+        }
+        if($check == false) {
+            return "Bạn không có quyền truy cập";
+        }
         $list = $this->productService->loaisp();
         return view('news.addNews',['list' => $list]);
     }
@@ -459,7 +533,10 @@ class ProductController extends Controller {
 		$ngay_ra_mat = $request->get('ngay_ra_mat');
 		$mo_ta = $request->get('mo_ta');
         $check1 = 0;
-            $dem = count($avatar_path);
+        if ($avatar_path == null) {
+            $avatar_path = [];
+        }
+        $dem = count($avatar_path);
         if ($dem > 0) {
             for ($i=0; $i < $dem; $i++) {  
                 $subName = 'product/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
@@ -508,6 +585,9 @@ class ProductController extends Controller {
         $GHSC = $request->get('GHSC');
         $SSPTK = $request->get('SSPTK');
         $SP = $request->get('SP');
+        if ($avatar_path == null) {
+            $avatar_path = [];
+        }
         $check1 = 0;
             $dem = count($avatar_path);
         if ($dem > 0) {
@@ -533,7 +613,7 @@ class ProductController extends Controller {
             }
         }else {
             $check = 1;
-            echo "<script>alert('Thất bại'); window.location='".url('discount/manage-discount')."'</script>";
+            echo "<script>alert('Thất bại vui lòng thử lại'); window.location='".url('discount/manage-discount')."'</script>";
         }
         if ($check1 == 0) {
            echo "<script>alert('Thành công'); window.location='".url('discount/manage-discount')."'</script>";
@@ -549,6 +629,9 @@ class ProductController extends Controller {
         $ND = $request->get('ND');
         $NĐ = $request->get('NĐ');
         $check1 = 0;
+        if ($avatar_path == null) {
+            $avatar_path = [];
+        }
         $ngay_tao = Carbon::now();
         $dem = count($avatar_path);
         if ($dem > 0) {

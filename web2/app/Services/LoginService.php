@@ -22,6 +22,10 @@ class LoginService {
 		return $this->loginRepository->login($user, $pass);
 	}
 
+    public function loginAPI($user, $pass) {
+        return $this->loginRepository->loginAPI($user, $pass);
+    }
+
 	public function getInfoByEmail($email) {
 		return $this->loginRepository->getInfoByEmail($email);
 	}

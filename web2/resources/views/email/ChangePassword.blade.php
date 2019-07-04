@@ -7,7 +7,7 @@
 				<b>Gmail</b>
 			</td>
 			<td>
-				<input type="type" id="Email" name="Email" placeholder="Email" value="" readonly="true" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px; margin-left: 5%"><br>
+				<input type="type" id="Email" name="Email" placeholder="Email" value="{{session()->get('emailMobile')}}" readonly="true" style="margin-bottom: 2%;width: 200px;height: 40px; border-radius: 3px; margin-left: 5%"><br>
 
 			</td>
 		</tr>

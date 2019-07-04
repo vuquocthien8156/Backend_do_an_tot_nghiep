@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')->join('PhanQuyen','tai_khoan','=','id')
+        ->where(['email' => $user, 
+        		'password' => $pass, 
+        		'us.da_xoa' => 0])->get();
+		return $result;
+	}
+
+	public function loginAPI($user, $pass) {
 		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')
         ->where(['email' => $user, 
         		'password' => $pass, 
@@ -561,7 +569,7 @@ class LoginRepository {
 
 			if($thoi_gian != null)
 
-				$result = $result->orderBy('thoi_gian', 'asc')->paginate(5);
+				$result = $result->orderBy('thoi_gian', 'desc')->paginate(5);
 			else
 				$result = $result->orderBy('thoi_gian', 'desc')->paginate(5);
 		}else {

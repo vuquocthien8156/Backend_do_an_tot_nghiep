@@ -40,7 +40,7 @@
                         <td  class="custom-view"><b>@{{item.ten}}</b></td>
                         <td  class="custom-view"><b>@{{item.ma_chu}}</b></td>
                         <td  class="custom-view"><b>@{{item.ten_loai_sp}}</b></td>
-                        <td  class="custom-view" width="150px"><div style="text-align: left; width: 100px; height: 100px; margin-left: 15%"><b>S(@{{item.gia_san_pham}}) VNĐ</b><b> M(@{{item.gia_vua}}) VNĐ</b><b>L(@{{item.gia_lon}}) VNĐ</b></td>
+                        <td  class="custom-view" width="150px"><div style="text-align: left; width: 100px; height: 100px; margin-left: 15%"><b>S(@{{item.gia_san_pham}}) VNĐ</b><br><b> M(@{{item.gia_vua}}) VNĐ</b><br><b>L(@{{item.gia_lon}}) VNĐ</b></td>
                          <td class="custom-view text-left" style="width: 150px;">
                             <b>@{{ item.mo_ta}}</b> 
                         </td>

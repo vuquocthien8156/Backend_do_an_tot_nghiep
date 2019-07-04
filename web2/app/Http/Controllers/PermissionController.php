@@ -25,13 +25,33 @@ class PermissionController extends Controller {
 		$this->permissionService = $permissionService;
 	}
 
-	public function PermissionView() {
-		$listPermission = $this->permissionService->getListpermission();
+	public function PermissionView(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
+		$listPermission = $this->permissionService->getListPermission();
 		$listUser = $this->permissionService->getListInternalUser();
 		return view('phanquyen.phanquyen',['listPermission'=>$listPermission, 'listUser' =>$listUser]);
 	}
 
 	public function Permission(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id_per = $request->get('id_per');
 		$id_user = $request->get('id_user');
 		$result = $this->permissionService->Permission($id_per, $id_user);
@@ -44,7 +64,17 @@ class PermissionController extends Controller {
 		}
 	}
 
-	public function listPermissionUser() {
+	public function listPermissionUser(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$list = $this->permissionService->listPermissionUser();
 		for ($i=0; $i < count($list); $i++) { 
 			$getRoll = $this->permissionService->getRoll($list[$i]->tai_khoan);
@@ -54,6 +84,16 @@ class PermissionController extends Controller {
 	}
 
 	public function createPermission(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$name = $request->get('name');
 		$phone = $request->get('phone');
 		$email = $request->get('email');
@@ -77,6 +117,16 @@ class PermissionController extends Controller {
 	}
 
 	public function updatePermission(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$user_id = $request->get('user_id');
 		$permission_group = $request->get('permission_group');
 		$deletePermission = $this->permissionService->deletePermission($user_id);
@@ -96,6 +146,16 @@ class PermissionController extends Controller {
 	}
 
 	public function deletePermission(Request $request){
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 3) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$user_id = $request->get('user_id');
 		$deletePermission = $this->permissionService->deletePermission($user_id);
 		if ($deletePermission > 0) {

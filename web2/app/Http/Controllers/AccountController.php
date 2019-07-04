@@ -29,14 +29,31 @@ class AccountController extends Controller {
 		$this->accountService = $accountService;
 	}
 
-	public function AccountView() {
+	public function AccountView(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 2) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		return view('account.account');
 	}
 
 	public function search(Request $request) {
-	if ($request->session()->has('name') == false && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 1) && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 2)) {
-	 	return redirect('api');
-	 } 
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 2) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$name = $request->get('name');
 		$phone = $request->get('phone');
 		$gender = $request->get('gender');
@@ -68,9 +85,16 @@ class AccountController extends Controller {
 	}
 
 	public function deleteAccount(Request $request) {
-	if ($request->session()->has('name') == false && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 1) && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 2)) {
-	 	return redirect('api');
-	 } 
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 2) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id = $request->get('id');
 		$result = $this->accountService->delete($id);
 		if ($result != 0) {
@@ -84,6 +108,16 @@ class AccountController extends Controller {
     }
 
     public function exportAccount(Request $request) {
+    	$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 2) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
         $name = $request->get('name');
         $phone = $request->get('phone');
         $gender = $request->get('gender');
@@ -91,9 +125,16 @@ class AccountController extends Controller {
     }
 
 	public function editAccount(Request $request) {
-		if ($request->session()->has('name') == false && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 1) && ($request->session()->has('name') == true && Session::get('vaitro') != 1 && Session::get('type') != 2)) {
-		 	return redirect('api');
-		} 
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 2) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$avatar_path = $request->get('files_edit');
 		$ten = $request->get('ten');
 		$id = $request->get('id');

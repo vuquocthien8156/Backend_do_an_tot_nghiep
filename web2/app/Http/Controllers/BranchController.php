@@ -27,6 +27,16 @@ class BranchController extends Controller {
 	}
 
 	public function branchView(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$name = $request->get('name');
 		$place = $request->get('place');
 		$listPlace = $this->branchService->listPlace();
@@ -35,6 +45,16 @@ class BranchController extends Controller {
     }
 
     public function searchBranch(Request $request) {
+    	$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		if ($request->get('page') === null) {
             $page = $request->get('page');
         }else {
@@ -46,6 +66,16 @@ class BranchController extends Controller {
 	}
 
 	public function saveBranch(Request $request){
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$name = $request->get('name_branch');
 		$latitude = $request->get('latitude');
 		$longitude = $request->get('longitude');
@@ -61,6 +91,16 @@ class BranchController extends Controller {
 	}
 
 	public function deleteBranch(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id = $request->get('id_branch');
 		$deleteBranch = $this->branchService->deleteBranch($id);
 		if ($deleteBranch == 1) {
@@ -71,6 +111,16 @@ class BranchController extends Controller {
 	}
 
 	public function updateBranch(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id_branch_update = $request->get('id_branch_update');
 		$address_update = $request->get('address_update');
 		$phone_branch_update = $request->get('phone_branch_update');

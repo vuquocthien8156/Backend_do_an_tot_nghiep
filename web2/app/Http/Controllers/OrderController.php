@@ -25,13 +25,33 @@ class OrderController extends Controller {
 		$this->loginService = $loginService;
 	}
 
-	public function orderView() {
+	public function orderView(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$getAllDisCount = $this->orderService->getAllDisCount();
 		$getStatus = $this->orderService->getStatus();
 		return view('order.order',['getAllDisCount' => $getAllDisCount, 'getStatus' => $getStatus]);
 	}
 
 	public function searchOrder(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$code = $request->get('code');
 		$page = 1;
 		$id = null;
@@ -48,6 +68,16 @@ class OrderController extends Controller {
 	}
 
 	public function accepthOrder(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id = $request->get('id');
 		$code = null;
 		$check = 0;
@@ -81,6 +111,16 @@ class OrderController extends Controller {
 	}
 
 	public function deleteOrder(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id = $request->get('id');
 		$result = $this->orderService->delete($id);
 		if ($result != 0) {
@@ -89,6 +129,16 @@ class OrderController extends Controller {
 		return \Response::json(['error' => ErrorCode::SYSTEM_ERROR, 'message' => 'Error!']);
 	}
 	public function editOrder(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$thong_tin_giao_hang = $request->get('thong_tin_giao_hang');
 		$ten_khuyen_mai = $request->get('ten_khuyen_mai');
 		$phi_ship = $request->get('phi_ship');
@@ -105,6 +155,16 @@ class OrderController extends Controller {
 	}
 
 	public function detailOrder(Request $request) {
+		$per = $request->session()->get('id');
+		$check = false;
+		for($i = 0; $i < count($per); $i++) {
+			if ($per[$i]->id == 1) {
+				$check = true;
+			}
+		}
+		if($check == false) {
+			return "Bạn không có quyền truy cập";
+		}
 		$id = $request->get('id');
 		$result = $this->orderService->detailOrder($id);
 		return response()->json(['listDetail'=>$result]);

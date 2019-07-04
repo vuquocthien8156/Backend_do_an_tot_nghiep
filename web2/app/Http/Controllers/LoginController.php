@@ -49,6 +49,10 @@ class LoginController extends Controller {
 		}
 	}
 
+	public function wellcome() {
+		return view('account.Wellcome');
+	}
+
 	public function login(Request $request) {  
 		$user = $request->get("username");
 		$pass = md5($request->get("password"));
@@ -71,7 +75,7 @@ class LoginController extends Controller {
 	public function loginAPI(Request $request) {  
 		$user = $request->get("username");
 		$pass = $request->get("password");
-		$check = $this->loginService->login($user, $pass);
+		$check = $this->loginService->loginAPI($user, $pass);
 		if (isset($check[0]->user_id)) {
 			return response()->json(['status' => 'ok', 'error' => 0, 'info' => $check[0]]);
 		}
@@ -834,7 +838,10 @@ class LoginController extends Controller {
 		$this->gmail =  $request->get('Email');
 		session()->put('emailMobile', $this->gmail);
 		$pathToResource = config('app.resource_url_path');
-		$path = $pathToResource.'ChangePassWord';
+		$a = url()->current();
+        $b = explode("/", $a);
+        $b = $b[0].'//'.$b[2].'/';
+		$path = $b.'ChangePassWord';
 		$data = ['path' => $path];
 		Mail::send('email.interface',$data, function($msg){
 			$msg->to($this->gmail)->subject('Verify gmail');

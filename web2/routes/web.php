@@ -12,6 +12,7 @@
 */
 Auth::routes();
 Route::get('loginView', 'LoginController@loginView')->name('login');
+Route::get('wellcome', 'LoginController@wellcome')->name('wellcome');
 Route::post('dangnhap', 'LoginController@login', '_token');
 Route::post('dangnhapsdt', 'LoginController@loginsdt', '_token');
 Route::get('logout', 'LoginController@logout');
