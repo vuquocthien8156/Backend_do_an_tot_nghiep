@@ -36,9 +36,6 @@ class PermissionController extends Controller {
 		if($check == false) {
 			return "Bạn không có quyền truy cập";
 		}
-		$listPermission = $this->permissionService->getListPermission();
-		$listUser = $this->permissionService->getListInternalUser();
-		return view('phanquyen.phanquyen',['listPermission'=>$listPermission, 'listUser' =>$listUser]);
 	}
 
 	public function Permission(Request $request) {
@@ -97,7 +94,7 @@ class PermissionController extends Controller {
 		$name = $request->get('name');
 		$phone = $request->get('phone');
 		$email = $request->get('email');
-		$password = $request->get('password');
+		$password = md5($request->get('password'));
 		$permission_group = $request->get('permission_group');
 		$inserUser = $this->permissionService->inserUser($name, $phone, $email, $password);
 		$getMaxId  = $this->permissionService->getMaxId();

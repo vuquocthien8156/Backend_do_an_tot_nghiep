@@ -172,7 +172,7 @@ class LoginRepository {
 			// $result->where('ma_khach_hang', '=', $id_KH);
 			$result->where(['ma_khach_hang' => $id_KH, 'dh.da_xoa' => 0]);
 		}
-		return $result->get();
+		return $result->orderBy('ngay_lap', 'desc')->get();
 	}
 
 	public function getDetail($ma_don_hang) {
@@ -728,7 +728,7 @@ class LoginRepository {
 		 	$result = $result->where(['hien_slider' => 1]);
 		}
 		$result = $result->where('ngay_ket_thuc', '>=', $from_date);
-        $result = $result->where('ngay_bat_dau', '>=', $to_date);
+        $result = $result->where('ngay_bat_dau', '<=', $to_date);
 		return $result->orderBy('ngay_bat_dau', 'desc')->get();
 	}
 
@@ -744,7 +744,7 @@ class LoginRepository {
 		->where([
 			'ls.ma_tai_khoan' => $id,
 			'ls.da_xoa' => 0,
-		])->get();
+		])->orderBy('ls.thoi_gian', 'desc')->get();
 		return $result;
 	}
 

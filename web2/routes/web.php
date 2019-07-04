@@ -120,7 +120,6 @@ Route::get('api/TheMostFavoriteProduct', 'ProductController@getIdSp');
 Route::get('api/listProduct', 'ProductController@searchProductAPI');
 Route::get('api/likedProduct', 'LoginController@getLikedProduct');//sp dc yeu thich
 Route::get('api/like', 'LoginController@requestLike');//thích sp
-Route::get('api/checkLikeByUser', 'LoginController@checkLikeProductByUser');
 Route::get('api/productType', 'LoginController@productType');
 Route::get('api/productDetail', 'LoginController@productDetail');
 
@@ -150,15 +149,12 @@ Route::get('api/getOrderDetail', 'LoginController@getOrderDetail');
 Route::post('api/addOrder', 'LoginController@addOrder');
 Route::post('api/paymentOnline', 'LoginController@paymentOnline');
 
-Route::get('api/getChildImage', 'LoginController@getChildImage');//new
-
 Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//new
-Route::get('api/getSlideShow', 'LoginController@getSlideShow');
+Route::get('api/getDiscount', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
-Route::get('api/getQuantityDiscount', 'LoginController@getQuantityDiscount');
-;
-Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
+
+// Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
 Route::post('api/verify', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
-Route::get('ChangePassWord', 'LoginController@ChangePassWord');
-Route::post('submitChange', 'LoginController@submitChange');
+// Route::get('ChangePassWord', 'LoginController@ChangePassWord');
+// Route::post('submitChange', 'LoginController@submitChange');
