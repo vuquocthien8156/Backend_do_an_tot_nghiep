@@ -119,7 +119,14 @@
                         </td>
                         <td>
                             <label for="other_note1"> Phương thức thanh toán </label>
-                            <input type="text" class="form-control" id="PTTT" style="width: 200px;">
+                            
+                            <select class="form-control" id="PTTT" style="width: 200px;">
+                                <option value="21">Thanh toán bằng điểm khi nhận hàng</option>
+                                <option value="23">Thanh toán bằng điểm và bằng thẻ</option>
+                                <option value="1">Thanh toán khi nhận hàng</option>
+                                <option value="2">Thanh toán bằng điểm</option>
+                                <option value="3">Thanh toán bằng thẻ</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -165,7 +172,7 @@
                         <tr class="text-center" style="font-weight: bold" v-for="(item,index) in results.data">
                             <td class="custom-view td-grey">@{{index + 1}}</td>
                             <td class="custom-view"><a style="cursor: pointer; color: blue;" @click="showDetail(item.madh)" class="see_more_less">@{{item.ma_chu}}</a></td>
-                            <td class="custom-view ">@{{item.thong_tin_giao_hang}}</td>
+                            <td class="custom-view " style="width:200px;text-align: left">@{{item.thong_tin_giao_hang}}</td>
                             <td class="custom-view ">@{{item.ten_khuyen_mai}}</td>
                             <td class="custom-view ">@{{item.phi_ship2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tong_tien2}} VNĐ</td>
@@ -173,7 +180,8 @@
                             <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 3">Thanh toán bằng thẻ</td>
                             <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 1">Thanh toán khi nhận hàng</td>
                             <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 2">Thanh toán bằng điểm</td>
-                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 4">Thanh toán bằng thẻ và điểm</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 21">Thanh toán bằng điểm khi nhận hàng</td>
+                            <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 23">Thanh toán bằng điểm bằng điểm và bằng thẻ</td>
                             <td class="custom-view ">@{{item.ngay_lap}}</td>
                             <td class="custom-view " @click="seeMoreStatus(item.trang_thai, item.ma_chu)" style="cursor: pointer;color: green">@{{item.ten_trang_thai}}</td>
                             <td class="custom-view ">

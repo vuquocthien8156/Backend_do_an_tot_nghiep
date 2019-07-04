@@ -154,7 +154,7 @@ Route::get('api/getDiscount', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
 
-// Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
+Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
 Route::post('api/verify', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
-// Route::get('ChangePassWord', 'LoginController@ChangePassWord');
-// Route::post('submitChange', 'LoginController@submitChange');
+Route::get('ChangePassWord', 'LoginController@ChangePassWord');
+Route::post('submitChange', 'LoginController@submitChange');

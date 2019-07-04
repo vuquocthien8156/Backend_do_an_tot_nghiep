@@ -101,8 +101,8 @@
                                             <tr>
                                     </tbody>   
                                 </table>
-                                <div class="col-12" style="margin-left: 50%">
-                                    <pagination :data="results" @pagination-change-page="search" :limit="4"></pagination> 
+                                <div class="col-12" style="margin-left: 0%">
+                                    <pagination :data="results" @pagination-change-page="search"></pagination> 
                                 </div>
                             </div>
                         </div>

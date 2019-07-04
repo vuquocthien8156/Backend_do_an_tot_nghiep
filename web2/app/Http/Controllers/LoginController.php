@@ -56,6 +56,7 @@ class LoginController extends Controller {
 	public function login(Request $request) {  
 		$user = $request->get("username");
 		$pass = md5($request->get("password"));
+		// dd($user, $pass);
 		$check = $this->loginService->login($user, $pass);
 		if (isset($check[0]->user_id)) {
 			session()->put('user_id',$check[0]->user_id);
