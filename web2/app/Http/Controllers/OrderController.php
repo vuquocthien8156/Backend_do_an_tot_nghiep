@@ -59,11 +59,34 @@ class OrderController extends Controller {
                 $page = $request->get('page');
         }
         $listOrder = $this->orderService->listOrder($id, $code);
-        for ($i=0; $i < count($listOrder); $i++) { 
+        //dd($listOrder);
+        if($listOrder != null && $listOrder != '') {
+        	for ($i=0; $i < count($listOrder); $i++) { 
             $listOrder[$i]->ngay_lap = date_format(Carbon::parse($listOrder[$i]->ngay_lap), 'd-m-Y');
             $listOrder[$i]->tong_tien2 = number_format($listOrder[$i]->tong_tien);
+            if($listOrder[$i]->phuong_thuc_thanh_toan == 1)
+            {
+            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship);
+            }
+            if($listOrder[$i]->phuong_thuc_thanh_toan == 3 || $listOrder[$i]->phuong_thuc_thanh_toan == 2)
+            {
+            	$listOrder[$i]->tien_phai_tra = 0;
+            }
+            if ($listOrder[$i]->phuong_thuc_thanh_toan == 21) {
+            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship - ($listOrder[$i]->so_diem*10000) - $listOrder[$i]->gia_khuyen_mai);	
+            }
+            if ($listOrder[$i]->phuong_thuc_thanh_toan == 23) {
+            	$listOrder[$i]->tien_phai_tra = 0;	
+            }
             $listOrder[$i]->phi_ship2 = number_format($listOrder[$i]->phi_ship);
-        }
+            $getStatus = $this->orderService->statusOrder($listOrder[$i]->madh);
+            $getNameStatus = $this->orderService->getNameStatus($getStatus);
+            if (isset($getNameStatus[0]->ma_trang_thai)) {
+            	$listOrder[$i]->ten_trang_thai = $getNameStatus[0]->ten_trang_thai;
+	            $listOrder[$i]->trang_thai = $getNameStatus[0]->ma_trang_thai;
+            }
+        	}
+        }        
 		return response()->json(['listSearch'=>$listOrder]);
 	}
 
@@ -83,7 +106,8 @@ class OrderController extends Controller {
 		$check = 0;
 		for($i = 0; $i < count($id); $i++) {
 			$listOrder = $this->orderService->listOrder($id[$i], $code);
-			$status = $listOrder[0]->trang_thai + 1;
+			$getStatus = $this->orderService->statusOrder($listOrder[$i]->madh);
+			$status = $getStatus + 1;
 			$updateStatus = $this->orderService->updateStatus($id[$i], $status);
 
 			$tong_tien = $listOrder[0]->tong_tien;
@@ -94,8 +118,8 @@ class OrderController extends Controller {
 			$ngay_lap = Carbon::now();
 			if ($status == 5) {
 				$hinh_thuc = 1;
-				$updatePointUser = $this->orderService->addPoint($listOrder[0]->ma_khach_hang, $totalPoint);
-				$addLog = $this->loginService->addLog($listOrder[0]->ma_khach_hang, $id[$i], $hinh_thuc, $ngay_lap, $totalPoint);
+				$updatePointUser = $this->orderService->addPoint($listOrder[0]->ma_khach_hang, (int)$totalPoint);
+				$addLog = $this->loginService->addLog($listOrder[0]->ma_khach_hang, $id[$i], $hinh_thuc, $ngay_lap, (int)$point);
 				if ($updateStatus > 0) {
 					$check = 0;		
 				}else {

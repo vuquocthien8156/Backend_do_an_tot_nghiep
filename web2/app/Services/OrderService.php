@@ -22,6 +22,14 @@ class OrderService {
 		return $this->orderRepository->listOrder($id, $code);
 	}
 
+    public function getNameStatus($id) {
+        return $this->orderRepository->getNameStatus($id);
+    }
+
+    public function statusOrder($id) {
+        return $this->orderRepository->statusOrder($id);
+    }
+
 	public function getStatus() {
 		return $this->orderRepository->getStatus();
 	}

@@ -65,7 +65,7 @@
                             <div class="modal-body">
                                  @if (count($getStatus) > 0)
                                         @foreach ($getStatus as $item)
-                                            <p v-if="{{$item->ma_trang_thai}} == this.trang_thai" style="color: green">{{$item->ma_trang_thai}} - {{$item->ten_trang_thai}}</p>
+                                            <p v-if="{{$item->ma_trang_thai}} <= this.trang_thai" style="color: green">{{$item->ma_trang_thai}} - {{$item->ten_trang_thai}}</p>
                                             <p v-else>{{$item->ma_trang_thai}} - {{$item->ten_trang_thai}}</p>
                                         @endforeach
                                      @endif
@@ -160,6 +160,7 @@
                         <th class="custom-view">khuyến mãi</th>
                         <th class="custom-view">Phí ship</th>
                         <th class="custom-view">Tổng tiền</th>
+                        <th class="custom-view">Tiền phải trả khi nhận hàng</th>
                         <th class="custom-view">Ghi chú</th>
                         <th class="custom-view">Phương thức thanh toán</th>
                         <th class="custom-view">Ngày lập</th>
@@ -176,6 +177,7 @@
                             <td class="custom-view ">@{{item.ten_khuyen_mai}}</td>
                             <td class="custom-view ">@{{item.phi_ship2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tong_tien2}} VNĐ</td>
+                            <td class="custom-view ">@{{item.tien_phai_tra}} VNĐ</td>
                             <td class="custom-view ">@{{item.ghi_chu}}</td>
                             <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 3">Thanh toán bằng thẻ</td>
                             <td class="custom-view " v-if="item.phuong_thuc_thanh_toan == 1">Thanh toán khi nhận hàng</td>

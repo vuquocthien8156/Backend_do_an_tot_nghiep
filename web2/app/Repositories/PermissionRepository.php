@@ -52,12 +52,14 @@ class PermissionRepository {
 	}
 
 	public function inserUser($name, $phone, $email, $password) {
+		$now = Carbon::now();
 		$result = DB::table('users')
 		->insert([
             'ten' => $name,
             'sdt' => $phone,
             'email' => $email,
             'password' => $password,
+            'created_at' => $now,
             'avatar' => 'images/logo1.png',
             'da_xoa' => 0
         ]);

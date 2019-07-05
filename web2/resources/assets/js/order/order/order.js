@@ -33,6 +33,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    console.log(this.results);
                     common.loading.hide('body');
                 })
                 .fail(error => {
