@@ -36,6 +36,7 @@ class PermissionController extends Controller {
 		if($check == false) {
 			return "Bạn không có quyền truy cập";
 		}
+		return view('phanquyen.phanquyen');
 	}
 
 	public function Permission(Request $request) {

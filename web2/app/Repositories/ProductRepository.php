@@ -50,12 +50,14 @@ class ProductRepository {
     }
 
     public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
+        $now = Carbon::now()->toDateString();
        if ($page == null) {
             $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta',  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
-        ]);
+        ])
+        ->where('ngay_hien_tai', '<=', $now);
 
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {
@@ -186,13 +188,12 @@ class ProductRepository {
                 'mo_ta' => $MT,
                 'so_phan_tram' => $SPT,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => $SSPQD,
                 'so_tien_qui_dinh_toi_thieu' => 0,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
                 'gioi_han_so_code' => $GHSC,
-                'so_sp_tang_kem' => 0,
+                
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -205,13 +206,13 @@ class ProductRepository {
                 'mo_ta' => $MT,
                 'so_phan_tram' => $SPT,
                 'so_tien' => $ST,
-                'so_sp_qui_dinh' => $SSPQD,
+                
                 'so_tien_qui_dinh_toi_thieu' => $STQDTT,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
                 'gioi_han_so_code' => $GHSC,
-                'so_sp_tang_kem' => 0,
+                
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -224,13 +225,13 @@ class ProductRepository {
                 'mo_ta' => $MT,
                 'so_phan_tram' => 0,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => 0,
+                
                 'so_tien_qui_dinh_toi_thieu' => $STQDTT,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
                 'gioi_han_so_code' => $GHSC,
-                'so_sp_tang_kem' => $SSPTK,
+                
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -243,13 +244,12 @@ class ProductRepository {
                 'mo_ta' => $MT,
                 'so_phan_tram' => 0,
                 'so_tien' => $ST,
-                'so_sp_qui_dinh' => $SSPQD,
+                
                 'so_tien_qui_dinh_toi_thieu' => $STQDTT,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => 0,
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -262,13 +262,12 @@ class ProductRepository {
                 'mo_ta' => $MT,
                 'so_phan_tram' => 0,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => 0,
+                
                 'so_tien_qui_dinh_toi_thieu' => $STQDTT,
                 'ma_san_pham' => $SP,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
                 'gioi_han_so_code' => $GHSC,
-                'so_sp_tang_kem' => $SSPTK,
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -301,13 +300,12 @@ class ProductRepository {
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => $so_phan_tram,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => $so_sp_qui_dinh,
+                
                 'so_tien_qui_dinh_toi_thieu' => 0,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => 0,
             ]);
         }
         if ($type == 2) {
@@ -318,13 +316,12 @@ class ProductRepository {
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => $so_phan_tram,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => $so_sp_qui_dinh,
+                
                 'so_tien_qui_dinh_toi_thieu' => 0,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => 0,
             ]);
         }
         if ($type == 3) {
@@ -335,13 +332,12 @@ class ProductRepository {
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => 0,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => 0,
+                
                 'so_tien_qui_dinh_toi_thieu' => $so_tien_qui_dinh_toi_thieu,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => $so_sp_tang_kem,
             ]);
         }
         if ($type == 4) {
@@ -352,13 +348,12 @@ class ProductRepository {
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => 0,
                 'so_tien' => $so_tien,
-                'so_sp_qui_dinh' => $so_sp_qui_dinh,
+                
                 'so_tien_qui_dinh_toi_thieu' => $so_tien_qui_dinh_toi_thieu,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => 0,
             ]);
         }
         if ($type == 5) {
@@ -369,13 +364,12 @@ class ProductRepository {
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => 0,
                 'so_tien' => 0,
-                'so_sp_qui_dinh' => 0,
+                
                 'so_tien_qui_dinh_toi_thieu' => $so_tien_qui_dinh_toi_thieu,
                 'ma_san_pham' => $ma_san_pham,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-                'so_sp_tang_kem' => $so_sp_tang_kem,
             ]);
         }
         return $result;
@@ -519,19 +513,19 @@ class ProductRepository {
     public function searchDiscount($type) {
             $result = DB::table('KhuyenMai')->select()->where(['da_xoa'=>0]);
             if ($type == 1) {
-                 $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '!=', 0], ['so_tien', '=', 0], ['so_sp_qui_dinh', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0]]);
+                 $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '!=', 0], ['so_tien', '=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0]]);
             }
             if ($type == 2) {
-                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '!=', 0], ['so_tien', '!=', 0], ['so_sp_qui_dinh', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '!=', 0]]);
+                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '!=', 0], ['so_tien', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '!=', 0]]);
             }
             if ($type == 4) {
-               $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '!=', 0], ['so_sp_qui_dinh', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '!=', 0]]);
+               $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '!=', 0]]);
             }
             if ($type == 3) {
-                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '=', 0], ['so_sp_qui_dinh', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0], ['ma_san_pham', '=', 0]]);
+                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0], ['ma_san_pham', '=', 0]]);
             }
             if ($type == 5) {
-                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '=', 0], ['so_sp_qui_dinh', '!=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0], ['ma_san_pham', '!=', 0]]);
+                $result =  $result->where([['da_xoa', '=', 0], ['so_phan_tram', '=', 0], ['so_tien', '=', 0], ['so_tien_qui_dinh_toi_thieu', '=', 0], ['ma_san_pham', '!=', 0]]);
             }
         return $result->orderBy('ma_khuyen_mai', 'desc')->paginate(15);
     }

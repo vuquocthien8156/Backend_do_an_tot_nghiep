@@ -20,10 +20,10 @@
                             @csrf
                             Chọn loại khuyến mãi <select class="input-app mr-4" style="width: 200px;margin-bottom: 10px" v-model="type" name="type">
                 <option value="1">Khuyến mãi theo % (ĐH)</option>
-                <option value="2">Khuyến mãi theo % và số tiền qui định(ĐH)</option>
-                <option value="3">Khuyến mãi theo số sản phẩm qui định(ĐH)</option>
-                <option value="4">Khuyến mãi theo số tiền và số sản phẩm qui định(ĐH)</option>
-                <option value="5">Khuyến mãi theo số sản phẩm qui định(SP)</option>
+                <option value="2">Khuyến mãi theo % và số tiền qui định tối thiểu(ĐH)</option>
+                <option value="3">Khuyến mãi theo số tiền</option>
+                <option value="4">Khuyến mãi theo số tiền và số tiền tối thiểu(ĐH)</option>
+                <option value="5">Khuyến mãi theo tiền cho sản phẩm(SP)</option>
             </select>
                             <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label><br>
                                         <i style="color: red">*Hình đầu tiên là hình chính</i>

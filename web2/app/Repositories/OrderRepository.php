@@ -15,9 +15,9 @@ class OrderRepository {
 
 	public function listOrder($id, $code) {
 		$result = DB::table('DonHang')->select('DonHang.ma_don_hang as madh', 'ma_chu', 'thong_tin_giao_hang', 'ma_khach_hang', 'khuyen_mai','phi_ship', 'tong_tien', 'DonHang.ghi_chu', 'ngay_lap', 'phuong_thuc_thanh_toan', 'DonHang.da_xoa', 'ten_khuyen_mai', 'so_diem', 'gia_khuyen_mai')->where('DonHang.da_xoa', '=', 0)
-		->join('KhuyenMai', 'ma_khuyen_mai', '=', 'khuyen_mai')
-		->join('ChiTietDonHang', 'ChiTietDonHang.ma_don_hang','=','DonHang.ma_don_hang')
-		->join('LichSuDiem', 'LichSuDiem.ma_don_hang', '=','DonHang.ma_don_hang');
+		->leftjoin('KhuyenMai', 'ma_khuyen_mai', '=', 'khuyen_mai')
+		->leftjoin('ChiTietDonHang', 'ChiTietDonHang.ma_don_hang','=','DonHang.ma_don_hang')
+		->leftjoin('LichSuDiem', 'LichSuDiem.ma_don_hang', '=','DonHang.ma_don_hang');
 		// ->leftjoin('ChiTietTrangThaiDonHang as ctttdh', 'ctttdh.ma_don_hang', '=', 'DonHang.ma_don_hang')
 		// ->leftjoin('TrangThaiDonHang', 'ma_trang_thai', '=', 'ctttdh.trang_thai');
 		if ($code != null && $code != '') {
