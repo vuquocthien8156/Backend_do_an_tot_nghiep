@@ -123,7 +123,7 @@ const app = new Vue({
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        bootbox.alert("xóa thành công !!", function() {
+                        bootbox.alert("Xóa thành công !!", function() {
                              window.location.reload();
                         });
                         common.loading.hide('body');
@@ -135,7 +135,7 @@ const app = new Vue({
             }
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/images/' + avatar);
+            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/images/' + avatar);
             this.selectedFile = avatar;
             $("#id_user").val(id);
             $("#ten").val(ten);
@@ -150,6 +150,36 @@ const app = new Vue({
         edit() {
             common.loading.show('body');
             var data = new FormData();
+            if($('#gender').val() == null || $('#gender').val() == "") {
+                bootbox.alert('Vui lòng chọn giới tính');
+                common.loading.hide('body');
+                return false;
+            }
+            if($('#ten').val() == null || $('#ten').val() == "") {
+                bootbox.alert('Vui lòng nhập tên');
+                common.loading.hide('body');
+                return false;
+            }
+            if($('#SDT').val() == null || $('#SDT').val() == "") {
+                bootbox.alert('Vui lòng nhập số điện thoại');
+                common.loading.hide('body');
+                return false;
+            }
+            if($('#NS').val() == null || $('#NS').val() == "") {
+                bootbox.alert('Vui lòng chọn ngày sinh');
+                common.loading.hide('body');
+                return false;
+            }
+            if($('#diachi').val() == null || $('#diachi').val() == "") {
+                bootbox.alert('Vui lòng nhập địa chỉ');
+                common.loading.hide('body');
+                return false;
+            }
+            if($('#email').val() == null || $('#email').val() == "") {
+                bootbox.alert('Vui lòng điền email');
+                common.loading.hide('body');
+                return false;
+            }
             let url = $('#form_edit_info').attr("action");
             data.append('files_edit', this.selectedFile);
             data.append('ten', $('#ten').val());
@@ -169,7 +199,7 @@ const app = new Vue({
            
             $.ajax(url, options).done(response => {
                     if (response.error === 0) {
-                       bootbox.alert("thành công !!", function() {
+                       bootbox.alert("Thành công !!", function() {
                              window.location.reload();
                         });
                         common.loading.hide('body');

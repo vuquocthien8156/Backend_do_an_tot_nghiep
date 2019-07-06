@@ -139,7 +139,7 @@ const app = new Vue({
             $('#id').val(ma_tin_tuc);
             $('#ND').val(noi_dung);
             $('#date').val(date);
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + hinh_tin_tuc);
+            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/' + hinh_tin_tuc);
             this.selectedFile = hinh_tin_tuc;
             $('#update').modal('show');
         },

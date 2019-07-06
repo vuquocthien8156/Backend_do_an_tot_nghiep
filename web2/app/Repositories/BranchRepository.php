@@ -40,7 +40,7 @@ class BranchRepository {
             'dia_chi' => $address,
             'latitude' => $latitude,
             'longitude' => $longitude,
-            'sdt' =>$phone_branch,
+            'so_dien_thoai' =>$phone_branch,
             'ma_khu_vuc' => $id_kv,
             'da_xoa' => 0
         ]);
@@ -62,7 +62,7 @@ class BranchRepository {
             'dia_chi' => $address_update,
             'latitude' => $latitude_update,
             'longitude' => $longitude_update,
-            'sdt' =>$phone_branch_update,
+            'so_dien_thoai' =>$phone_branch_update,
             'ma_khu_vuc' => $id_kv,
         ]);
         return $result;

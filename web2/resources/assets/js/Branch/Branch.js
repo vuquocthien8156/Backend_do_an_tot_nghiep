@@ -41,10 +41,10 @@ const app = new Vue({
                 })
         },
         saveBranch() {
-            if (($("#address").val().indexOf('Hồ Chí Minh') == -1 && $("#place").val() != 1) || ($("#address").val().indexOf('Hà Nội') == -1 && $("#place").val() != 2)) {
-                bootbox.alert("Vui lọng chọn đúng khu vực");
-                return false;
-            }
+            // if (($("#address").val().indexOf('Hồ Chí Minh') == -1 && $("#place").val() != 1) || ($("#address").val().indexOf('Hà Nội') == -1 && $("#place").val() != 2)) {
+            //     bootbox.alert("Vui lọng chọn đúng khu vực");
+            //     return false;
+            // }
             var data = {
                 latitude: $("#lat").val(),
                 longitude: $("#long").val(),
@@ -160,10 +160,10 @@ const app = new Vue({
             $('#collapseTableBranch').collapse('hide');
         },
         updateBranch() {
-             if (($("#address1").val().indexOf('Hồ Chí Minh') == -1 && $("#place_update").val() == 1) || ($("#address1").val().indexOf('Hà Nội') == -1 && $("#place_update").val() == 2)) {
-                bootbox.alert("Vui lọng chọn đúng khu vực");
-                return false;
-            }
+            //  if (($("#address1").val().indexOf('Hồ Chí Minh') == -1 && $("#place_update").val() != 1) || ($("#address1").val().indexOf('Hà Nội') == -1 && $("#place_update").val() != 2)) {
+            //     bootbox.alert("Vui lọng chọn đúng khu vực");
+            //     return false;
+            // }
             var data = {
                 latitude_update: $("#lat_update").val(),
                 longitude_update: $("#long_update").val(),

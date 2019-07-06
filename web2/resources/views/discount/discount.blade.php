@@ -44,7 +44,7 @@
                     
                         <div class="form-group" style="float: left;margin-left: 5%">
                             <label for="other_note1"> Mô tả </label>
-                            <input type="text" class="form-control" id="MT" required="" style="width: 200px;">
+                            <textarea class="form-control" id="MT" required="" style="width: 200px;"></textarea>
                         </div>
                     
                         <div class="form-group" v-if="type == 1 || type == 2" style="float: left;margin-left: 5%">

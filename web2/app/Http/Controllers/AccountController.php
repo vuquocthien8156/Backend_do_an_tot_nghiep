@@ -164,6 +164,7 @@ class AccountController extends Controller {
                 }
                 $avatar_path = $filename;
         }
+        $NS = Carbon::parse($NS);
         $result = $this->accountService->editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now);
         if ($result == 1) {
         	return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);

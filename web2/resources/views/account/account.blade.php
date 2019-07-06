@@ -18,8 +18,8 @@
                 <input id="" type="text" class="input-app mr-4"  placeholder="Số điện thoại"  style="width: 200px;margin-bottom: 10px" v-model="phone">
                 <select class="input-app mr-4" v-model="gender" style="width: 200px; height: 33px; cursor: pointer;">
                         <option value=""> Chọn giới tính </option>
-                        <option value="1"> Nam </option>
-                        <option value="2"> Nữ </option>
+                        <option value="0"> Nam </option>
+                        <option value="1"> Nữ </option>
                     </select>
                 <select name="listPer" id="listPer" class="input-app mr-4" style="width: 200px; height: 33px; cursor: pointer;" v-model="loai_tai_khoan" @change="search()">
                         <option value="">Chọn loại tài khoản</option>
@@ -54,9 +54,9 @@
                             <td  class="custom-view">@{{item.ten}}</td>
                             <td  class="custom-view">@{{item.sdt}}</td>
                             <td  class="custom-view">@{{item.ngay_sinh}}</td>
-                            <td  class="custom-view" v-if="item.gioi_tinh == 1">Nam</td>
-                            <td  class="custom-view" v-if="item.gioi_tinh == 2">Nữ</td>
-                            <td  class="custom-view" v-if="item.gioi_tinh == 3">Khác</td>
+                            <td  class="custom-view" v-if="item.gioi_tinh == 0">Nam</td>
+                            <td  class="custom-view" v-if="item.gioi_tinh == 1">Nữ</td>
+                            <td  class="custom-view" v-if="item.gioi_tinh == 2">Khác</td>
                             <td  class="custom-view" v-if="item.gioi_tinh == null">Chưa có</td>
                             <td  class="custom-view">@{{item.diem_tich}}</td>
                             <td  class="custom-view">@{{item.dia_chi}}</td>

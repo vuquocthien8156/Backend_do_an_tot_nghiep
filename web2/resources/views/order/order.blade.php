@@ -164,7 +164,7 @@
                         <th class="custom-view">Tổng tiền</th>
                         <th class="custom-view">Tiền phải trả khi nhận hàng</th>
                         <th class="custom-view">Ghi chú</th>
-                        <th class="custom-view">Phương thức thanh toán</th>
+                        <th class="custom-view" style="width: 100px">Phương thức thanh toán</th>
                         <th class="custom-view">Ngày lập</th>
                         <th class="custom-view">Thông tin trạng thái đơn hàng</th>
                         <th class="custom-view">Chọn duyệt</th>

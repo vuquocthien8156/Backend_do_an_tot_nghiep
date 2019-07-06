@@ -148,7 +148,7 @@ const app = new Vue({
             ngay_ra_mat, mo_ta, ma_loai_sp, img) {
             // $("#edit").css('display','block');
             // $("#body").css('display','none');
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + img);
+            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/' + img);
             this.selectedFile = img;
             $("#id_product").val(ma_so);
             $("#ten").val(ten);

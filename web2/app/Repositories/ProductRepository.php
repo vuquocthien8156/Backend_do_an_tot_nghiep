@@ -178,7 +178,7 @@ class ProductRepository {
         return $result;
     }
 
-    public function addDiscount($avatar_path,$now,$type,$ma, $ten,$MT, $SPT, $ST, $SSPQD, $STQDTT, $NBD ,$NKT, $GHSC,$SSPTK,$SP ) {
+    public function addDiscount($avatar_path,$now,$type,$ma, $ten,$MT, $SPT, $ST, $SSPQD, $STQDTT, $NBD ,$NKT, $GHSC,$SSPTK,$SP) {
         if ($type == 1) {
             $result = DB::table('KhuyenMai')->insert([
              'ma_code' => $ma,
@@ -242,7 +242,7 @@ class ProductRepository {
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $NBD,
                 'ngay_ket_thuc' => $NKT,
-                'gioi_han_so_code' => $gioi_han_so_code,
+                'gioi_han_so_code' => $GHSC,
                 'da_xoa' => 0,
                 'hien_slider' => 0,
         ]);
@@ -285,8 +285,8 @@ class ProductRepository {
 
     public function editDiscount($ten_khuyen_mai, $id,$ma_code,$mo_ta,$so_phan_tram ,$so_tien ,$so_sp_qui_dinh ,$so_tien_qui_dinh_toi_thieu,$gioi_han_so_code ,$ngay_bat_dau ,$ngay_ket_thuc ,$id_now,$type, $so_sp_tang_kem, $avatar_path) {
         if ($type == 1) {
-            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai','=',$id)->update([
-                'ma_code' => $ma_code,
+            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai' ,'=', $id)->update([
+             'ma_code' => $ma_code,
                 'hinh_anh' => $avatar_path,
                 'ten_khuyen_mai' => $ten_khuyen_mai,
                 'mo_ta' => $mo_ta,
@@ -297,41 +297,47 @@ class ProductRepository {
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-            ]);
+                'da_xoa' => 0,
+                'hien_slider' => 0,
+        ]);
         }
         if ($type == 2) {
-            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai','=',$id)->update([
-                'ma_code' => $ma_code,
+            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai' ,'=', $id)->update([
+           'ma_code' => $ma_code,
                 'hinh_anh' => $avatar_path,
                 'ten_khuyen_mai' => $ten_khuyen_mai,
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => $so_phan_tram,
-                'so_tien' => 0,
-                'so_tien_qui_dinh_toi_thieu' => 0,
-                'ma_san_pham' => 0,
-                'ngay_bat_dau' => $ngay_bat_dau,
-                'ngay_ket_thuc' => $ngay_ket_thuc,
-                'gioi_han_so_code' => $gioi_han_so_code,
-            ]);
-        }
-        if ($type == 3) {
-            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai','=',$id)->update([
-                'ma_code' => $ma_code,
-                'hinh_anh' => $avatar_path,
-                'ten_khuyen_mai' => $ten_khuyen_mai,
-                'mo_ta' => $mo_ta,
-                'so_phan_tram' => 0,
                 'so_tien' => 0,
                 'so_tien_qui_dinh_toi_thieu' => $so_tien_qui_dinh_toi_thieu,
                 'ma_san_pham' => 0,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-            ]);
+                'da_xoa' => 0,
+                'hien_slider' => 0,
+        ]);
+        }
+        if ($type == 3) {
+            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai' ,'=', $id)->update([
+            'ma_code' => $ma_code,
+                'hinh_anh' => $avatar_path,
+                'ten_khuyen_mai' => $ten_khuyen_mai,
+                'mo_ta' => $mo_ta,
+                'so_phan_tram' => 0,
+                'so_tien' => $so_tien,
+                'so_tien_qui_dinh_toi_thieu' => 0,
+                'ma_san_pham' => 0,
+                'ngay_bat_dau' => $ngay_ket_thuc,
+                'ngay_ket_thuc' => $ngay_ket_thuc,
+                'gioi_han_so_code' => $gioi_han_so_code,
+                'da_xoa' => 0,
+                'hien_slider' => 0,
+        ]);
         }
         if ($type == 4) {
-            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai','=',$id)->update([
-                'ma_code' => $ma_code,
+            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai' ,'=', $id)->update([
+           'ma_code' => $ma_code,
                 'hinh_anh' => $avatar_path,
                 'ten_khuyen_mai' => $ten_khuyen_mai,
                 'mo_ta' => $mo_ta,
@@ -342,22 +348,26 @@ class ProductRepository {
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-            ]);
+                'da_xoa' => 0,
+                'hien_slider' => 0,
+        ]);
         }
         if ($type == 5) {
-            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai','=',$id)->update([
-                'ma_code' => $ma_code,
+            $result = DB::table('KhuyenMai')->where('ma_khuyen_mai' ,'=', $id)->update([
+             'ma_code' => $ma_code,
                 'hinh_anh' => $avatar_path,
                 'ten_khuyen_mai' => $ten_khuyen_mai,
                 'mo_ta' => $mo_ta,
                 'so_phan_tram' => 0,
-                'so_tien' => 0,
-                'so_tien_qui_dinh_toi_thieu' => $so_tien_qui_dinh_toi_thieu,
+                'so_tien' => $so_tien,
+                'so_tien_qui_dinh_toi_thieu' => 0,
                 'ma_san_pham' => $ma_san_pham,
                 'ngay_bat_dau' => $ngay_bat_dau,
                 'ngay_ket_thuc' => $ngay_ket_thuc,
                 'gioi_han_so_code' => $gioi_han_so_code,
-            ]);
+                'da_xoa' => 0,
+                'hien_slider' => 0,
+        ]);
         }
         return $result;
 
