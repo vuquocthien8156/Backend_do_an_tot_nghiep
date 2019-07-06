@@ -34,23 +34,27 @@ class PermissionService {
 		return $this->permissionRepository->listPermissionUser();
 	}
 
-	public function inserPermission($getMaxId, $permission_group) {
-		return $this->permissionRepository->inserPermission($getMaxId, $permission_group);
+	public function inserPermission($user_id, $permission_group) {
+		return $this->permissionRepository->inserPermission($user_id, $permission_group);
 	}
 
-	public function inserUser($name, $phone, $email, $password) {
-		return $this->permissionRepository->inserUser($name, $phone, $email, $password);
+	public function inserUser($name, $phone, $email, $password, $permission_group) {
+		return $this->permissionRepository->inserUser($name, $phone, $email, $password, $permission_group);
 	}
 
-	public function getRoll($id) {
-		return $this->permissionRepository->getRoll($id);
+	public function getRoll($roll) {
+		return $this->permissionRepository->getRoll($roll);
+	}
+
+	public function getNamePer($roll) {
+		return $this->permissionRepository->getNamePer($roll);
 	}	
 
 	public function getMaxId() {
 		return $this->permissionRepository->getMaxId();
 	}
 
-	public function deletePermission($id) {
-		return $this->permissionRepository->deletePermission($id);
+	public function deletePermission($user_id,$status) {
+		return $this->permissionRepository->deletePermission($user_id,$status);
 	}
 }

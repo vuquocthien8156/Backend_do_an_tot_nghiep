@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\DB;
 class LoginRepository {
 
 	public function login($user, $pass) {
-		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password')->join('PhanQuyen','tai_khoan','=','id')
+		$result = DB::table('users as us')->select('us.ten', 'us.id as user_id', 'email', 'gioi_tinh' ,'sdt', 'diem_tich' , 'ngay_sinh' , 'dia_chi' , 'fb_id' , 'avatar' , 'password','loai_tai_khoan')
         ->where(['email' => $user, 
         		'password' => $pass, 
-        		'us.da_xoa' => 0])->get();
+        		'us.da_xoa' => 0])
+        ->where('loai_tai_khoan', '!=', 1)->get();
 		return $result;
 	}
 

@@ -67,13 +67,44 @@ const app = new Vue({
                 }
             }
         },
-        deleteHealthRecord(id) {
+        deleted(id, status) {
             var data = {
-                id:id
+                id:id,
+                status:status
             }
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
                 title: 'Thông báo',
-                message: 'Bạn có xoá tài khoản này không?',
+                message: 'Bạn có muốn phục hồi tài khoản này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
+                $.post('delete', data)
+                .done(response => {
+                    if (response.error == 0) {
+                        bootbox.alert("Phục hồi thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
+                    }
+                })
+                    }
+                }
+            });
+            }else {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn xoá tài khoản này không?',
                 buttons: {
                     confirm: {
                         label: 'Xác nhận',
@@ -99,6 +130,7 @@ const app = new Vue({
                     }
                 }
             });
+            }
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
             $("#avatarcollector_edit").attr('src', 'http://localhost:8888/images/' + avatar);

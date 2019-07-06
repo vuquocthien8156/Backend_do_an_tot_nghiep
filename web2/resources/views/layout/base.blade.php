@@ -34,7 +34,7 @@
     <body style="background: white">
          @if(Session::has('login') && Session::get('login') == true && Session::has('name'))
         <div class="header bg-white fixed-top">
-            <nav class="navbar box-shadow container" id="navbar-example2">
+            <nav class="navbar box-shadow" id="navbar-example2">
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <div class="d-flex align-items-center flex-grow-1 flex-md-grow-0">
                         <a href="/customer/manage" class="navbar-brand p-0 m-0 d-flex">
@@ -45,7 +45,7 @@
                         <ul id="header-navbar" class="nav justify-content-center font-weight-bold">
                             @if(Session::has('id'))
                               @foreach (Session::get('id') as $value)
-                                @if($value->id == 2)
+                                @if($value->quyen_cho_phep == 2)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                             style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +56,7 @@
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->id == 4)
+                                @if($value->quyen_cho_phep == 4)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,24 +69,22 @@
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->id == 1)
+                                @if($value->quyen_cho_phep == 1)
                                     <li class="nav-item d-none d-lg-block dropdown">
-                                        <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
-                                        style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                       QUẢN LÝ KHÁC
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route("manage-branch", [], false)}}">CHI NHÁNH</a>
-                                             <a class="dropdown-item" href="{{route("order", [], false)}}">ĐƠN HÀNG</a>
-                                        </div>
+                                        <a class="nav-link p-2 px-lg-3" style="font-size: 16px" href="{{route("order", [], false)}}">ĐƠN HÀNG</a>
                                     </li>
                                 @endif
-                                @if($value->id == 3)
+                                 @if($value->quyen_cho_phep == 7)
+                                    <li class="nav-item d-none d-lg-block dropdown">
+                                        <a class="nav-link p-2 px-lg-3" style="font-size: 16px" href="{{route("manage-branch", [], false)}}">CHI NHÁNH</a>
+                                    </li>
+                                @endif
+                                @if($value->quyen_cho_phep == 3)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3" style="font-size: 16px" href="{{route("permission", [], false)}}">PHÂN QUYỀN</a>
                                     </li>
                                 @endif
-                                @if($value->id == 5)
+                                @if($value->quyen_cho_phep == 5)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,7 +96,7 @@
                                         </div>
                                     </li>
                                 @endif
-                                @if($value->id == 6)
+                                @if($value->quyen_cho_phep == 6)
                                     <li class="nav-item d-none d-lg-block dropdown">
                                         <a class="nav-link p-2 px-lg-3 dropdown-toggle" 
                                         style="font-size: 16px" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

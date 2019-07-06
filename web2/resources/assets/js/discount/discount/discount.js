@@ -43,13 +43,15 @@ const app = new Vue({
                 })
         },
 
-        deleted(id) {
+        deleted(id,status) {
             var data = {
-                id:id
+                id:id,
+                status:status
             }
-            bootbox.confirm({
+            if(status == 1) {
+                bootbox.confirm({
                 title: 'Thông báo',
-                message: 'Bạn có xoá khuyến mãi này không?',
+                message: 'Bạn có muốn phục hồi khuyến mãi này không?',
                 buttons: {
                     confirm: {
                         label: 'Xác nhận',
@@ -66,7 +68,7 @@ const app = new Vue({
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        bootbox.alert("xóa thành công !!", function() {
+                        bootbox.alert("Phục hồi thành công !!", function() {
                              window.location.reload();
                         });
                         common.loading.hide('body');
@@ -75,9 +77,36 @@ const app = new Vue({
                     }
                 }
             });
-        
-            
-            
+            }else {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn xoá khuyến mãi này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
+                $.post('delete', data)
+                .done(response => {
+                    if (response.error == 0) {
+                        bootbox.alert("Xóa thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
+                    }
+                })
+                    }
+                }
+            });
+            }
         },
         seeMoreDetail(ma_code,ten_khuyen_mai,mo_ta,so_phan_tram,so_tien,so_sp_qui_dinh,so_tien_qui_dinh_toi_thieu,gioi_han_so_code,ngay_bat_dau,ngay_ket_thuc,hinh_anh,ma_khuyen_mai,so_sp_tang_kem,ma_san_pham) {
             $("#avatarcollector_edit").attr('src', 'http://localhost:8888/' + hinh_anh);

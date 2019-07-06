@@ -21,9 +21,9 @@
                             Chọn loại khuyến mãi <select class="input-app mr-4" style="width: 200px;margin-bottom: 10px" v-model="type" name="type">
                 <option value="1">Khuyến mãi theo % (ĐH)</option>
                 <option value="2">Khuyến mãi theo % và số tiền qui định(ĐH)</option>
-                <option value="3">Khuyến mãi theo số sản phẩm qui định(ĐH)</option>
-                <option value="4">Khuyến mãi theo số tiền và số sản phẩm qui định(ĐH)</option>
-                <option value="5">Khuyến mãi theo số sản phẩm qui định(SP)</option>
+                <option value="3">Khuyến mãi theo số tiền(ĐH)</option>
+                <option value="4">Khuyến mãi theo số tiền và số tiền qui định(ĐH)</option>
+                <option value="5">Khuyến mãi theo số tiền cho sản phẩm(SP)</option>
             </select>
                             <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label><br>
                                         <i style="color: red">*Hình đầu tiên là hình chính</i>
@@ -56,14 +56,9 @@
                             <input type="number" class="form-control" name="SPT" required="" style="width: 200px;">
                         </div>
                     
-                        <div class="form-group" v-if="type == 2 || type == 4" style="float: left;margin-left: 5%">
+                        <div class="form-group" v-if="type == 3 || type == 4 || type == 5" style="float: left;margin-left: 5%">
                             <label for="other_note1"> Số tiền </label>
                             <input type="number" class="form-control" name="ST" required="" style="width: 200px;">
-                        </div>
-                    
-                        <div class="form-group" style="float: left;margin-left: 5%">
-                            <label for="other_note1"> Số sản phẩm qui định </label>
-                            <input type="number" class="form-control" required="" name="SSPQD" style="width: 200px;">
                         </div>
                     
                         <div class="form-group" v-if="type == 2 || type == 4" style="float: left;margin-left: 5%">
@@ -87,12 +82,7 @@
                             <input type="number" class="form-control" name="GHSC" required="" style="width: 200px;">
                         </div>
 
-                        <div class="form-group" v-if="type == 3 || type == 5" style="float: left;margin-left: 5%">
-                            <label for="other_note1"> Số sản phẩm tặng kèm </label>
-                            <input type="number" class="form-control" name="SSPTK" required="" style="width: 200px;">
-                        </div>
-
-                        <div class="form-group" v-if="type == 3 || type == 5" style="float: left;margin-left: 5%">
+                        <div class="form-group" v-if="type == 5" style="float: left;margin-left: 5%">
                             <label for="other_note1"> Sản phẩm </label>
                             <select name="SP" class="form-control" style="width: 200px;">
                                 <option value="">Chọn loại sản phẩm</option>

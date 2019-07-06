@@ -70,11 +70,48 @@ const app = new Vue({
                     common.loading.hide('body');
                 });
         },
-        deleteBranch(id_branch) {
+        deleteBranch(id_branch,status) {
             var data = {
                 id_branch: id_branch,
+                status: status
             }
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn phục hồi chi nhánh này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                        common.loading.show('body');
+                        $.post('delete', data)
+                        .done(response => {
+                            if (response.error === 0) {
+                                common.loading.hide('body');
+                                bootbox.alert("Phục hồi thành công !!", function() {
+                                    window.location = '/Branch/manage';
+                                })
+                            } else {
+                                bootbox.alert('Error!!!');
+                            }
+                        }).fail(error => {
+                            bootbox.alert('Error!!!');
+                        }).always(() => {
+                            common.loading.hide('body');
+                        });
+                    }
+                }
+            });
+            }else {
+                bootbox.confirm({
                 title: 'Thông báo',
                 message: 'Bạn có chắc chắn muốn xoá chi nhánh này không?',
                 buttons: {
@@ -107,7 +144,8 @@ const app = new Vue({
                         });
                     }
                 }
-            }); 
+            });
+            } 
         },
         getInfoBranch(name, phone, address, latitude, longitude, id, id_kv) {
             this.name_branch_update = name;

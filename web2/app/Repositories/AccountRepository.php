@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class AccountRepository {
 
 	public function search($name, $phone, $page=1, $gender) {
-		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi');
+		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi')->where('loai_tai_khoan', '=', 1);
         
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {
@@ -33,8 +33,8 @@ class AccountRepository {
 		return $result->orderBy('us.id', 'asc')->paginate(15);
 	}
 
-	public function delete($id) {
-		$result = DB::table('users as us')->where('id','=',$id)->update(['da_xoa' => 1]);
+	public function delete($id, $status) {
+		$result = DB::table('users as us')->where('id','=',$id)->update(['da_xoa' => $status]);
 		return $result;
 
 	}

@@ -61,8 +61,9 @@
                                 <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
                             </td>
                             <td  class="custom-view">
-                                <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten, item.sdt, item.ngay_sinh, item.gioi_tinh, item.diem_tich, item.dia_chi, item.email, item.avatar, item.id);"></a>
-                                <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteHealthRecord(item.id)"  data-toggle="tooltip" data-placement="right" title="Xoá thẻ thành viên"></span></td>
+                                <a href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten, item.sdt, item.ngay_sinh, item.gioi_tinh, item.diem_tich, item.dia_chi, item.email, item.avatar, item.id);"></a>
+                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.id, item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Xoá tài khoản"></span>
+                                <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleted(item.id,item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span></td>
                         <tr>
                     </tbody>
                 </table>

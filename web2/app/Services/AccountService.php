@@ -22,8 +22,8 @@ class AccountService {
 		return $this->accountRepository->search($name, $phone, $page, $gender);
 	}
 
-	public function delete($id) {
-		return $this->accountRepository->delete($id);
+	public function delete($id, $status) {
+		return $this->accountRepository->delete($id, $status);
 	}
 
 	public function editUser($avatar_path, $ten, $id, $SDT, $NS, $gender, $diemtich, $diachi, $email, $now) {

@@ -31,6 +31,7 @@
                                             <th class="custom-view">Số lượng</th>
                                             <th class="custom-view">Đơn giá</th>
                                             <th class="custom-view">Kích cở</th>
+                                            <th class="custom-view">Topping</th>
                                             <th class="custom-view">Giá khuyến mãi</th>
                                             <th class="custom-view">Thành tiền</th>
                                             <th class="custom-view">Ghi chú</th>
@@ -41,10 +42,11 @@
                                             <td class="custom-view td-grey">@{{index + 1}}</td>
                                             <td class="custom-view">@{{item.ten}}</td>
                                             <td class="custom-view">@{{item.so_luong}}</td>
-                                            <td class="custom-view">@{{item.don_gia}}</td>
+                                            <td class="custom-view">@{{item.don_gia}} VNĐ</td>
                                             <td class="custom-view">@{{item.kich_co}}</td>
+                                            <td class="custom-view" style="text-align: left;"><span v-for="(access, index) in item.topping">  @{{access.ten}}(x@{{access.so_luong}})<br></span></td>
                                             <td class="custom-view">@{{item.gia_khuyen_mai}}</td>
-                                            <td class="custom-view">@{{item.thanh_tien}}</td>
+                                            <td class="custom-view">@{{item.thanh_tien}} VNĐ</td>
                                             <td class="custom-view">@{{item.ghi_chu}}</td>
                                         </tr>
                                     </tbody>
@@ -166,6 +168,7 @@
                         <th class="custom-view">Ngày lập</th>
                         <th class="custom-view">Thông tin trạng thái đơn hàng</th>
                         <th class="custom-view">Chọn duyệt</th>
+                        <th class="custom-view">Tồn tại</th>
                         <th class="custom-view">Hành Động</th>
                     </tr>
                     </thead>
@@ -173,7 +176,7 @@
                         <tr class="text-center" style="font-weight: bold" v-for="(item,index) in results.data">
                             <td class="custom-view td-grey">@{{index + 1}}</td>
                             <td class="custom-view"><a style="cursor: pointer; color: blue;" @click="showDetail(item.madh)" class="see_more_less">@{{item.ma_chu}}</a></td>
-                            <td class="custom-view " style="width:200px;text-align: left">@{{item.thong_tin_giao_hang}}</td>
+                            <td class="custom-view " style="width:150px;text-align: left">@{{item.thong_tin_giao_hang}}</td>
                             <td class="custom-view ">@{{item.ten_khuyen_mai}}</td>
                             <td class="custom-view ">@{{item.phi_ship2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tong_tien2}} VNĐ</td>
@@ -191,13 +194,18 @@
                                 <input v-else style="width: 20px;height: 20px" :value="item.madh" name="check[]" v-model="checkApprove" type="checkbox">
                             </td>
                             <td  class="custom-view">
-                                <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.thong_tin_giao_hang, item.khuyen_mai,item.phi_ship,item.tong_tien,item.ghi_chu,item.phuong_thuc_thanh_toan,item.ngay_lap,item.madh);" title="Sửa"></a>
-                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteOrder(item.madh)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span></td>
+                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
+                            <td  class="custom-view">
+                                <a href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.thong_tin_giao_hang, item.khuyen_mai,item.phi_ship,item.tong_tien,item.ghi_chu,item.phuong_thuc_thanh_toan,item.ngay_lap,item.madh);" title="Sửa"></a>
+                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleteOrder(item.madh)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span>
+                             <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleteOrder(item.madh,item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span></td>
                         <tr>
                     </tbody>
                 </table>
                  <div class="col-12" style="margin-left: 80%">
-                        <pagination :data="results" @pagination-change-page="search"></pagination> 
+                        <pagination :data="results" @pagination-change-page="search" :limit="4"></pagination> 
                 </div>
             </div>
         </div>

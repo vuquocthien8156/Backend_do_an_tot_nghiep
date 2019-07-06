@@ -79,13 +79,44 @@ const app = new Vue({
                 })
             $('#showMore').modal('show');
         },
-        deleted(id) {
+        deleted(id, status) {
             var data = {
-                id:id
+                id:id,
+                status:status
             }
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
                 title: 'Thông báo',
-                message: 'Bạn có xoá sản phẩm này không?',
+                message: 'Bạn có muốn phục hồi sản phẩm này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
+                $.post('delete', data)
+                .done(response => {
+                    if (response.error == 0) {
+                        bootbox.alert("Phục hồi thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
+                    }
+                })
+                    }
+                }
+            });
+            }else {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn xoá sản phẩm này không?',
                 buttons: {
                     confirm: {
                         label: 'Xác nhận',
@@ -111,6 +142,7 @@ const app = new Vue({
                     }
                 }
             });
+            }
         },
         seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
             ngay_ra_mat, mo_ta, ma_loai_sp, img) {

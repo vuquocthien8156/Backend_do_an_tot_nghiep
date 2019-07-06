@@ -30,7 +30,7 @@ class BranchController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 7) {
 				$check = true;
 			}
 		}
@@ -48,7 +48,7 @@ class BranchController extends Controller {
     	$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 7) {
 				$check = true;
 			}
 		}
@@ -69,7 +69,7 @@ class BranchController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 7) {
 				$check = true;
 			}
 		}
@@ -94,7 +94,7 @@ class BranchController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 7) {
 				$check = true;
 			}
 		}
@@ -102,7 +102,13 @@ class BranchController extends Controller {
 			return "Bạn không có quyền truy cập";
 		}
 		$id = $request->get('id_branch');
-		$deleteBranch = $this->branchService->deleteBranch($id);
+		$status = $request->get('status');
+		if ($status == 1) {
+			$status = 0;
+		}else {
+			$status = 1;
+		}
+		$deleteBranch = $this->branchService->deleteBranch($id,$status);
 		if ($deleteBranch == 1) {
 			return response()->json(['status' => 'error', 'error' => 0]);
 		}else {
@@ -114,7 +120,7 @@ class BranchController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 7) {
 				$check = true;
 			}
 		}

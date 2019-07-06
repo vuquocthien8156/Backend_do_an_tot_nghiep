@@ -29,7 +29,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -45,7 +45,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -94,7 +94,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -138,7 +138,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -146,7 +146,13 @@ class OrderController extends Controller {
 			return "Bạn không có quyền truy cập";
 		}
 		$id = $request->get('id');
-		$result = $this->orderService->delete($id);
+		$status = $request->get('status');
+		if ($status == 1) {
+			$status = 0;
+		}else {
+			$status = 1;
+		}
+		$result = $this->orderService->delete($id,$status);
 		if ($result != 0) {
 			 return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
 		}
@@ -156,7 +162,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -182,7 +188,7 @@ class OrderController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 1) {
+			if ($per[$i]->quyen_cho_phep == 1) {
 				$check = true;
 			}
 		}
@@ -191,6 +197,10 @@ class OrderController extends Controller {
 		}
 		$id = $request->get('id');
 		$result = $this->orderService->detailOrder($id);
+		for($i = 0; $i<count($result); $i++) {
+			$topping = $this->loginService->getTopping($result[$i]->ma_chi_tiet);
+			$result[$i]->topping = $topping;
+		}
 		return response()->json(['listDetail'=>$result]);
 	}
 }

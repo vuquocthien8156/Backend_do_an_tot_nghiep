@@ -46,6 +46,7 @@ class RegisterRepository {
 		$user->email = $username;
 		$user->password = $password;
 		$user->da_xoa = 0;
+		$loai_tai_khoan = 1;
 		$user->save();
 		return $user;
 	}

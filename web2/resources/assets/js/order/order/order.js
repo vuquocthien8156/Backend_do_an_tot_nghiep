@@ -57,11 +57,45 @@ const app = new Vue({
                 })
             $('#ModalShowDetail').modal('show');
         },
-        deleteOrder(id) {
+        deleteOrder(id,status) {
             var data = {
-                id:id
+                id:id,
+                status:status
             }
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có phục hồi đơn hàng này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
+                $.post('delete', data)
+                .done(response => {
+                    if (response.error == 0) {
+                        bootbox.alert("Phục hồi thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
+                    }
+                })
+                    }
+                }
+            });
+        
+            
+            
+            }else {
+                bootbox.confirm({
                 title: 'Thông báo',
                 message: 'Bạn có xoá đơn hàng này không?',
                 buttons: {
@@ -80,7 +114,7 @@ const app = new Vue({
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        bootbox.alert("xóa thành công !!", function() {
+                        bootbox.alert("Xóa thành công !!", function() {
                              window.location.reload();
                         });
                         common.loading.hide('body');
@@ -89,9 +123,7 @@ const app = new Vue({
                     }
                 }
             });
-        
-            
-            
+            }
         },
         seeMoreDetail(thong_tin_giao_hang,ten_khuyen_mai,phi_ship,tong_tien2,ghi_chu,
             phuong_thuc_thanh_toan,ngay_lap,id) {

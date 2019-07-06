@@ -120,6 +120,7 @@
                     <th  class="custom-view" style="width:500px;">Nội dung</th>
                     <th  class="custom-view">Ngày đăng</th>
                     <th  class="custom-view">Hình ảnh</th>
+                    <th  class="custom-view">Trạng thái</th>
                     <th  class="custom-view">Hành Động</th>
                 </tr>
                 </thead>
@@ -135,9 +136,14 @@
                                     </a>
                                     <!-- <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_tin_tuc)">+</button> -->
                         </td>
-                        <td class="custom-view"><p>
-                            <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten_tin_tuc, item.ma_tin_tuc, item.noi_dung, item.ngay_dang, item.hinh_tin_tuc);"></a>
-                            <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_tin_tuc)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>
+                         <td  class="custom-view">
+                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
+                        <td class="custom-view">
+                            <a href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ten_tin_tuc, item.ma_tin_tuc, item.noi_dung, item.ngay_dang, item.hinh_tin_tuc);"></a>
+                            <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_tin_tuc)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span>
+                             <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleted(item.ma_tin_tuc, item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span></td>
                     </tr>
                 </tbody>
             </table>

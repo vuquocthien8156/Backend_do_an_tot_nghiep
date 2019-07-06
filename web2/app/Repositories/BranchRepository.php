@@ -20,7 +20,7 @@ class BranchRepository {
     }
 
     public function listBranch($page){
-        $result = DB::table('ChiNhanh')->select('ma_chi_nhanh', 'ChiNhanh.ma_khu_vuc','ten', 'ten_khu_vuc', 'dia_chi', 'latitude', 'longitude', 'ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua','so_dien_thoai', 'ChiNhanh.da_xoa')->leftjoin('KhuVuc', 'KhuVuc.ma_khu_vuc', '=','ChiNhanh.ma_khu_vuc')->where('ChiNhanh.da_xoa' , '=', 0);
+        $result = DB::table('ChiNhanh')->select('ma_chi_nhanh', 'ChiNhanh.ma_khu_vuc','ten', 'ten_khu_vuc', 'dia_chi', 'latitude', 'longitude', 'ngay_khai_truong', 'gio_mo_cua', 'gio_dong_cua','so_dien_thoai', 'ChiNhanh.da_xoa')->leftjoin('KhuVuc', 'KhuVuc.ma_khu_vuc', '=','ChiNhanh.ma_khu_vuc')->where('ChiNhanh.da_xoa','=', 0);
         // if ($name != '' && $name != null) {
         //     $result->where(function($where) use ($name) {
         //         $where->whereRaw('lower(ten) like ? ', ['%' . trim(mb_strtolower($name, 'UTF-8')) . '%']);
@@ -47,10 +47,10 @@ class BranchRepository {
         return $result;
     }
 
-    public function deleteBranch($id) {
+    public function deleteBranch($id,$status) {
          $result = DB::table('ChiNhanh')->where('ma_chi_nhanh' , '=', $id)
         ->update([
-            'da_xoa' => 1
+            'da_xoa' => $status
         ]);
         return $result;
     }

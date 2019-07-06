@@ -46,8 +46,8 @@ class OrderService {
         return $addPoint = $this->orderRepository->addPoint($ma_kh, $totalPoint);   
     }
 
-    public function delete($id) {
-        return $this->orderRepository->delete($id);   
+    public function delete($id,$status) {
+        return $this->orderRepository->delete($id,$status);   
     }
 
     public function editOrder($thong_tin_giao_hang, $ten_khuyen_mai, $phi_ship, $ngay_lap, $tong_tien, $ghi_chu, $phuong_thuc_thanh_toan, $id) {

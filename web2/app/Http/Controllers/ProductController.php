@@ -32,7 +32,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 4) {
+            if ($per[$i]->quyen_cho_phep == 4) {
                 $check = true;
             }
         }
@@ -47,7 +47,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 6) {
+            if ($per[$i]->quyen_cho_phep == 6) {
                 $check = true;
             }
         }
@@ -62,7 +62,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 5) {
+            if ($per[$i]->quyen_cho_phep == 5) {
                 $check = true;
             }
         }
@@ -144,7 +144,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 5) {
+            if ($per[$i]->quyen_cho_phep == 5) {
                 $check = true;
             }
         }
@@ -164,7 +164,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 4) {
+            if ($per[$i]->quyen_cho_phep == 4) {
                 $check = true;
             }
         }
@@ -179,7 +179,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 5) {
+            if ($per[$i]->quyen_cho_phep == 5) {
                 $check = true;
             }
         }
@@ -194,7 +194,7 @@ class ProductController extends Controller {
         $per = $request->session()->get('id');
         $check = false;
         for($i = 0; $i < count($per); $i++) {
-            if ($per[$i]->id == 6) {
+            if ($per[$i]->quyen_cho_phep == 6) {
                 $check = true;
             }
         }
@@ -416,7 +416,13 @@ class ProductController extends Controller {
 
 	public function deleteProduct(Request $request) {
 		$id = $request->get('id');
-		$result = $this->productService->delete($id);
+        $status = $request->get('status');
+        if ($status == 1) {
+            $status = 0;
+        }else {
+            $status = 1;
+        }
+		$result = $this->productService->delete($id, $status);
 		if ($result != 0) {
 			 return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
 		}
@@ -710,7 +716,13 @@ class ProductController extends Controller {
 
     public function deleteDiscount(Request $request) {
         $id = $request->get('id');
-        $result = $this->productService->deleteDiscount($id);
+        $status = $request->get('status');
+        if ($status == 1) {
+            $status = 0;
+        }else {
+            $status = 1;
+        }
+        $result = $this->productService->deleteDiscount($id, $status);
         if ($result != 0) {
              return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
         }
@@ -719,7 +731,13 @@ class ProductController extends Controller {
 
     public function deleteNews(Request $request) {
         $id = $request->get('id');
-        $result = $this->productService->deleteNews($id);
+        $status = $request->get('status');
+        if ($status == 1) {
+            $status = 0;
+        }else {
+            $status = 1;
+        }
+        $result = $this->productService->deleteNews($id, $status);
         if ($result != 0) {
              return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
         }

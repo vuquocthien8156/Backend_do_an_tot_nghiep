@@ -30,8 +30,8 @@ class BranchService {
         return $this->branchRepository->saveBranch($name, $latitude, $longitude, $phone_branch, $address, $id_kv);
     }
 
-    public function deleteBranch($id) {
-        return $this->branchRepository->deleteBranch($id);
+    public function deleteBranch($id,$status) {
+        return $this->branchRepository->deleteBranch($id,$status);
     }
 
     public function updateBranch($id_branch_update, $address_update, $phone_branch_update, $name_branch_update, $latitude_update, $longitude_update, $id_kv) {

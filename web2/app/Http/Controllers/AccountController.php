@@ -33,7 +33,7 @@ class AccountController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 2) {
+			if ($per[$i]->quyen_cho_phep == 2) {
 				$check = true;
 			}
 		}
@@ -47,7 +47,7 @@ class AccountController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 2) {
+			if ($per[$i]->quyen_cho_phep == 2) {
 				$check = true;
 			}
 		}
@@ -88,7 +88,7 @@ class AccountController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 2) {
+			if ($per[$i]->quyen_cho_phep == 2) {
 				$check = true;
 			}
 		}
@@ -96,7 +96,13 @@ class AccountController extends Controller {
 			return "Bạn không có quyền truy cập";
 		}
 		$id = $request->get('id');
-		$result = $this->accountService->delete($id);
+		$status = $request->get('status');
+		if ($status == 1) {
+			$status = 0;
+		}else {
+			$status = 1;
+		}
+		$result = $this->accountService->delete($id,$status);
 		if ($result != 0) {
 			 return \Response::json(['error' => ErrorCode::NO_ERROR, 'message' => 'Success!']);
 		}
@@ -111,7 +117,7 @@ class AccountController extends Controller {
     	$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 2) {
+			if ($per[$i]->quyen_cho_phep == 2) {
 				$check = true;
 			}
 		}
@@ -128,7 +134,7 @@ class AccountController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 2) {
+			if ($per[$i]->quyen_cho_phep == 2) {
 				$check = true;
 			}
 		}

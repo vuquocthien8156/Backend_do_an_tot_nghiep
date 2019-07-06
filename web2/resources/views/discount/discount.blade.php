@@ -52,14 +52,9 @@
                             <input type="number" class="form-control" id="SPT" required="" style="width: 200px;">
                         </div>
                     
-                        <div class="form-group" v-if="type == 2 || type == 4" style="float: left;margin-left: 5%">
+                        <div class="form-group" v-if="type == 3 || type == 4 || type == 5" style="float: left;margin-left: 5%">
                             <label for="other_note1"> Số tiền </label>
                             <input type="number" class="form-control" id="ST" required="" style="width: 200px;">
-                        </div>
-                    
-                        <div class="form-group" style="float: left;margin-left: 5%">
-                            <label for="other_note1"> Số sản phẩm qui định </label>
-                            <input type="number" class="form-control" required="" id="SSPQD" style="width: 200px;">
                         </div>
                     
                         <div class="form-group" v-if="type == 2 || type == 4" style="float: left;margin-left: 5%">
@@ -83,12 +78,7 @@
                             <input type="number" class="form-control" id="GHSC" required="" style="width: 200px;">
                         </div>
 
-                        <div class="form-group" v-if="type == 3 || type == 5" style="float: left;margin-left: 5%">
-                            <label for="other_note1"> Số sản phẩm tặng kèm </label>
-                            <input type="number" class="form-control" id="SSPTK" required="" style="width: 200px;">
-                        </div>
-
-                        <div class="form-group" v-if="type == 3 || type == 5" style="float: left;margin-left: 5%">
+                        <div class="form-group" v-if="type == 5" style="float: left;margin-left: 5%">
                             <label for="other_note1"> Sản phẩm </label>
                             <select id="SP" class="form-control" style="width: 200px;">
                                 <option value="">Chọn loại sản phẩm</option>
@@ -153,9 +143,9 @@
             <select class="input-app mr-4" style="width: 200px;margin-bottom: 10px" @change="search()" v-model="type">
                 <option value="1">Khuyến mãi theo % (ĐH)</option>
                 <option value="2">Khuyến mãi theo % và số tiền qui định(ĐH)</option>
-                <option value="3">Khuyến mãi theo số sản phẩm qui định(ĐH)</option>
-                <option value="4">Khuyến mãi theo số tiền và số sản phẩm qui định(ĐH)</option>
-                <option value="5">Khuyến mãi theo số sản phẩm qui định(SP)</option>
+                <option value="3">Khuyến mãi theo số tiền(ĐH)</option>
+                <option value="4">Khuyến mãi theo số tiền và số tiền qui định(ĐH)</option>
+                <option value="5">Khuyến mãi theo số tiền cho sản phẩm(SP)</option>
             </select>
             <!-- <button class="button-app ml-5 float-right" @click="search()">Tìm kiếm</button> -->
             <table id="tb1" class="table table-bordered table-striped w-100" style="min-height: 150px; line-height: 1.4;">
@@ -166,15 +156,14 @@
                     <th  class="custom-view">Tên khuyến mãi</th>
                     <th  class="custom-view">Mô tả</th>
                     <th  class="custom-view" v-if="type == 1 || type == 2">Số phần trăm</th>
-                    <th  class="custom-view" v-if="type == 2 || type == 4">Số tiền</th>
-                    <th  class="custom-view">Số sản phẩm quy định</th>
-                    <th  class="custom-view" v-if="type == 3 || type == 5">Mã sản phẩm</th>
+                    <th  class="custom-view" v-if="type == 3 || type == 4 || type == 5">Số tiền</th>
+                    <th  class="custom-view" v-if="type == 5">Mã sản phẩm</th>
                     <th  class="custom-view" v-if="type == 2 || type == 4">Số tiền qui định</th>
                     <th  class="custom-view">Giới hạn số code</th>
-                    <th  class="custom-view" v-if="type == 3 || type == 5">Số sản phẩm tặng kèm</th>
                     <th  class="custom-view">Ngày bắt đầu</th>
                     <th  class="custom-view">Ngày kết thúc</th>
                     <th  class="custom-view">Hình ảnh</th>
+                    <th  class="custom-view">Trạng thái</th>
                     <th  class="custom-view">Hành Động</th>
                 </tr>
                 </thead>
@@ -185,12 +174,10 @@
                         <td  class="custom-view"><b>@{{item.ten_khuyen_mai}}<b></td>
                         <td  class="custom-view"><b>@{{item.mo_ta}}</b></td>
                         <td  class="custom-view" v-if="type == 1 || type == 2" width="150bx"><b>@{{item.so_phan_tram}}</b></td>
-                        <td class="custom-view" v-if="type == 2 || type == 4"><b>@{{item.so_tien}}</b></td>
-                        <td  class="custom-view" width="150px"><b>@{{item.so_sp_qui_dinh}}</b></td>
-                        <td  class="custom-view" v-if="type == 3 || type == 5" width="150px"><b>@{{item.ma_san_pham}}</b></td>
+                        <td class="custom-view" v-if="type == 3 || type == 4 || type == 5"><b>@{{item.so_tien}}</b></td>
+                        <td  class="custom-view" v-if="type == 5" width="150px"><b>@{{item.ma_san_pham}}</b></td>
                         <td class="custom-view" v-if="type == 2 || type == 4"><b>@{{item.so_tien_qui_dinh_toi_thieu}}</b></td>
                         <td class="custom-view"><b>@{{item.gioi_han_so_code}}</b></td>
-                        <td  class="custom-view" v-if="type == 3 || type == 5" width="150px"><b>@{{item.so_sp_tang_kem}}</b></td>
                         <td  class="custom-view" width="150px"><b>@{{item.ngay_BD}}</b></td>
                         <td  class="custom-view" width="150px"><b>@{{item.ngay_KT}}</b></td>
                         <td class="custom-view">
@@ -199,9 +186,14 @@
                                     </a>
                                     <!-- <button style="cursor: pointer;border: 1px solid transparent; background: transparent;font-weight: bold;" @click="showMore(item.ma_khuyen_mai)">+</button> -->
                         </td>
-                        <td class="custom-view"><p>
-                            <a href="#" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_code,item.ten_khuyen_mai,item.mo_ta,item.so_phan_tram,item.so_tien,item.so_sp_qui_dinh,item.so_tien_qui_dinh_toi_thieu,item.gioi_han_so_code,item.ngay_bat_dau,item.ngay_ket_thuc,item.hinh_anh, item.ma_khuyen_mai,item.so_sp_tang_kem, item.ma_san_pham);"></a>
-                            <span class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_khuyen_mai)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span><p></td>
+                        <td  class="custom-view">
+                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
+                        <td class="custom-view">
+                            <a href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-edit" @click="seeMoreDetail(item.ma_code,item.ten_khuyen_mai,item.mo_ta,item.so_phan_tram,item.so_tien,item.so_sp_qui_dinh,item.so_tien_qui_dinh_toi_thieu,item.gioi_han_so_code,item.ngay_bat_dau,item.ngay_ket_thuc,item.hinh_anh, item.ma_khuyen_mai,item.so_sp_tang_kem, item.ma_san_pham);"></a>
+                            <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" style="cursor: pointer;" @click="deleted(item.ma_khuyen_mai, item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Xoá"></span>
+                            <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleted(item.ma_khuyen_mai, item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span></td>
                     </tr>
                 </tbody>
             </table>

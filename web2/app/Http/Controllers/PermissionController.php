@@ -29,20 +29,23 @@ class PermissionController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
 		if($check == false) {
 			return "Bạn không có quyền truy cập";
 		}
+		$listPermission = $this->permissionService->getListPermission();
+		$listUser = $this->permissionService->getListInternalUser();
+		return view('phanquyen.phanquyen',['listPermission'=>$listPermission, 'listUser' =>$listUser]);
 	}
 
 	public function Permission(Request $request) {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
@@ -65,7 +68,7 @@ class PermissionController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
@@ -74,8 +77,10 @@ class PermissionController extends Controller {
 		}
 		$list = $this->permissionService->listPermissionUser();
 		for ($i=0; $i < count($list); $i++) { 
-			$getRoll = $this->permissionService->getRoll($list[$i]->tai_khoan);
+			$getRoll = $this->permissionService->getRoll($list[$i]->loai_tai_khoan);
+			$getNamePer = $this->permissionService->getNamePer($list[$i]->loai_tai_khoan);
 			$list[$i]->listRoll = $getRoll;
+			$list[$i]->getNamePer = $getNamePer;
 		}
 		return response()->json(['status' => 'ok', 'error' => 0, 'list' => $list]);
 	}
@@ -84,7 +89,7 @@ class PermissionController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
@@ -96,11 +101,9 @@ class PermissionController extends Controller {
 		$email = $request->get('email');
 		$password = md5($request->get('password'));
 		$permission_group = $request->get('permission_group');
-		$inserUser = $this->permissionService->inserUser($name, $phone, $email, $password);
-		$getMaxId  = $this->permissionService->getMaxId();
 		for ($i=0; $i < count($permission_group); $i++) { 
-			$inserPermission = $this->permissionService->inserPermission($getMaxId, $permission_group[$i]);
-			if ($inserPermission == true) {
+			$inserUser = $this->permissionService->inserUser($name, $phone, $email, $password, $permission_group[$i]);
+			if ($inserUser == true) {
 				$t = 1;
 			}else {
 				$t=0;
@@ -117,7 +120,7 @@ class PermissionController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
@@ -126,19 +129,21 @@ class PermissionController extends Controller {
 		}
 		$user_id = $request->get('user_id');
 		$permission_group = $request->get('permission_group');
-		$deletePermission = $this->permissionService->deletePermission($user_id);
 		for ($i=0; $i < count($permission_group); $i++) { 
-			$inserPermission = $this->permissionService->inserPermission($user_id, $permission_group[$i]);
-			if ($inserPermission == true) {
+			$updatePermission = $this->permissionService->inserPermission($user_id, $permission_group[$i]);
+			if ($updatePermission == true) {
 				$t = 1;
 			}else {
 				$t=0;
 			}
 		}
 		if ($t == 1) {
+			if ($request->session()->get('user_id') == $user_id) {
+				return response()->json(['status' => 'fail', 'error' => 2]);
+			}
 			return response()->json(['status' => 'ok', 'error' => 0]);
 		}else {
-			return response()->json(['status' => 'ok', 'error' => 1]);
+			return response()->json(['status' => 'fail', 'error' => 1]);
 		}
 	}
 
@@ -146,7 +151,7 @@ class PermissionController extends Controller {
 		$per = $request->session()->get('id');
 		$check = false;
 		for($i = 0; $i < count($per); $i++) {
-			if ($per[$i]->id == 3) {
+			if ($per[$i]->quyen_cho_phep == 3) {
 				$check = true;
 			}
 		}
@@ -154,7 +159,13 @@ class PermissionController extends Controller {
 			return "Bạn không có quyền truy cập";
 		}
 		$user_id = $request->get('user_id');
-		$deletePermission = $this->permissionService->deletePermission($user_id);
+		$status = $request->get('status');
+		if ($status == 1) {
+			$status = 0;
+		}else {
+			$status = 1;
+		}
+		$deletePermission = $this->permissionService->deletePermission($user_id,$status);
 		if ($deletePermission > 0) {
 			return response()->json(['status' => 'ok', 'error' => 0]);
 		}else {

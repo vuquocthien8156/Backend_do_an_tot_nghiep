@@ -18,7 +18,7 @@ const app = new Vue({
             phone_user_update: '',
             email_user_update: '',
             password_user_update: '',
-            list_access_id : []
+            list_access_id :''
         };
     },
     created() { 
@@ -39,7 +39,6 @@ const app = new Vue({
             $.get('/permission/listPermission', data)
                 .done(response => {
                     this.results = response.list;
-                    console.log(this.results);
                 }).fail(error => {
                     bootbox.alert('Error!!!');
                 }).always(() => {
@@ -82,7 +81,7 @@ const app = new Vue({
                 arrayCheck.push(this.value);
             });
             if (arrayCheck === undefined || arrayCheck.length == 0) {
-                bootbox.alert("Tạo User cần ít nhất 1 quyền truy cập.");
+                bootbox.alert("Sửa User cần quyền truy cập.");
                 return false;
             }
             var data = {
@@ -111,12 +110,49 @@ const app = new Vue({
                     common.loading.hide('body');
                 });
         },
-        deleteUserWeb(user_id) {
+        deleteUserWeb(id, status) {
             var data = {
                 _token: this.csrf,
-                user_id: user_id,
+                user_id: id,
+                status:status
             };
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn phục hồi tài khoản này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                        common.loading.show('body');
+                        $.post('/permission/delete', data)
+                        .done(response => {
+                            if (response.error === 0) {
+                                common.loading.hide('body');
+                                bootbox.alert("Phục hồi thành công !!", function() {
+                                    window.location = '/permission/manage';
+                                })
+                            } else {
+                                bootbox.alert('Error!!!');
+                            }
+                        }).fail(error => {
+                            bootbox.alert('Error!!!');
+                        }).always(() => {
+                            common.loading.hide('body');
+                        });
+                    }
+                }
+            });
+            }else {
+                bootbox.confirm({
                 title: 'Thông báo',
                 message: 'Bạn có chắc chắn muốn xoá tài khoản này không?',
                 buttons: {
@@ -150,6 +186,7 @@ const app = new Vue({
                     }
                 }
             });
+            }
         },
 
         getInfo(tai_khoan, ten, sdt, email, ten_vai_tro) {
@@ -173,7 +210,7 @@ const app = new Vue({
                 arrayCheck.push(this.value);
             });
             if (arrayCheck === undefined || arrayCheck.length == 0) {
-                bootbox.alert("Tạo User cần ít nhất 1 quyền truy cập.");
+                bootbox.alert("Sửa User cần quyền truy cập.");
                 return false;
             }
             var data = {
@@ -188,13 +225,27 @@ const app = new Vue({
             $.post('/permission/update', data)
                 .done(response => {
 
-                    if (response.error === 0) {
+                    if (response.error === 2) {
                         common.loading.hide('body');
                         bootbox.alert("sửa thành công !!", function() {
                             window.location = '/logout';
                         })
                     } else {
-                        bootbox.alert('Error!!!');
+                        if (response.error === 0) {
+                            common.loading.hide('body');
+                            bootbox.alert("Sửa thành công !!", function() {
+                                window.location = '/permission/manage';
+                            })
+                        }else {
+                            if (response.error === 2) {
+                            common.loading.hide('body');
+                            bootbox.alert("Sửa thành công !!", function() {
+                                window.location = '/logout';
+                            })
+                        }else {
+                            bootbox.alert('Error!!!');
+                        }
+                        }
                     }
                 }).fail(error => {
                     bootbox.alert('Error!!!');

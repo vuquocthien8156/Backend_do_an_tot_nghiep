@@ -34,16 +34,16 @@ class ProductService {
         return $this->productRepository->searchRankProduct();
     }
 
-    public function delete($id) {
-		return $this->productRepository->delete($id);
+    public function delete($id,$status) {
+		return $this->productRepository->delete($id,$status);
 	}
 
-    public function deleteDiscount($id) {
-        return $this->productRepository->deleteDiscount($id);
+    public function deleteDiscount($id, $status) {
+        return $this->productRepository->deleteDiscount($id, $status);
     }
 
-    public function deleteNews($id) {
-        return $this->productRepository->deleteNews($id);
+    public function deleteNews($id, $status) {
+        return $this->productRepository->deleteNews($id, $status);
     }
 
     public function loaisp() {

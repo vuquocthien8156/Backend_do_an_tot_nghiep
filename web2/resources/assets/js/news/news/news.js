@@ -67,11 +67,42 @@ const app = new Vue({
                 })
             $('#showMore').modal('show');
         },
-        deleted(id) {
+        deleted(id,status) {
             var data = {
-                id:id
+                id:id,
+                status:status
             }
-            bootbox.confirm({
+            if (status == 1) {
+                bootbox.confirm({
+                title: 'Thông báo',
+                message: 'Bạn có muốn phục hồi tin tức này không?',
+                buttons: {
+                    confirm: {
+                        label: 'Xác nhận',
+                        className: 'btn-primary',
+                    },
+                    cancel: {
+                        label: 'Bỏ qua',
+                        className: 'btn-default'
+                    }
+                },
+                callback: (result) => {
+                    if (result) {
+                            common.loading.show('body');
+                $.post('delete', data)
+                .done(response => {
+                    if (response.error == 0) {
+                        bootbox.alert("Phục hồi thành công !!", function() {
+                             window.location.reload();
+                        });
+                        common.loading.hide('body');
+                    }
+                })
+                    }
+                }
+            });
+            }else {
+                bootbox.confirm({
                 title: 'Thông báo',
                 message: 'Bạn có xoá tin tức này không?',
                 buttons: {
@@ -90,7 +121,7 @@ const app = new Vue({
                 $.post('delete', data)
                 .done(response => {
                     if (response.error == 0) {
-                        bootbox.alert("xóa thành công !!", function() {
+                        bootbox.alert("Xóa thành công !!", function() {
                              window.location.reload();
                         });
                         common.loading.hide('body');
@@ -99,9 +130,7 @@ const app = new Vue({
                     }
                 }
             });
-        
-            
-            
+            }        
         },
         seeMoreDetail(ten_tin_tuc, ma_tin_tuc, noi_dung, ngay_dang, hinh_tin_tuc) {
             var day = ngay_dang.split('-');

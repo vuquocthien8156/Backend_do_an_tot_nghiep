@@ -63,7 +63,7 @@ class LoginController extends Controller {
 			session()->put('name',$check[0]->ten);
 			session()->put('email',$check[0]->email);
 			session()->put('login',true);
-			$getRoll = $this->permissionService->getRoll($check[0]->user_id);
+			$getRoll = $this->permissionService->getRoll($check[0]->loai_tai_khoan);
 			session()->put('id',$getRoll);
 			return response()->json(['status' => 'ok', 'error' => 0, $check]);
 		}

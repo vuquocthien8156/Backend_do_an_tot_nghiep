@@ -14,18 +14,15 @@ use Illuminate\Support\Facades\DB;
 class PermissionRepository {
 
 	public function getListPermission() {
-		$result = DB::table('vaitro')->select('id', 'ten_vai_tro')->where([
-			'trang_thai' => 0,
-		])->orderby('id','asc')->get(); 
+		$result = DB::table('LoaiTaiKhoan')->select('ma_loai_tai_khoan', 'ten_loai_tai_khoan')->where([
+			'da_xoa' => 0,
+		])->where('ma_loai_tai_khoan', '!=', 1)->orderby('ma_loai_tai_khoan','asc')->get(); 
 		return $result;
 	}
 
 	public function getListInternalUser() {
-		$result = DB::table('users as us')->select('us.id', 'ten', 'email')
-		->join('PhanQuyen','PhanQuyen.tai_khoan','=', 'us.id')
-		->where([
-			'us.da_xoa' => 0,
-		])->orderby('us.id','asc')->get(); 
+		$result = DB::table('users as us')->select('us.id', 'ten', 'email', 'da_xoa')
+		->where('loai_tai_khoan', '!=', 1)->orderby('us.id','asc')->get(); 
 		return $result;
 	}
 
@@ -38,20 +35,26 @@ class PermissionRepository {
 	}
 
 	public function listPermissionUser() {
-		$result = DB::table('PhanQuyen')->select('tai_khoan', 'ten', 'sdt', 'email')
-		->join('users as us','PhanQuyen.tai_khoan','=', 'us.id')
-		->where([
-			'us.da_xoa' => 0,
-		])->DISTINCT()->paginate(15); 
+		$result = DB::table('users as us')->select('us.id', 'ten', 'email', 'loai_tai_khoan', 'sdt', 'da_xoa')
+		->where('loai_tai_khoan', '!=', 1)->orderby('us.id','asc')->paginate(15); 
 		return $result;
 	}
 
-	public function getRoll($id) {
-		$result = DB::table('PhanQuyen')->select('id' ,'ten_vai_tro')->leftjoin('vaitro as vt', 'vt.id', '=','PhanQuyen.quyen_cho_phep')->where('tai_khoan' , '=', $id)->get();
+	public function getRoll($roll) {
+		$result = DB::table('PhanQuyen')->select('ten_vai_tro','quyen_cho_phep')
+		->join('vaitro', 'id', '=', 'quyen_cho_phep')
+		->join('LoaiTaiKhoan', 'LoaiTaiKhoan.ma_loai_tai_khoan', '=', 'PhanQuyen.ma_loai_tai_khoan')
+		->where('LoaiTaiKhoan.ma_loai_tai_khoan' , '=', $roll)->get();
         return $result;
 	}
 
-	public function inserUser($name, $phone, $email, $password) {
+	public function getNamePer($roll) {
+		$result = DB::table('LoaiTaiKhoan')->select('ten_loai_tai_khoan')
+		->where('LoaiTaiKhoan.ma_loai_tai_khoan' , '=', $roll)->get();
+        return $result;
+	}
+
+	public function inserUser($name, $phone, $email, $password, $permission_group) {
 		$now = Carbon::now();
 		$result = DB::table('users')
 		->insert([
@@ -61,6 +64,7 @@ class PermissionRepository {
             'password' => $password,
             'created_at' => $now,
             'avatar' => 'images/logo1.png',
+            'loai_tai_khoan' => $permission_group,
             'da_xoa' => 0
         ]);
         return $result;
@@ -71,18 +75,17 @@ class PermissionRepository {
         return $result;
 	}
 
-	public function inserPermission($getMaxId, $permission_group) {
-		$result = DB::table('PhanQuyen')
-		->insert([
-            'tai_khoan' => $getMaxId,
-            'quyen_cho_phep' => $permission_group,
-            'da_xoa' => 0
+	public function inserPermission($user_id, $permission_group) {
+		$result = DB::table('users')
+		->where('id', '=', $user_id)
+		->update([
+            'loai_tai_khoan' => $permission_group,
         ]);
 		return $result;
 	}
 
-	public function deletePermission($id) {
-		$result = DB::table('PhanQuyen')->where('tai_khoan' , '=', $id)->delete();
+	public function deletePermission($user_id,$status) {
+		$result = DB::table('users')->where('id' , '=', $user_id)->update(['da_xoa' => $status]);
 		return $result;
 	}
 }

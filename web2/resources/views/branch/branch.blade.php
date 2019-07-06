@@ -94,9 +94,10 @@
                                                 <td class="custom-view text-left"> @{{item.dia_chi }} </td>
                                                 <td class="custom-view text-right"> @{{item.ten_khu_vuc }} </td>
                                                 <td class="custom-view">
-                                                    <span class="btn_edit fas fa-edit" @click="getInfoBranch(item.ten,  item.sdt,  item.dia_chi ,item.latitude, item.longitude,item.ma_chi_nhanh, item.ma_khu_vuc)" >        
+                                                    <span v-if="item.da_xoa == 0" class="btn_edit fas fa-edit" @click="getInfoBranch(item.ten,  item.sdt,  item.dia_chi ,item.latitude, item.longitude,item.ma_chi_nhanh, item.ma_khu_vuc)" >        
                                                     </span>
-                                                    <span class="btn_remove fas fa-times" @click="deleteBranch(item.ma_chi_nhanh)"></span>
+                                                    <span v-if="item.da_xoa == 0" class="btn_remove fas fa-times" @click="deleteBranch(item.ma_chi_nhanh,item.da_xoa)"></span>
+                                                    <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleteBranch(item.ma_chi_nhanh,item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span></td>
                                                 </td>
                                             <tr>
                                     </tbody>   

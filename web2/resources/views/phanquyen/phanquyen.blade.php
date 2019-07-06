@@ -45,13 +45,13 @@
                             </div>
                         </div>
                         <div class="form-group w-100 mb-3" >
-                            <label for="cmnd" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Cho phép truy cập</label>
+                            <label for="cmnd" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Quyền cho phép</label>
                             <div class="col-md-8 p-0 input-group">
                                 @foreach ($listPermission as $value)
                                     <div class="col-md-8 p-0 mb-2">
                                         <div class="form-group">
-                                            <input style="width: 20px; height: 20px" type="checkbox" name="chk_permission_group[]" class="input_type_check" id="permission_{{$value->id}}" value="{{$value->id}}"> 
-                                            <label for="customer_type"> {{$value->ten_vai_tro}} </label><br>
+                                            <input style="width: 20px; height: 20px" type="radio" name="chk_permission_group[]" class="input_type_check" id="permission_{{$value->ma_loai_tai_khoan}}" value="{{$value->ma_loai_tai_khoan}}"> 
+                                            <label for="customer_type"> {{$value->ten_loai_tai_khoan}} </label><br>
                                         </div>
                                     </div>
                                 @endforeach
@@ -74,7 +74,9 @@
                             <th class="custom-view"> STT </th>
                             <th class="custom-view"> Họ Tên/ Số điện thoại </th>
                             <th class="custom-view"> Email </th>
-                            <th class="custom-view"> Cho phép truy cập </th>
+                            <th class="custom-view"> Tên quyền </th>
+                            <th class="custom-view" style="width: 550px"> Cho phép truy cập </th>
+                            <th class="custom-view" style="width: 550px">Trạng thái</th>
                             <th class="custom-view"> Hành động </th>
                         </tr>
                     </thead>
@@ -84,11 +86,19 @@
                             <td class="custom-view text-left"> @{{ item.ten }} / <br> @{{ item.sdt }}</td>
                             <td class="custom-view text-left">@{{ item.email }}</td>
                             <td class="custom-view">
-                                 <span v-for="(access, key) in item.listRoll"> <span v-if="key != 0">-</span>  @{{access.ten_vai_tro}} </span>
+                                 <span v-for="(access1, key) in item.getNamePer"> <span v-if="key != 0">-</span>  @{{access1.ten_loai_tai_khoan}} </span>
                             </td>
                             <td class="custom-view">
-                                <span class="btn_edit fa fa-edit"  @click="getInfo(item.tai_khoan,item.ten,item.sdt,item.email,item.ten_vai_tro)" data-toggle="tooltip" data-placement="left" title="Sửa"></span>
-                                <span class="btn_remove fa fa-trash" @click="deleteUserWeb(item.tai_khoan)" data-toggle="tooltip" data-placement="right" title="Xoá"></span>
+                                 <span v-for="(access, key) in item.listRoll"> <span v-if="key != 0">-</span>  @{{access.ten_vai_tro}} </span>
+                            </td>
+                             <td  class="custom-view">
+                                <span href="#" v-if="item.da_xoa == 0" class="btn_edit fa fa-check" style="color: green"></span>
+                                <span href="#" v-if="item.da_xoa == 1" class="btn_edit fa fa-times" style="color: red"></span>
+                            </td>
+                            <td class="custom-view">
+                                <span v-if="item.da_xoa == 0" class="btn_edit fa fa-edit"  @click="getInfo(item.id,item.ten,item.sdt,item.email,item.ten_vai_tro)" data-toggle="tooltip" data-placement="left" title="Sửa"></span>
+                                <span v-if="item.da_xoa == 0" class="btn_remove fa fa-trash" @click="deleteUserWeb(item.id, item.da_xoa)" data-toggle="tooltip" data-placement="right" title="Xoá"></span>
+                                <span v-if="item.da_xoa == 1" class="btn_edit fas fa-undo" style="cursor: pointer;" @click="deleteUserWeb(item.id, item.da_xoa)"  data-toggle="tooltip" data-placement="right" title="Phục hồi"></span>
                             </td>
                         <tr>
                     </tbody> 
@@ -126,13 +136,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="info_user_update" class="col-sm-4"> <b>Cho phép truy cập </b></label>
+                            <label for="info_user_update" class="col-sm-4"> <b>Quyền cho phép </b></label>
                             <div class="col-sm-8">
                                 @foreach ($listPermission as $value)
                                     <div class="col-md-8">
                                         <div>
-                                            <input style="width: 20px; height: 20px" type="checkbox" name="chk_permission_group_update[]" class="input_type_check" id="permission_update_{{$value->id}}" value="{{$value->id}}"> 
-                                            <label for="permission_update_{{$value->id}}"> {{$value->ten_vai_tro}} </label><br>
+                                            <input style="width: 20px; height: 20px" type="radio" name="chk_permission_group_update[]" class="input_type_check" id="permission_update_{{$value->ma_loai_tai_khoan}}" value="{{$value->ma_loai_tai_khoan}}"> 
+                                            <label for="permission_update_{{$value->ma_loai_tai_khoan}}"> {{$value->ten_loai_tai_khoan}} </label><br>
                                         </div>
                                     </div>
                                 @endforeach
@@ -155,4 +165,24 @@
 					include public_path('/js/permission/permission/permission.js');
 				@endphp
 			</script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                var listUser = [];
+                listUser.push(
+                    <?php 
+                        for ($i = 0; $i < count($listUser); $i++) {
+                            echo ("'" .  trim($listUser[$i]->email) . "',");   
+                        }
+                    ?>
+                );
+                $('#email_user').focusout(function () {
+                    for (var i = 0; i < listUser.length; i++) {
+                        if ($('#email_user').val() == listUser[i]) {
+                            bootbox.alert('Tài khoản đã tồn tại');
+                            return false;
+                        }
+                    }
+                })
+                })
+            </script>
 @endsection
