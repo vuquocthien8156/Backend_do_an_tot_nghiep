@@ -34,6 +34,7 @@
                         <th class="custom-view">Điểm tích</th>
                         <th class="custom-view">Địa chỉ</th>
                         <th class="custom-view">Tài Khoản</th>
+                        <th class="custom-view">Tên quyền</th>
                         <th class="custom-view">Hình ảnh</th>
                         <th class="custom-view">Trạng thái</th>
                         <th class="custom-view">Hành Động</th>
@@ -53,6 +54,7 @@
                             <td  class="custom-view">@{{item.dia_chi}}</td>
                             <td  class="custom-view" v-if="item.email != null">@{{item.email}}</td>
                             <td  class="custom-view" v-if="item.email == null">Chưa có</td>
+                            <td  class="custom-view">@{{item.ten_loai_tai_khoan}}</td>
                             <td  class="custom-view"> <a data-fancybox="gallery" :href="item.pathToResource+'images/'+item.avatar">
                                         <img class="img-responsive" width="50px" height="50px" :src="item.pathToResource+'images/'+item.avatar">
                                     </a></td>
