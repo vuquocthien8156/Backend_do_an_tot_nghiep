@@ -137,7 +137,7 @@ const app = new Vue({
             }
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
-            $("#avatarcollector_edit").attr('src', this.path+'images/' + avatar);
+            $("#avatarcollector_edit").attr('src', this.path + avatar);
             this.selectedFile = avatar;
             $("#id_user").val(id);
             $("#ten").val(ten);
