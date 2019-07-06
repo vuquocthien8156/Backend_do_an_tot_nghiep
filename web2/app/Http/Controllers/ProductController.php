@@ -229,7 +229,7 @@ class ProductController extends Controller {
         $listProduct = $this->productService->searchProduct($name, $page, $ma_loai, $mo_ta, $masp);
         for ($i=0; $i < count($listProduct); $i++) { 
             $listProduct[$i]->pathToResource = $pathToResource;
-            $listProduct[$i]->ngay_ra_mat = date_format(Carbon::parse($listProduct[$i]->ngay_ra_mat), 'd-m-Y');
+            $listProduct[$i]->ngay_ra_mat1 = date_format(Carbon::parse($listProduct[$i]->ngay_ra_mat), 'd-m-Y');
         }
 		return response()->json(['listSearch'=>$listProduct, 'infoExportExcel' => $infoExportExcel]);  
 	}

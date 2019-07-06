@@ -144,7 +144,7 @@ const app = new Vue({
             });
             }
         },
-        seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, so_lan_dat, 
+        seeMoreDetail(ma_so, ten, ma_chu, ten_loai_sp, gia_san_pham, gia_vua, gia_lon, 
             ngay_ra_mat, mo_ta, ma_loai_sp, img) {
             // $("#edit").css('display','block');
             // $("#body").css('display','none');
@@ -159,7 +159,6 @@ const app = new Vue({
             $("#gia_size_lon").val(gia_lon);
             $("#ngay_ra_mat").val(ngay_ra_mat);
             $("#mo_ta").val(mo_ta);
-            $("#so_lan_order").val(so_lan_dat);
             $('#update').modal('show');
         },
         add() {
