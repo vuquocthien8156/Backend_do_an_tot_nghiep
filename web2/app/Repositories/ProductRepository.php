@@ -57,12 +57,11 @@ class ProductRepository {
         ->where([
             'lsp.da_xoa' => 0,
         ])
-        ->where('ngay_hien_tai', '<=', $now);
+        ->where('ngay_ra_mat', '<=', $now);
 
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {
                 $where->whereRaw('lower(sp.ten) like ? ', ['%' . trim(mb_strtolower($name, 'UTF-8')) . '%']);
-         
             });
         }
 
