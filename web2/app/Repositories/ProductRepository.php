@@ -57,7 +57,7 @@ class ProductRepository {
         ->where([
             'lsp.da_xoa' => 0,
         ])
-        ->where('ngay_hien_tai', '<=', $now);
+        ->where('ngay_bat_dau', '<=', $now);
 
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {
