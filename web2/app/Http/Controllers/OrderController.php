@@ -106,8 +106,7 @@ class OrderController extends Controller {
 		$check = 0;
 		for($i = 0; $i < count($id); $i++) {
 			$listOrder = $this->orderService->listOrder($id[$i], $code);
-			//$a = $listOrder[$i]->madh;
-			$getStatus = $this->orderService->statusOrder($listOrder[$i]->madh);
+			$getStatus = $this->orderService->statusOrder($listOrder[0]->madh);
 			$status = $getStatus + 1;
 			$updateStatus = $this->orderService->updateStatus($id[$i], $status);
 

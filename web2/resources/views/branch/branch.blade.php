@@ -57,7 +57,7 @@
                                         <option value="">Khu vực</option>
                                         @if(count($list) > 0)
                                             @foreach ($list as $value)
-                                                <option value="{{$value->ma_khu_vuc}}">{{$value->ten_khu_vuc}}</option>
+                                                <option value="{{$value->ma_khu_vuc}}">-{{$value->ten_khu_vuc}}</option>
                                             @endforeach
                                         @endif
                                     </select>

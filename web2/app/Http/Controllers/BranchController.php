@@ -62,7 +62,8 @@ class BranchController extends Controller {
         }
         $pathToResource = config('app.resource_url_path');
         $listBranch = $this->branchService->listBranch($page);
-		return response()->json(['listBranch'=>$listBranch]);  
+        $listPlace = $this->branchService->listPlace();
+		return response()->json(['listBranch'=>$listBranch, 'listPlace' => $listPlace]);  
 	}
 
 	public function saveBranch(Request $request){

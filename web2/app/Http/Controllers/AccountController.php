@@ -154,10 +154,10 @@ class AccountController extends Controller {
 		$email = $request->get('email');
 		$now = Carbon::now();
 		if ($request->file('files_edit') != null || $request->file('files_edit') != '') {
-                $subName = 'images/user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
+                $subName = 'user/'.$now->year.$this->twoDigitNumber($now->month).$this->twoDigitNumber($now->day);
                 $destinationPath = config('app.resource_physical_path');
                 $pathToResource = config('app.resource_url_path');
-                $filename =  $subName . '/' . $request->file('files_edit')->getClientOriginalName();
+                $filename = 'images/'.$subName . '/' . $request->file('files_edit')->getClientOriginalName();
                 $check = $request->file('files_edit')->move($destinationPath.'/'.$subName, $filename);
                 if (!file_exists($check)) {
                     return \Response::json(false);

@@ -21,7 +21,8 @@ const app = new Vue({
             gia_size_lon:'',
             loaisp: '',
             ngay_ra_mat:'',
-            mo_ta:''
+            mo_ta:'',
+            path:'',
         };
     },
 
@@ -49,6 +50,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.path = this.results.data[0].pathToResource;
                     this.exportproduct = response.infoExportExcel;
                     common.loading.hide('body');
                 })
@@ -148,7 +150,7 @@ const app = new Vue({
             ngay_ra_mat, mo_ta, ma_loai_sp, img) {
             // $("#edit").css('display','block');
             // $("#body").css('display','none');
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/' + img);
+            $("#avatarcollector_edit").attr('src', this.path + img);
             this.selectedFile = img;
             $("#id_product").val(ma_so);
             $("#ten").val(ten);

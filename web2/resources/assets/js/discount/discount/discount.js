@@ -11,6 +11,7 @@ const app = new Vue({
             selectedFile: null,
             imageUrl:null,
             listImg:'',
+            path:'',
         };
     },
 
@@ -36,6 +37,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.path = this.results.data[0].pathToResource;
                     common.loading.hide('body');
                 })
                 .fail(error => {
@@ -109,7 +111,7 @@ const app = new Vue({
             }
         },
         seeMoreDetail(ma_code,ten_khuyen_mai,mo_ta,so_phan_tram,so_tien,so_sp_qui_dinh,so_tien_qui_dinh_toi_thieu,gioi_han_so_code,ngay_bat_dau,ngay_ket_thuc,hinh_anh,ma_khuyen_mai,so_sp_tang_kem,ma_san_pham) {
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/' + hinh_anh);
+            $("#avatarcollector_edit").attr('src', this.path + hinh_anh);
             this.selectedFile = hinh_anh;
             $('#ten').val(ten_khuyen_mai);
             $('#ma').val(ma_code);

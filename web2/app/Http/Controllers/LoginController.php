@@ -378,7 +378,7 @@ class LoginController extends Controller {
     	$check = 0;
     	$loop = 0;
 	    for ($i=0; $i < count($getCart); $i++) {
-	    	if ($idCustomer == $getCart[$i]->ma_khach_hang && $ma_sp == $getCart[$i]->ma_san_pham && $size == $getCart[$i]->kich_co) {
+	    	if ($idCustomer == $getCart[$i]->ma_khach_hang && $ma_sp == $getCart[$i]->ma_san_pham && $size == $getCart[$i]->kich_co && $note == $getCart[$i]->ghi_chu) {
 	    		$getDetailCart = $this->loginService->getDetailCart($getCart[$i]->ma_gio_hang);
 	    		
 	    			$a=0;

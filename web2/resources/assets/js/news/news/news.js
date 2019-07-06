@@ -11,7 +11,8 @@ const app = new Vue({
             name:'',
             selectedFile: null,
             imageUrl:null,
-            listImg:''
+            listImg:'',
+            path:'',
         };
     },
 
@@ -37,6 +38,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.path = this.results.data[0].pathToResource;
                     common.loading.hide('body');
                 })
                 .fail(error => {
@@ -139,7 +141,7 @@ const app = new Vue({
             $('#id').val(ma_tin_tuc);
             $('#ND').val(noi_dung);
             $('#date').val(date);
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/' + hinh_tin_tuc);
+            $("#avatarcollector_edit").attr('src', this.path + hinh_tin_tuc);
             this.selectedFile = hinh_tin_tuc;
             $('#update').modal('show');
         },

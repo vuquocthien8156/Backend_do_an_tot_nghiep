@@ -465,7 +465,7 @@ class LoginRepository {
 	}
 
 	public function getCart() {
-		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_khach_hang', 'ma_san_pham', 'kich_co')->get();
+		$result = DB::table('GioHang')->select('ma_gio_hang', 'ma_khach_hang', 'ma_san_pham', 'kich_co', 'ghi_chu')->get();
         return $result;
 	}
 
