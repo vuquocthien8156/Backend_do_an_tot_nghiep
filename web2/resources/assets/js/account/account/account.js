@@ -13,6 +13,7 @@ const app = new Vue({
             selectedFile: null,
             imageUrl: null,
             gender: '',
+            loai_tai_khoan:''
         };
     },
 
@@ -25,6 +26,7 @@ const app = new Vue({
                 phone:this.phone,
                 name: this.name,
                 gender:this.gender,
+                loai_tai_khoan:this.loai_tai_khoan
             };
             if (page) {
                 data.page = page;

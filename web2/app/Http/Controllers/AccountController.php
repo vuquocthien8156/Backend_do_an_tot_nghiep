@@ -40,7 +40,8 @@ class AccountController extends Controller {
 		if($check == false) {
 			return "Bạn không có quyền truy cập";
 		}
-		return view('account.account');
+		$loaiTaiKhoan = $this->accountService->loaiTaiKhoan();
+		return view('account.account',['listPer' => $loaiTaiKhoan]);
 	}
 
 	public function search(Request $request) {
@@ -57,13 +58,14 @@ class AccountController extends Controller {
 		$name = $request->get('name');
 		$phone = $request->get('phone');
 		$gender = $request->get('gender');
+		$loai_tai_khoan = $request->get('loai_tai_khoan');
 		$infoExportExcel = ['name' => $name, 'phone' => $phone, 'gender' => $gender];
 		$page = 1;
         if ($request->get('page') !== null) {
             $page = $request->get('page');
         }
         $pathToResource = config('app.resource_url_path');
-		$listAccount = $this->accountService->search($name, $phone, $page, $gender);
+		$listAccount = $this->accountService->search($name, $phone, $page, $gender, $loai_tai_khoan);
 		$tmp = $listAccount->map(function ($item) {
                 return [
                 	'id' => $item->id,

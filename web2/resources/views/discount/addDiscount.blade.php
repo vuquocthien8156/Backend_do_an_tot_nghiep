@@ -27,7 +27,7 @@
             </select>
                             <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label><br>
                                         <i style="color: red">*Hình đầu tiên là hình chính</i>
-                                        <input id="_imagesInput" name="files[]" type="file" multiple style="width: 75px;" title="Chọn ảnh">
+                                        <input id="_imagesInput" name="files[]" required="" type="file" multiple style="width: 75px;" title="Chọn ảnh">
                                         <div id="_displayImages" style="margin-bottom: 15%">
                                             <div>
                                                 <ul id="frames" class="frames">

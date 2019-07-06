@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountRepository {
 
-	public function search($name, $phone, $page=1, $gender) {
+	public function search($name, $phone, $page=1, $gender, $loai_tai_khoan) {
 		$result = DB::table('users as us')->select('us.id', 'us.ten','us.sdt','us.ngay_sinh','us.gioi_tinh','us.diem_tich','us.email','us.da_xoa','us.avatar', 'us.dia_chi', 'ten_loai_tai_khoan')
 		->join('LoaiTaiKhoan', 'ma_loai_tai_khoan', '=', 'loai_tai_khoan');
         
@@ -31,7 +31,15 @@ class AccountRepository {
         if ($gender != '' && $gender != null) {
         	$result->where('us.gioi_tinh', '=', $gender);
         }
+        if($loai_tai_khoan != null && $loai_tai_khoan != "") {
+        	$result->where('us.loai_tai_khoan', '=', $loai_tai_khoan);	
+        }
 		return $result->orderBy('us.id', 'asc')->paginate(15);
+	}
+
+	public function loaiTaiKhoan() {
+		$result = DB::table('LoaiTaiKhoan')->select('ma_loai_tai_khoan', 'ten_loai_tai_khoan')->where('da_xoa', '=', 0);
+		return $result->orderBy('ma_loai_tai_khoan')->get();
 	}
 
 	public function delete($id, $status) {

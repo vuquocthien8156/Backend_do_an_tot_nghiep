@@ -18,8 +18,12 @@ class AccountService {
 		$this->accountRepository = $accountRepository;
 	}
 
-	public function search($name, $phone, $page, $gender) {
-		return $this->accountRepository->search($name, $phone, $page, $gender);
+	public function loaiTaiKhoan() {
+		return $this->accountRepository->loaiTaiKhoan();
+	}
+
+	public function search($name, $phone, $page, $gender, $loai_tai_khoan) {
+		return $this->accountRepository->search($name, $phone, $page, $gender, $loai_tai_khoan);
 	}
 
 	public function delete($id, $status) {
