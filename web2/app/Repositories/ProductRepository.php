@@ -50,12 +50,14 @@ class ProductRepository {
     }
 
     public function searchProductAPI($name, $page, $ma_loai, $mo_ta , $ma_loai_chinh) {
+        $now = Carbon::now()->toDateString();
        if ($page == null) {
             $result = DB::table('SanPham as sp')->select('sp.ma_so', 'lsp.ma_loai_sp', 'sp.ma_chu', 'sp.ten','sp.gia_san_pham', 'sp.gia_vua', 'sp.gia_lon', 'sp.ngay_ra_mat', 'lsp.ten_loai_sp', 'sp.daxoa', 'sp.hinh_san_pham', 'sp.mo_ta',  'lsp.loai_chinh')
         ->leftjoin('LoaiSanPham as lsp', 'lsp.ma_loai_sp', '=', 'sp.loai_sp')
         ->where([
             'lsp.da_xoa' => 0,
-        ]);
+        ])
+        ->where('ngay_hien_tai', '<=', $now);
 
         if ($name != '' && $name != null) {
             $result->where(function($where) use ($name) {

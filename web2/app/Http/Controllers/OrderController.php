@@ -60,7 +60,7 @@ class OrderController extends Controller {
         }
         $listOrder = $this->orderService->listOrder($id, $code);
         //dd($listOrder);
-        if($listOrder != null && $listOrder != '') {
+        
         	for ($i=0; $i < count($listOrder); $i++) { 
             $listOrder[$i]->ngay_lap = date_format(Carbon::parse($listOrder[$i]->ngay_lap), 'd-m-Y');
             $listOrder[$i]->tong_tien2 = number_format($listOrder[$i]->tong_tien);
@@ -86,7 +86,7 @@ class OrderController extends Controller {
 	            $listOrder[$i]->trang_thai = $getNameStatus[0]->ma_trang_thai;
             }
         	}
-        }        
+                
 		return response()->json(['listSearch'=>$listOrder]);
 	}
 
@@ -106,6 +106,7 @@ class OrderController extends Controller {
 		$check = 0;
 		for($i = 0; $i < count($id); $i++) {
 			$listOrder = $this->orderService->listOrder($id[$i], $code);
+			//$a = $listOrder[$i]->madh;
 			$getStatus = $this->orderService->statusOrder($listOrder[$i]->madh);
 			$status = $getStatus + 1;
 			$updateStatus = $this->orderService->updateStatus($id[$i], $status);
