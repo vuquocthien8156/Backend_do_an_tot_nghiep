@@ -23,7 +23,7 @@
                                     <td>
                                         <label for="model" class="col-md-4 p-0 justify-content-start align-items-start font-weight-bold">Hình Ảnh</label><br>
                                         <i style="color: red">*Hình đầu tiên là hình chính</i>
-                                        <input id="_imagesInput" name="files[]" type="file" multiple style="width: 75px;" title="Chọn ảnh">
+                                        <input id="_imagesInput" required="" name="files[]" type="file" multiple style="width: 75px;" title="Chọn ảnh">
                                         <div id="_displayImages">
                                             <div>
                                                 <ul id="frames" class="frames">
@@ -51,13 +51,13 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"> <b>Giá size vừa </b></label>
-                                            <input type="number" required="" class="form-control" id="" name ="gia_size_vua" style="width: 200px;">
+                                            <input type="number" class="form-control" id="M" name ="gia_size_vua" style="width: 200px;">
                                         </div>    
                                     </td>
                                     <td>
                                         <div class="form-group" style="margin-left: 0%">
                                             <label for="other_note1"> <b>Giá gốc </b></label>
-                                            <input type="number" required="" class="form-control" id="" name="gia_goc" style="width: 200px;">
+                                            <input type="number" class="form-control" id="S" name="gia_goc" style="width: 200px;">
                                         </div>
                                     </td>
                                 </tr>
@@ -65,7 +65,7 @@
                                     <td>
                                         <div class="form-group">
                                             <label for="other_note1"> <b>Giá size lớn</b> </label>
-                                            <input type="number" required="" class="form-control" id="" name ="gia_size_lon" style="width: 200px;">
+                                            <input type="number" class="form-control" id="L" name ="gia_size_lon" style="width: 200px;">
                                         </div>
                                     </td>
                                     <td>
@@ -98,7 +98,7 @@
                                 </tr>
                             </table>
                         <div class="form-group">
-                            <input type="submit" class="button-app" style="margin-right: 75%" value="Lưu"></button>
+                            <input type="submit" id="save" class="button-app" style="margin-right: 75%" value="Lưu"></button>
                         </div>
             </form>    
                     </div>
@@ -152,9 +152,29 @@
         }
         });     
     </script>
-           <script type="text/javascript">
-				@php
-					include public_path('/js/product/product/addProduct.js');
-				@endphp
-			</script>
+    <script type="text/javascript">
+		@php
+			include public_path('/js/product/product/addProduct.js');
+		@endphp
+	</script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#M').focusout(function() {
+                if ($('#M').val() != null && $('#S').val()!=null && $('#M').val() < $('#S').val()) {
+                    bootbox.alert('Số tiền size vừa không hợp lệ');
+                }
+            })
+            $('#L').focusout(function() {
+                if ($('#M').val() != null && $('#S').val()!=null && $('#L').val()!=null && ($('#L').val() < $('#S').val() || $('#L').val() < $('#M').val())) {
+                    bootbox.alert('Số tiền size lớn không hợp lệ');
+                }  
+            })
+            $('#save').click(function() {
+                if ($('#M').val() == null && $('#S').val()==null && $('#L').val()== null || $('#M').val() == '' && $('#S').val()=='' && $('#L').val()== '') {
+                    bootbox.alert('Vui lòng nhập ít nhất 1 giá cho sản phẩm');
+                    return false;
+                }
+            })
+        });
+    </script>
 @endsection

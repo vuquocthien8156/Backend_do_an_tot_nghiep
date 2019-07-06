@@ -30,9 +30,9 @@
                                             <th class="custom-view">Tên sản phẩm</th>
                                             <th class="custom-view">Số lượng</th>
                                             <th class="custom-view">Đơn giá</th>
+                                            <th class="custom-view">Giá khuyến mãi</th>
                                             <th class="custom-view">Kích cở</th>
                                             <th class="custom-view">Topping</th>
-                                            <th class="custom-view">Giá khuyến mãi</th>
                                             <th class="custom-view">Thành tiền</th>
                                             <th class="custom-view">Ghi chú</th>
                                         </tr>
@@ -43,9 +43,9 @@
                                             <td class="custom-view">@{{item.ten}}</td>
                                             <td class="custom-view">@{{item.so_luong}}</td>
                                             <td class="custom-view">@{{item.don_gia}} VNĐ</td>
+                                            <td class="custom-view">@{{item.gia_khuyen_mai}} VNĐ</td>
                                             <td class="custom-view">@{{item.kich_co}}</td>
                                             <td class="custom-view" style="text-align: left;"><span v-for="(access, index) in item.topping">  @{{access.ten}}(x@{{access.so_luong}})<br></span></td>
-                                            <td class="custom-view">@{{item.gia_khuyen_mai}}</td>
                                             <td class="custom-view">@{{item.thanh_tien}} VNĐ</td>
                                             <td class="custom-view">@{{item.ghi_chu}}</td>
                                         </tr>
@@ -177,7 +177,8 @@
                             <td class="custom-view td-grey">@{{index + 1}}</td>
                             <td class="custom-view"><a style="cursor: pointer; color: blue;" @click="showDetail(item.madh)" class="see_more_less">@{{item.ma_chu}}</a></td>
                             <td class="custom-view " style="width:150px;text-align: left">@{{item.thong_tin_giao_hang}}</td>
-                            <td class="custom-view ">@{{item.ten_khuyen_mai}}</td>
+                            <td class="custom-view" v-if="item.ten_khuyen_mai != null">@{{item.ten_khuyen_mai}}</td>
+                            <td class="custom-view" v-if="item.ten_khuyen_mai == null">Khôn có khuyến mãi</td>
                             <td class="custom-view ">@{{item.phi_ship2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tong_tien2}} VNĐ</td>
                             <td class="custom-view ">@{{item.tien_phai_tra}} VNĐ</td>

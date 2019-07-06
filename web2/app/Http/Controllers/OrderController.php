@@ -64,16 +64,27 @@ class OrderController extends Controller {
         	for ($i=0; $i < count($listOrder); $i++) { 
             $listOrder[$i]->ngay_lap = date_format(Carbon::parse($listOrder[$i]->ngay_lap), 'd-m-Y');
             $listOrder[$i]->tong_tien2 = number_format($listOrder[$i]->tong_tien);
+            $getPointLog = $this->orderService->getPointLog($listOrder[$i]->madh);
             if($listOrder[$i]->phuong_thuc_thanh_toan == 1)
             {
-            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship);
+            	if (isset($getPointLog[0]->so_diem) == false) {
+            		$getPointLog = 0;
+            	}else {
+            		$getPointLog = $getPointLog[0]->so_diem;
+            	}
+            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship - $listOrder[$i]->tong_tien_khuyen_mai);
             }
             if($listOrder[$i]->phuong_thuc_thanh_toan == 3 || $listOrder[$i]->phuong_thuc_thanh_toan == 2)
             {
             	$listOrder[$i]->tien_phai_tra = 0;
             }
             if ($listOrder[$i]->phuong_thuc_thanh_toan == 21) {
-            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship - ($listOrder[$i]->so_diem*10000) - $listOrder[$i]->gia_khuyen_mai);	
+            	if (isset($getPointLog[0]->so_diem) == false) {
+            		$getPointLog = 0;
+            	}else {
+            		$getPointLog = $getPointLog[0]->so_diem;
+            	}
+            	$listOrder[$i]->tien_phai_tra = number_format($listOrder[$i]->tong_tien+$listOrder[$i]->phi_ship - ($getPointLog*10000) - $listOrder[$i]->tong_tien_khuyen_mai);	
             }
             if ($listOrder[$i]->phuong_thuc_thanh_toan == 23) {
             	$listOrder[$i]->tien_phai_tra = 0;	

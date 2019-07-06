@@ -22,6 +22,10 @@ class OrderService {
 		return $this->orderRepository->listOrder($id, $code);
 	}
 
+    public function getPointLog($id) {
+        return $this->orderRepository->getPointLog($id);
+    }    
+
     public function getNameStatus($id) {
         return $this->orderRepository->getNameStatus($id);
     }
