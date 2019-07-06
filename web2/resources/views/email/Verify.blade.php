@@ -17,7 +17,7 @@
                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                 <div class="row" style="font-size: 25px; width: 100%;font-weight: bold; line-height: 5; text-align: center; color: #ce252c;margin-left: 63%">Xác thực</div>
                 <div class="form-group" style="margin-left: 38%;width: 1000px">
-                    <input id="username" style="height: 40px;width: 300px;margin-left: 15%" name="Email" type="email" class="form-control" value="{{session()->get('email')}}" placeholder="Nhập email" required autofocus>
+                    <input id="username" style="height: 40px;width: 300px;margin-left: 15%" name="Email" type="email" class="form-control" readonly="true" value="{{session()->get('email')}}" placeholder="Nhập email" required autofocus>
                 </div>
                 <input style="background: #ce252c; color: white;width: 300px; height: 40px; margin-left: 53%" type="submit" name="" value="Xác thực">
             </form>
