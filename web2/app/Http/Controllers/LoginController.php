@@ -33,6 +33,9 @@ class LoginController extends Controller {
 	}
 
 	public function loginView(Request $request) {
+		if ($request->session()->get('email') != null && $request->session()->get('email') != '') {
+			return redirect()->route('wellcome');
+		}
 	  	return view('login.login2');
 	}
 
