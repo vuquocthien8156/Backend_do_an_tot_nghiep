@@ -13,7 +13,8 @@ const app = new Vue({
             selectedFile: null,
             imageUrl: null,
             gender: '',
-            loai_tai_khoan:''
+            loai_tai_khoan:'',
+            path: '',
         };
     },
 
@@ -35,6 +36,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
+                    this.path = this.results.data[0].pathToResource;
                     this.exportaccount = response.infoExportExcel;
                     common.loading.hide('body');
                 })
@@ -135,7 +137,7 @@ const app = new Vue({
             }
         },
         seeMoreDetail(ten, sdt, ngay_sinh, gioi_tinh, diem_tich, dia_chi, email, avatar, id) {
-            $("#avatarcollector_edit").attr('src', 'http://localhost:8000/images/' + avatar);
+            $("#avatarcollector_edit").attr('src', this.path+'images/' + avatar);
             this.selectedFile = avatar;
             $("#id_user").val(id);
             $("#ten").val(ten);

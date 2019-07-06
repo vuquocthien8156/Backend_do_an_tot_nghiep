@@ -555,13 +555,16 @@ class ProductController extends Controller {
                 }
                 $avatar_path = $filename;
                 if ($i == 0) {
-                    $result = $this->productService->addProduct($avatar_path, $ten, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);   
+                    $result = $this->productService->addProduct($avatar_path, $ten, $ma, $gia_goc, $gia_size_vua, $gia_size_lon, $loaisp, $ngay_ra_mat, $mo_ta);
+                    $check1 = 0;   
                 }
-                $getIdMax = $this->productService->getIdMax();
-                $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
-                if ($inserImage == false) {
-                    $check1 = 1;
-                    break;
+                if ($i > 0) {
+                    $getIdMax = $this->productService->getIdMax();
+                    $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
+                    if ($inserImage == false) {
+                        $check1 = 1;
+                        break;
+                    }
                 }
             }
         }else {
@@ -608,13 +611,16 @@ class ProductController extends Controller {
                 }
                 $avatar_path = $filename;
                 if ($i == 0) {
-                    $result = $this->productService->addDiscount($avatar_path,$now,$type,$ma, $ten,$MT, $SPT, $ST, $SSPQD, $STQDTT, $NBD ,$NKT, $GHSC,$SSPTK,$SP );   
+                    $result = $this->productService->addDiscount($avatar_path,$now,$type,$ma, $ten,$MT, $SPT, $ST, $SSPQD, $STQDTT, $NBD ,$NKT, $GHSC,$SSPTK,$SP );
+                    $check1 = 0;   
                 }
-                $getIdMax = $this->productService->getIdMaxDiscount();
-                $inserImage = $this->productService->inserImageDiscount($avatar_path, $getIdMax);
-                if ($inserImage == false) {
-                    $check1 = 1;
-                    break;
+                if ($i > 0) {
+                     $getIdMax = $this->productService->getIdMaxDiscount();
+                    $inserImage = $this->productService->inserImageDiscount($avatar_path, $getIdMax);
+                    if ($inserImage == false) {
+                        $check1 = 1;
+                        break;
+                    }
                 }
             }
         }else {
@@ -652,13 +658,16 @@ class ProductController extends Controller {
                 }
                 $avatar_path = $filename;
                 if ($i == 0) {
-                    $result = $this->productService->addNews($ten, $ND, $ngay_tao, $avatar_path, $NĐ);   
+                    $result = $this->productService->addNews($ten, $ND, $ngay_tao, $avatar_path, $NĐ);
+                    $check1 = 0;   
                 }
-                $getIdMax = $this->productService->getIdMaxNews();
-                $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
-                if ($inserImage == false) {
-                    $check1 = 1;
-                    break;
+                if ($i > 0) {
+                    $getIdMax = $this->productService->getIdMaxNews();
+                    $inserImage = $this->productService->inserImage($avatar_path, $getIdMax);
+                    if ($inserImage == false) {
+                        $check1 = 1;
+                        break;
+                    }
                 }
             }
         }else {
@@ -699,6 +708,7 @@ class ProductController extends Controller {
             $listDiscount[$i]->pathToResource = $pathToResource;
             $listDiscount[$i]->ngay_BD = isset($listDiscount[$i]->ngay_bat_dau) ? date_format(Carbon::parse($listDiscount[$i]->ngay_bat_dau), 'd-m-Y') : null;
             $listDiscount[$i]->ngay_KT = isset($listDiscount[$i]->ngay_ket_thuc) ? date_format(Carbon::parse($listDiscount[$i]->ngay_ket_thuc), 'd-m-Y') :null;
+             $listDiscount[$i]->pathToResource = $pathToResource;
         }
        return response()->json(['listSearch'=>$listDiscount]);
     }

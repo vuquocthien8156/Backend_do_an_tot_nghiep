@@ -11,12 +11,10 @@ const app = new Vue({
             latitude: '',
             longitude: '',
             name_branch: '',
-           
             phone_branch: '',
             other_infomation: '',
-
             name_branch_update: '',
-        
+            listPlace: '',
             phone_branch_update: '',
             other_infomation_update: '',
             id_branch_update: '',
@@ -34,6 +32,7 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listBranch;
+                    this.listPlace = response.listPlace;
                     common.loading.hide('body');
                 })
                 .fail(error => {
@@ -41,10 +40,29 @@ const app = new Vue({
                 })
         },
         saveBranch() {
-            // if (($("#address").val().indexOf('Hồ Chí Minh') == -1 && $("#place").val() != 1) || ($("#address").val().indexOf('Hà Nội') == -1 && $("#place").val() != 2)) {
-            //     bootbox.alert("Vui lọng chọn đúng khu vực");
-            //     return false;
-            // }
+            var a = $("#place").val();
+            var b = 'randombranch';
+            for (var i = 0; i < this.listPlace.length; i++) {
+                if (a == this.listPlace[i].ma_khu_vuc) {
+                    b = this.listPlace[i].ten_khu_vuc;
+                }
+            }
+            if (($("#address").val().indexOf(b) == -1)) {
+                bootbox.alert("Vui lòng chọn đúng khu vực");
+                return false;
+            }
+            if (this.name_branch == null && this.name_branch == '') {
+                bootbox.alert("Vui lòng điền tên chi nhánh");
+                return false;
+            }
+            if (this.phone_branch == null && this.phone_branch == '') {
+                bootbox.alert("Vui lòng điền số điện thoại");
+                return false;
+            }
+            if ($("#address").val() == null && $("#address").val() == '') {
+                bootbox.alert("Vui lòng chọn địa chỉ");
+                return false;
+            }
             var data = {
                 latitude: $("#lat").val(),
                 longitude: $("#long").val(),
@@ -160,10 +178,28 @@ const app = new Vue({
             $('#collapseTableBranch').collapse('hide');
         },
         updateBranch() {
-            //  if (($("#address1").val().indexOf('Hồ Chí Minh') == -1 && $("#place_update").val() != 1) || ($("#address1").val().indexOf('Hà Nội') == -1 && $("#place_update").val() != 2)) {
-            //     bootbox.alert("Vui lọng chọn đúng khu vực");
-            //     return false;
-            // }
+           var b = 'randombranch';
+            for (var i = 0; i < this.listPlace.length; i++) {
+                if (a == this.listPlace[i].ma_khu_vuc) {
+                    b = this.listPlace[i].ten_khu_vuc;
+                }
+            }
+            if (($("#address").val().indexOf(b) == -1)) {
+                bootbox.alert("Vui lòng chọn đúng khu vực");
+                return false;
+            }
+            if (this.name_branch == null && this.name_branch == '') {
+                bootbox.alert("Vui lòng điền tên chi nhánh");
+                return false;
+            }
+            if (this.phone_branch == null && this.phone_branch == '') {
+                bootbox.alert("Vui lòng điền số điện thoại");
+                return false;
+            }
+            if ($("#address").val() == null && $("#address").val() == '') {
+                bootbox.alert("Vui lòng chọn địa chỉ");
+                return false;
+            }
             var data = {
                 latitude_update: $("#lat_update").val(),
                 longitude_update: $("#long_update").val(),
