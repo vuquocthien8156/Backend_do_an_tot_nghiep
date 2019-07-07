@@ -50,7 +50,11 @@ const app = new Vue({
             $.get('search', data)
                 .done(response => {
                     this.results = response.listSearch;
-                    this.path = this.results.data[0].pathToResource;
+                    if (this.results.data == '' || this.results.data == null) {
+                        this.path = null;    
+                    }else {
+                        this.path = this.results.data[0].pathToResource;
+                    }
                     this.exportproduct = response.infoExportExcel;
                     common.loading.hide('body');
                 })

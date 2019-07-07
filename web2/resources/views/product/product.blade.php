@@ -24,7 +24,7 @@
                             </div>       
                         <div class="modal-body">
                             <form id="form_edit_info" method="POST" action="edit" enctype="multipart/form-data">
-                <table border="0px" class=" table-striped w-100" style="margin-left: 0%">
+                <table border="0px" class=" table-striped w-100" style="margin-left: 0%;font-weight: bold;">
                 <tr style="background: #f2f2f2">
                     <td>
                         <label for="other_note1"> Hình ảnh </label>

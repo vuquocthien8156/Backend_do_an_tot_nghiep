@@ -892,4 +892,13 @@ class LoginController extends Controller {
 
 		}
 	}
+	public function getPointUser(Request $request) {
+		$id = $request->get('id');
+		$getPoint = $this->loginService->getPoint($id);
+		if (isset($getPoint[0]->diem_tich)) {
+			$getPoint = $getPoint[0]->diem_tich;
+			return response()->json(['status' => 'success', 'error' =>  0, 'pointuser' => $getPoint]);
+		}
+		return response()->json(['status' => 'fail', 'error' =>  1]);
+	}
 }

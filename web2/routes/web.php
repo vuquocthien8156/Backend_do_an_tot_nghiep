@@ -153,7 +153,7 @@ Route::get('api/getQuantityAndPrice', 'LoginController@getQuantityAndPrice');//n
 Route::get('api/getDiscount', 'LoginController@getSlideShow');
 
 Route::get('api/getLogPointUser', 'LoginController@getAllLogPointUser');
-
+Route::get('api/getPointUser', 'LoginController@getPointUser');
 Route::get('api/verify',['as' => 'getlienhe', 'uses' => 'LoginController@lienhe']);
 Route::post('api/verify', ['as' => 'postlienhe', 'uses' => 'LoginController@postlienhe']);
 Route::get('ChangePassWord', 'LoginController@ChangePassWord');
