@@ -127,7 +127,7 @@ class OrderController extends Controller {
 			$getPoint = $this->orderService->getPoint($listOrder[0]->ma_khach_hang);
 			$totalPoint = (int)$getPoint[0]->diem_tich + (int)$point;
 			$ngay_lap = Carbon::now();
-			if ($status == 5) {
+			if ($status == 5 && $phuong_thuc == 1) {
 				$hinh_thuc = 1;
 				$updatePointUser = $this->orderService->addPoint($listOrder[0]->ma_khach_hang, (int)$totalPoint);
 				$addLog = $this->loginService->addLog($listOrder[0]->ma_khach_hang, $id[$i], $hinh_thuc, $ngay_lap, (int)$point);

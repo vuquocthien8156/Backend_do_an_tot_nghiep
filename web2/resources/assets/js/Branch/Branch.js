@@ -45,6 +45,7 @@ const app = new Vue({
             for (var i = 0; i < this.listPlace.length; i++) {
                 if (a == this.listPlace[i].ma_khu_vuc) {
                     b = this.listPlace[i].ten_khu_vuc;
+                    break;
                 }
             }
             if (($("#address").val().indexOf(b) == -1)) {
@@ -178,13 +179,16 @@ const app = new Vue({
             $('#collapseTableBranch').collapse('hide');
         },
         updateBranch() {
-           var b = 'randombranch';
+            var a = $("#place_update").val();
+            console.log(a);
+            var b = 'randombranch';
             for (var i = 0; i < this.listPlace.length; i++) {
                 if (a == this.listPlace[i].ma_khu_vuc) {
                     b = this.listPlace[i].ten_khu_vuc;
+                    break;
                 }
             }
-            if (($("#address").val().indexOf(b) == -1)) {
+            if (($("#address1").val().indexOf(b) == -1)) {
                 bootbox.alert("Vui lòng chọn đúng khu vực");
                 return false;
             }

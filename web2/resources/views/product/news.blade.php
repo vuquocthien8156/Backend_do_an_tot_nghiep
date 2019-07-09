@@ -23,9 +23,6 @@
                        <p style="font-size: 20px">{{$key->noi_dung}}</p>
                     </div>
                 </div>
-                <div style="margin-top:3%;margin-left:8%">
-                       <p style="font-size: 20px">{{$key->path}}</p>
-                    </div>
             </div> 
             @endforeach   
         </div>
