@@ -26,7 +26,7 @@
         "chart.js": "^2.7.2",
         "js-cookie": "^2.2.0",
         "laravel-vue-pagination": "^2.0.1",
-        "npm": "^6.3.0",
+        "npm": "^6.14.6",
         "pc-bootstrap4-datetimepicker": "^4.17.50",
         "tether": "^1.4.4",
         "vue-bootstrap-datetimepicker": "^5.0.0-beta.2",
